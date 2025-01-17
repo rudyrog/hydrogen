@@ -1,20 +1,20 @@
-"use client";
-import React, { useEffect, useRef } from "react";
-import gsap from "gsap";
-import Particles from "@/components/ui/particles";
+'use client'
+import Particles from '@/components/ui/particles'
+import gsap from 'gsap'
+import { useEffect, useRef } from 'react'
 
 export default function Home() {
-  const letterRefs = useRef<(HTMLParagraphElement | null)[]>([]);
+  const letterRefs = useRef<(HTMLParagraphElement | null)[]>([])
 
   useEffect(() => {
-    letterRefs.current = letterRefs.current.slice(0, 8);
+    letterRefs.current = letterRefs.current.slice(0, 8)
 
     const tl = gsap.timeline({
       defaults: {
         duration: 1.2,
-        ease: "elastic.out(1, 0.8)",
+        ease: 'elastic.out(1, 0.8)',
       },
-    });
+    })
 
     tl.fromTo(
       letterRefs.current,
@@ -31,39 +31,39 @@ export default function Home() {
         scale: 1,
         stagger: {
           each: 0.1,
-          ease: "power2.inOut",
+          ease: 'power2.inOut',
         },
-      }
+      },
     )
       .fromTo(
         letterRefs.current,
         {
-          filter: "blur(10px)",
+          filter: 'blur(10px)',
         },
         {
-          filter: "blur(0px)",
+          filter: 'blur(0px)',
           stagger: {
             each: 0.08,
-            from: "start",
+            from: 'start',
           },
           duration: 0.8,
         },
-        "<0.1"
+        '<0.1',
       )
       .fromTo(
-        ".description",
+        '.description',
         {
-          filter: "blur(10px)",
+          filter: 'blur(10px)',
           y: 80,
         },
         {
-          filter: "blur(0px)",
+          filter: 'blur(0px)',
           y: 0,
           duration: 3,
         },
-        "<0.1"
-      );
-  }, []);
+        '<0.1',
+      )
+  }, [])
 
   return (
     <div className="relative w-full h-screen overflow-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
@@ -74,9 +74,9 @@ export default function Home() {
         color="black"
         refresh
       />
-      <div className="relative z-10 flex flex-col justify-center items-center h-full">
-        <div className="flex flex-row items-center justify-center title tracking-widest perspective-[1000px] text-[12vw] md:text-[8vw] lg:text-[12rem]">
-          {["H", "Y", "D", "R", "O", "G", "E", "N"].map((letter, index) => (
+      <div className="relative z-10 flex flex-col justify-center  items-center h-full">
+        <div className="flex flex-row items-center justify-center title tracking-widest perspective-[1000px] text-[1vw] md:text-[10rem] ">
+          {['H', 'Y', 'D', 'R', 'O', 'G', 'E', 'N'].map((letter, index) => (
             <p
               key={index}
               //  @ts-ignore
@@ -98,5 +98,5 @@ export default function Home() {
         </div>
       </div>
     </div>
-  );
+  )
 }
