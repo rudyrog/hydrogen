@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from 'react'
 import ClassicQuiz from '../../../components/quiz/ClassicQuiz'
 
 export default function Quiz() {
-  const [isTimed, setIsTimed] = useState<boolean>(true)
+  const [isTimed, setIsTimed] = useState<boolean>(false)
   const [time, setTime] = useState<number>(3)
   const [level, setLevel] = useState<'Easy' | 'Medium' | 'Hard'>('Medium')
   const [gameMode, setGameMode] = useState<'classic' | 'location'>('classic')
@@ -31,7 +31,7 @@ export default function Quiz() {
 
   // GSAP Animations for page elements
   useEffect(() => {
-    letterRefs.current = letterRefs.current.slice(0, 9)
+    letterRefs.current = letterRefs.current.slice(0, 4)
 
     const tl = gsap.timeline({
       defaults: {
@@ -58,45 +58,45 @@ export default function Quiz() {
           ease: 'power2.inOut',
         },
       },
-    ).fromTo(
-      letterRefs.current,
-      {
-        filter: 'blur(10px)',
-      },
-      {
-        filter: 'blur(0px)',
-        stagger: {
-          each: 0.08,
-          from: 'start',
+    )
+      .fromTo(
+        letterRefs.current,
+        {
+          filter: 'blur(10px)',
         },
-        duration: 0.8,
-      },
-      '<0.1',
-    )
-
-    gsap.fromTo(
-      '.card',
-      { opacity: 0, y: 50 },
-      { opacity: 1, y: 0, duration: 2, ease: 'power2.inOut' },
-    )
-
-    gsap.fromTo(
-      '.time',
-      { opacity: 0, y: 50 },
-      { opacity: 1, y: 0, stagger: 0.2, duration: 2, ease: 'power2.inOut' },
-    )
-
-    gsap.fromTo(
-      '.quiz-btn',
-      { opacity: 0, x: -50 },
-      { opacity: 1, x: 0, duration: 2, ease: 'power2.inOut' },
-    )
+        {
+          filter: 'blur(0px)',
+          stagger: {
+            each: 0.08,
+            from: 'start',
+          },
+          duration: 0.8,
+        },
+        '<0.1',
+      )
+      .fromTo(
+        '.card',
+        { opacity: 0, filter: 'blur(10px)' },
+        { opacity: 1, filter: 'blur(0px)' },
+      )
+      .fromTo(
+        '.time',
+        { opacity: 0, y: 50 },
+        { opacity: 1, y: 0, stagger: 0.2, ease: 'power2.inOut' },
+        '<0.1',
+      )
+      .fromTo(
+        '.quiz-btn',
+        { opacity: 0, x: -50 },
+        { opacity: 1, x: 0, duration: 2, ease: 'power2.inOut' },
+        '<0.1',
+      )
   }, [])
 
   return (
-    <div className="flex gap-3 flex-col container mx-auto">
+    <div className="flex gap-3 flex-col container mx-auto p-3 w-5/6">
       <h1 className="quiz-title flex flex-row text-7xl md:text-start text-center title pt-20">
-        {['Q', 'u', 'i', 'z'].map((letter, index) => (
+        {['Q', 'U', 'I', 'Z'].map((letter, index) => (
           <p
             key={index}
             //  @ts-ignore
@@ -134,10 +134,10 @@ export default function Quiz() {
         <>
           <div className="flex gap-3">
             <Card
-              className={`w-96 cursor-pointer card${
+              className={`w-96 cursor-pointer${
                 gameMode === 'classic'
-                  ? 'border border-black transition-all duration-300 shadow-md shadow-gray-400 text-black rounded-none'
-                  : 'border border-gray-200 bg-gray-100/50 text-black/80 rounded-none'
+                  ? 'border border-black transition-all duration-300 shadow-md shadow-gray-400 text-black rounded-none card'
+                  : 'border border-gray-200 card bg-gray-100/50 text-black/80 rounded-none'
               }`}
               onClick={() => handleGameModeChange('classic')}
             >
@@ -153,10 +153,10 @@ export default function Quiz() {
             </Card>
 
             <Card
-              className={`w-96 cursor-pointer card ${
+              className={`w-96 cursor-pointer ${
                 gameMode === 'location'
-                  ? 'border border-black transition-all duration-300 shadow-md shadow-gray-400 text-black rounded-none'
-                  : 'border border-gray-200 bg-gray-100/50 text-black/80 rounded-none'
+                  ? 'border border-black transition-all duration-300 shadow-md shadow-gray-400 text-black rounded-none card'
+                  : 'border card border-gray-200 bg-gray-100/50 text-black/80 rounded-none'
               }`}
               onClick={() => handleGameModeChange('location')}
             >

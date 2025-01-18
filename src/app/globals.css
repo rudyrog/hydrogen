@@ -16,6 +16,19 @@
   }
   @apply subtitle underline-offset-4 text-base text-black/80 hover:text-black transition-all duration-300;
 }
+.ab-link {
+  text-decoration: underline white;
+  &:hover {
+    text-decoration: underline black;
+  }
+  @apply underline-offset-4 text-base text-black transition-all duration-300;
+}
+tr{
+  @apply border-b border-black/20;
+}
+td{
+  @apply border-r border-black/20;
+}
 
 @font-face {
   font-family: "Griffin";
@@ -113,4 +126,9 @@
   body {
     @apply body;
   }
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; /* make scrollbar transparent */
 }

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 //@ts-ignore
 import { InteractiveHoverButton } from '../ui/interactive-hover-button'
+
 interface Element {
   AtomicNumber: number
   Symbol: string
@@ -35,9 +36,11 @@ export default function ClassicQuiz({
   const [inputLength, setInputLength] = useState(0)
   const [values, setValues] = useState<string[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [timeRemaining, setTimeRemaining] = useState(time * 60)
   const inputRefs = useRef<(HTMLInputElement | null)[]>([])
   const [noOfHints, setNoOfHints] = useState(1)
   const [isCompleted, setIsCompleted] = useState(false)
+
   useEffect(() => {
     fetchQuestions()
 
@@ -54,6 +57,23 @@ export default function ClassicQuiz({
   }, [])
 
   useEffect(() => {
+    if (isLoading || isCompleted) return
+
+    const timer = setInterval(() => {
+      setTimeRemaining((prevTime) => {
+        if (prevTime <= 1) {
+          clearInterval(timer)
+          setIsCompleted(true)
+          return 0
+        }
+        return prevTime - 1
+      })
+    }, 1000)
+
+    return () => clearInterval(timer)
+  }, [isLoading, isCompleted])
+
+  useEffect(() => {
     if (questions.length > 0 && currentQuestion <= questions.length) {
       const questionNameLength = questions[currentQuestion - 1].Name.length
       setInputLength(questionNameLength)
@@ -61,6 +81,12 @@ export default function ClassicQuiz({
       setIsLoading(false)
     }
   }, [questions, currentQuestion])
+
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60)
+    const remainingSeconds = seconds % 60
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`
+  }
 
   const fetchQuestions = async () => {
     try {
@@ -73,7 +99,6 @@ export default function ClassicQuiz({
         .sort(() => 0.5 - Math.random())
         .slice(0, noOfQuestions)
       setQuestions(shuffledQuestions)
-      console.log(shuffledQuestions)
     } catch (error) {
       console.error('Error fetching questions:', error)
     }
@@ -111,11 +136,9 @@ export default function ClassicQuiz({
       if (currentQuestion < questions.length) {
         setCurrentQuestion((prev) => prev + 1)
         setNoOfHints(1)
-
         inputRefs.current[0]?.focus()
       } else {
         setIsCompleted(true)
-        console.log('Quiz completed!')
       }
     }
   }
@@ -132,25 +155,25 @@ export default function ClassicQuiz({
 
   return (
     <div className="p-3">
-      {isCompleted === true ? (
+      {isCompleted ? (
         <div className="cmp-txt text-3xl border border-black/20 h-1/2 w-1/2 p-4 gap-2">
-          Finished...
+          {timeRemaining === 0 ? "Time's up!" : 'Finished!'}
           <br />
           <p className="text-lg">
-            {currentQuestion} out of {questions.length} questions correct.
-            <br />
+            {/* Time remaining: {formatTime(timeRemaining)} */}
             Heisenberg Approved
           </p>
         </div>
       ) : (
         <div className="border border-black/20 h-1/2 w-1/2 p-4 flex flex-col items-center justify-center">
-          <div className="text-2xl text-center font-medium p-3 flex flex-col items-center justify-center gap-1">
+          <div className="text-2xl text-center font-medium p-2 flex flex-col items-center justify-center gap-1">
+            <div className="text-xl font-bold">{formatTime(timeRemaining)}</div>
             Classic{' '}
             <p className="text-sm">
               ({currentQuestion} of {questions.length})
             </p>
           </div>
-          <div className="flex items-center justify-center gap-2 p-3 border border-black/20 text-center text-3xl w-fit">
+          <div className="flex items-center justify-center gap-2 p-3 border border-black/40 text-center text-3xl w-fit">
             {values.map((value, index) => (
               <input
                 key={index}
