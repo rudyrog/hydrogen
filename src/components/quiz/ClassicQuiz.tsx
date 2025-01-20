@@ -42,7 +42,7 @@ export default function ClassicQuiz({
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const [noOfHints, setNoOfHints] = useState(1);
   const [isCompleted, setIsCompleted] = useState(false);
-
+  const [badEnding, setBadEnding] = useState(false);
   const { user } = useAuth();
 
   useEffect(() => {
@@ -68,6 +68,7 @@ export default function ClassicQuiz({
         if (prevTime <= 1) {
           clearInterval(timer);
           setIsCompleted(true);
+          setBadEnding(true);
           return 0;
         }
         return prevTime - 1;
@@ -143,7 +144,8 @@ export default function ClassicQuiz({
         inputRefs.current[0]?.focus();
       } else {
         setIsCompleted(true);
-        if (user?.email) incrementClassicQuizCompleted(user?.email);
+        if (user?.email && !badEnding)
+          incrementClassicQuizCompleted(user?.email);
       }
     }
   };
@@ -165,8 +167,11 @@ export default function ClassicQuiz({
           {timeRemaining === 0 ? "Time's up!" : "Finished!"}
           <br />
           <p className="text-lg">
-            {/* Time remaining: {formatTime(timeRemaining)} */}
-            Heisenberg Approved
+            {badEnding ? (
+              <div>Aww u suck try again</div>
+            ) : (
+              <div> Heisenberg Approved </div>
+            )}
           </p>
         </div>
       ) : (

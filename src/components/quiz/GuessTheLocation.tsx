@@ -1,13 +1,146 @@
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import elements from "@/data/elements.json";
 import { Element } from "@/types/element";
-import React from "react";
 
-const PeriodicTable: React.FC = () => {
+export const GuessTheLocation = ({
+  level,
+  time,
+  noOfQuestions,
+}: {
+  level: string;
+  time: number;
+  noOfQuestions: number;
+}) => {
+  const [questions, setQuestions] = useState<Element[]>([]);
+  const [currentQuestion, setCurrentQuestion] = useState(1);
+  const [isGameCompleted, setIsGameCompleted] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [timeRemaining, setTimeRemaining] = useState(time * 60);
+  const [badEnding, setBadEnding] = useState(false);
+
+  useEffect(() => {
+    fetchQuestions();
+
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+      event.returnValue = "";
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
+  const fetchQuestions = async () => {
+    try {
+      const max = level === "Easy" ? 10 : level === "Medium" ? 20 : 30;
+      const response = await fetch(
+        `http://localhost:3000/api/v1/getQuestion?min=1&max=${max}`,
+      );
+      const data = await response.json();
+      const shuffledQuestions = data
+        .sort(() => 0.5 - Math.random())
+        .slice(0, noOfQuestions);
+      setQuestions(shuffledQuestions);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error fetching questions:", error);
+    }
+  };
+
+  const formatTime = (seconds: number) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
+  };
+
+  useEffect(() => {
+    if (isLoading || isGameCompleted) return;
+
+    const timer = setInterval(() => {
+      setTimeRemaining((prevTime) => {
+        if (prevTime <= 1) {
+          clearInterval(timer);
+          setBadEnding(true);
+          setIsGameCompleted(true);
+          return 0;
+        }
+        return prevTime - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [isLoading, isGameCompleted]);
+
+  return (
+    !isLoading && (
+      <div className="flex flex-col gap-12 py-8">
+        <div className="container mx-auto flex flex-col gap-3 w-4/5">
+          {currentQuestion} / {noOfQuestions} | {formatTime(timeRemaining)}
+          <div className="p-3 rounded-3xl border w-fit text-3xl">
+            {isGameCompleted ? (
+              badEnding ? (
+                <div>You suck</div>
+              ) : (
+                <div>Yoooo you won!!!</div>
+              )
+            ) : (
+              <div>Find {questions[currentQuestion - 1].Name}!</div>
+            )}
+          </div>
+        </div>
+        {!isGameCompleted && (
+          <div className="relative w-screen  flex items-end justify-center ">
+            <HiddenPeriodicTable
+              currentQuestionElementNumber={
+                questions[currentQuestion - 1].AtomicNumber
+              }
+              setCurrentQuestion={setCurrentQuestion}
+              currentQuestion={currentQuestion}
+              noOfQuestions={noOfQuestions}
+              setIsGameCompleted={setIsGameCompleted}
+            />
+          </div>
+        )}
+      </div>
+    )
+  );
+};
+
+// ITS CHAOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOS
+//
+
+const HiddenPeriodicTable = ({
+  currentQuestionElementNumber,
+  setCurrentQuestion,
+  currentQuestion,
+  noOfQuestions,
+  setIsGameCompleted,
+}: {
+  currentQuestionElementNumber: number;
+  setCurrentQuestion: Dispatch<SetStateAction<number>>;
+  currentQuestion: number;
+  noOfQuestions: number;
+  setIsGameCompleted: Dispatch<SetStateAction<boolean>>;
+}) => {
+  const checkAnswer = (element: Element) => {
+    console.log(element, currentQuestionElementNumber);
+
+    if (element.AtomicNumber === currentQuestionElementNumber) {
+      console.log(element);
+      if (currentQuestion < noOfQuestions)
+        setCurrentQuestion(currentQuestion + 1);
+      else setIsGameCompleted(true);
+    }
+  };
   const ElementCard = ({ element }: { element: Element | undefined }) => {
     if (!element) return <div className="w-16 h-16 invisible" />;
 
     return (
       <div
+        onClick={() => checkAnswer(element)}
         className="w-16 h-16 p-1 text-center border rounded transition-transform hover:scale-105 cursor-pointer flex flex-col justify-between"
         style={{
           backgroundColor: `#${element.CPKHexColor || "808080"}`,
@@ -16,8 +149,8 @@ const PeriodicTable: React.FC = () => {
         }}
       >
         <div className="text-xs">{element.AtomicNumber}</div>
-        <div className="text-sm font-bold">{element.Symbol}</div>
-        <div className="text-xs truncate">{element.Name}</div>
+        <div className="text-sm font-bold">?</div>
+        <div className="text-xs truncate">?</div>
       </div>
     );
   };
@@ -147,5 +280,3 @@ const PeriodicTable: React.FC = () => {
     </div>
   );
 };
-
-export default PeriodicTable;
