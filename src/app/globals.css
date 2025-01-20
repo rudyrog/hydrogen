@@ -23,11 +23,12 @@
   }
   @apply underline-offset-4 text-base text-black transition-all duration-300;
 }
-tr{
-  @apply border-b border-black/20;
-}
-td{
-  @apply border-r border-black/20;
+.name-link {
+  text-decoration: underline white;
+  &:hover {
+    text-decoration: underline black;
+  }
+  @apply mx-0.5 underline-offset-4 text-lg text-black transition-all duration-300;
 }
 
 @font-face {

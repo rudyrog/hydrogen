@@ -55,11 +55,13 @@ export default function About() {
       .fromTo(
         contentRef.current,
         {
+          filter: 'blur(10px)',
           opacity: 0,
           y: 50,
           scale: 0.95,
         },
         {
+          filter: 'blur(0px)',
           opacity: 1,
           y: 0,
           scale: 1,
@@ -72,12 +74,14 @@ export default function About() {
       .fromTo(
         imagesRef.current,
         {
+          filter: 'blur(10px)',
           opacity: 0,
           x: 100,
           rotateY: 15,
           scale: 0.9,
         },
         {
+          filter: 'blur(0px)',
           opacity: 1,
           x: 0,
           rotateY: 0,
@@ -125,7 +129,7 @@ export default function About() {
                 href="https://github.com/rudyrog"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="link"
+                className="name-link"
               >
                 Rudra Mehta
               </a>{' '}
@@ -134,7 +138,7 @@ export default function About() {
                 href="https://github.com/parv141206"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="link"
+                className="name-link"
               >
                 Parv Shah
               </a>
@@ -146,7 +150,7 @@ export default function About() {
                 href="https://github.com/rudyrog/periodic-table"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="link"
+                className="name-link"
               >
                 GitHub
               </a>
@@ -211,7 +215,7 @@ export default function About() {
             <Image
               width={400}
               height={200}
-              src="/images/test-tube.jpg"
+              src="/images/bonds.jpg"
               alt="test tube"
               className="border border-black-20"
               //@ts-ignore

@@ -8,11 +8,13 @@ import { useEffect, useRef } from 'react'
 export default function Home() {
   const letterRefs = useRef<(HTMLParagraphElement | null)[]>([])
   const alfRefs = useRef<(HTMLParagraphElement | null)[]>([])
+  const marieRefs = useRef<(HTMLParagraphElement | null)[]>([])
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger)
     letterRefs.current = letterRefs.current.slice(0, 8)
     alfRefs.current = alfRefs.current.slice(0, 13)
+    marieRefs.current = marieRefs.current.slice(0, 13)
 
     const tl = gsap.timeline({
       defaults: {
@@ -147,6 +149,84 @@ export default function Home() {
       },
       '<0.1',
     )
+    const marieTimeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: '#marie-section',
+        start: 'top center',
+        end: 'top 20%',
+        scrub: 1,
+      },
+    })
+
+    marieTimeline
+      .fromTo(
+        marieRefs.current,
+        {
+          y: 120,
+          opacity: 0,
+          rotateX: -80,
+          scale: 0.8,
+        },
+        {
+          y: 0,
+          opacity: 1,
+          rotateX: 0,
+          scale: 1,
+          ease: 'elastic.out(1, 0.8)',
+          stagger: {
+            each: 0.1,
+            ease: 'power2.inOut',
+          },
+        },
+      )
+      .fromTo(
+        '.marie-img',
+        {
+          x: -100,
+          opacity: 0,
+          scale: 0.8,
+          rotate: -15,
+        },
+        {
+          x: 0,
+          opacity: 1,
+          scale: 1,
+          rotate: 0,
+          duration: 3,
+          ease: 'power2.out',
+        },
+        '<0.2',
+      )
+      .fromTo(
+        '.marie-text',
+        {
+          x: 100,
+          opacity: 0,
+          scale: 0.9,
+        },
+        {
+          x: 0,
+          opacity: 1,
+          scale: 1,
+          ease: 'power2.out',
+        },
+        '<0.3',
+      )
+
+    marieTimeline.fromTo(
+      [marieRefs.current, '.marie-img', '.marie-text'],
+      {
+        filter: 'blur(10px)',
+      },
+      {
+        filter: 'blur(0px)',
+        stagger: {
+          each: 0.08,
+          from: 'start',
+        },
+      },
+      '<0.1',
+    )
   }, [])
 
   return (
@@ -180,7 +260,7 @@ export default function Home() {
             universe, constituting roughly 75% of all baryonic mass.
           </p>
         </div>
-        <div className="p-2 md:p-3 backdrop-blur-md rounded-lg text-black/60 mt-6">
+        <div className="p-2 md:p-3 backdrop-blur-md rounded-lg text-black/30 mt-6">
           Scroll For More
         </div>
       </section>
@@ -188,7 +268,7 @@ export default function Home() {
         id="nobel-section"
         className="px-8  md:px-20 bg-white/90 text-black w-full flex flex-row items-center justify-center min-h-screen -mt-60"
       >
-        <div className="flex flex-row h-fit w-full pt-12 justify-between">
+        <div className="flex flex-row w-full pt-12 justify-between">
           <Image
             width={400}
             height={400}
@@ -212,13 +292,63 @@ export default function Home() {
               )}
             </h2>
             <p className="nobel-text max-w-[80%] md:max-w-[70%]  p-4 md:p-6 md:pt-0  bg-white/90 backdrop-blur-md rounded-lg text-wrap text-lg">
-              Alfred Nobel (1843-1821) was a Swedish chemist and inventor. He
-              was a recipient of the Nobel Prize in Chemistry in 1895. Also
-              known as the Father of Modern Chemistry, Nobel was a pioneer in
-              the field of chemistry and made significant contributions to the
-              development of the mordern understanding of science. The Nobel
-              Prize is an annual award given to a person or organization for
-              their discovery and contribution to the scientific community.
+              Alfred Nobel (1833-1896) was a Swedish chemist, inventor, and
+              businessman whose complex legacy shaped the course of both science
+              and peace advocacy. Most famous for inventing{' '}
+              <strong>Dynamite</strong> in 1867, Nobel's work with explosives
+              revolutionized both mining and warfare. Born in Stockholm to an
+              engineering family, Nobel showed early brilliance in chemistry and
+              engineering. Despite having no formal university education, he
+              became one of the most successful inventors of his time,
+              accumulating 355 patents across multiple countries. His most
+              significant invention, dynamite, made construction and mining
+              safer by providing a more stable alternative to highly volatile
+              nitroglycerin.
+            </p>
+          </div>
+        </div>
+      </section>
+      <section
+        id="marie-section"
+        className="px-8  md:px-20 bg-white/90 text-black w-full flex flex-row items-center justify-center min-h-screen -mt-40"
+      >
+        <div className="flex flex-row h-fit w-full pt-12 justify-between">
+          <Image
+            width={400}
+            height={400}
+            src="/images/marie.jpg"
+            alt="Nobel"
+            className="marie-img border border-black-20 z-30"
+          />
+          <div className="ml-4 flex flex-col items-start justify-start">
+            <h2 className="marie-title flex flex-row text-[5rem] title text-center perspective-[1000px]">
+              {['M', 'a', 'r', 'i', 'e', ' ', 'C', 'u', 'r', 'i', 'e'].map(
+                (letter, index) => (
+                  <p
+                    key={index}
+                    // @ts-ignore
+                    ref={(el) => (marieRefs.current[index] = el)}
+                    className="mx-3 transition-colors duration-300 cursor-default select-none"
+                  >
+                    {letter}
+                  </p>
+                ),
+              )}
+            </h2>
+            <p className="marie-text max-w-[80%] md:max-w-[70%]  p-4 md:p-6 md:pt-0  bg-white/90 backdrop-blur-md rounded-lg text-wrap text-lg">
+              Marie Curie (1867-1934) was a pioneering physicist and chemist
+              whose groundbreaking research on radioactivity transformed our
+              understanding of matter and energy. The first woman to win a Nobel
+              Prize and the only person to win in multiple scientific fields
+              (Physics and Chemistry), Curie's discoveries revolutionized both
+              science and medicine. Born Maria Skłodowska in Warsaw, Poland,
+              Curie overcame significant barriers as a woman in science,
+              eventually becoming the first female professor at the Sorbonne in
+              Paris. Despite facing poverty and gender discrimination, she
+              conducted meticulous research that led to the discovery of two new
+              elements, <strong>Olonium</strong> and <strong> Radium</strong>,
+              and developed techniques for isolating radioactive isotopes that
+              laid the foundation for modern radiation therapy.
             </p>
           </div>
         </div>
