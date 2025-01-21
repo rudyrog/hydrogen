@@ -14,7 +14,7 @@
   &:hover {
     text-decoration: underline black;
   }
-  @apply subtitle underline-offset-4 text-base text-black/80 hover:text-black transition-all duration-300;
+  @apply subtitle underline-offset-4 text-base dark:text-white text-black/80 hover:text-black transition-all duration-300;
 }
 .ab-link {
   text-decoration: underline white;
@@ -60,7 +60,43 @@
   :root {
     --background-color: #121212;
     --text-color: #ffffff;
-    --primary-color: #bb86fc;
+    --primary-color: #ffffff;
+      --card: 0 0% 10%;
+        /* Background color for cards (black) */
+        --card-foreground: 0 0% 98%;
+        /* Foreground color for text (white) */
+      
+        --border: 0 0% 20%;
+        /* Border color for cards */
+        --input: 0 0% 15%;
+        /* Input background within cards */
+        --ring: 0 0% 40%;
+        /* Ring focus or hover color */
+      
+        --muted: 0 0% 20%;
+        /* Muted background within cards */
+        --muted-foreground: 0 0% 70%;
+        /* Muted text color in cards */
+      
+        --accent: 0 0% 20%;
+        /* Accent background within cards */
+        --accent-foreground: 0 0% 98%;
+        /* Accent text color */
+      
+        --secondary: 0 0% 15%;
+        /* Secondary background within cards */
+        --secondary-foreground: 0 0% 80%;
+        /* Secondary text color */
+      
+        --primary: 0 0% 98%;
+        /* Primary text color */
+        --primary-foreground: 0 0% 10%;
+        /* Primary foreground text color */
+      
+        --destructive: 0 60% 40%;
+        /* Destructive (e.g., error) background */
+        --destructive-foreground: 0 0% 98%;
+        /* Destructive text color */
   }
 }
 
@@ -69,7 +105,7 @@
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
+    --card-foreground: 0 0% 100%;
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 3.9%;
     --primary: 0 0% 9%;
@@ -97,37 +133,59 @@
     --color-4: 195 100% 63%;
     --color-5: 90 100% 63%;
   }
-  .dark {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-    --color-1: 0 100% 63%;
-    --color-2: 270 100% 63%;
-    --color-3: 210 100% 63%;
-    --color-4: 195 100% 63%;
-    --color-5: 90 100% 63%;
-  }
+.card {
+  background-color: hsl(var(--card));
+  color: hsl(var(--card-foreground));
+  border-color: hsl(var(--border));
+}
+
+.dark .text-primary {
+  color: hsl(var(--foreground));
+  /* Default light text color */
+}
+
+.dark .text-muted {
+  color: hsl(var(--muted-foreground));
+  /* Muted text color */
+}
+ .dark {
+   --card: 0 0% 10%;
+   /* Background color for cards (black) */
+   --card-foreground: 0 0% 98%;
+   /* Foreground color for text (white) */
+
+   --border: 0 0% 20%;
+   /* Border color for cards */
+   --input: 0 0% 15%;
+   /* Input background within cards */
+   --ring: 0 0% 40%;
+   /* Ring focus or hover color */
+
+   --muted: 0 0% 20%;
+   /* Muted background within cards */
+   --muted-foreground: 0 0% 70%;
+   /* Muted text color in cards */
+
+   --accent: 0 0% 20%;
+   /* Accent background within cards */
+   --accent-foreground: 0 0% 98%;
+   /* Accent text color */
+
+   --secondary: 0 0% 15%;
+   /* Secondary background within cards */
+   --secondary-foreground: 0 0% 80%;
+   /* Secondary text color */
+
+   --primary: 0 0% 98%;
+   /* Primary text color */
+   --primary-foreground: 0 0% 10%;
+   /* Primary foreground text color */
+
+   --destructive: 0 60% 40%;
+   /* Destructive (e.g., error) background */
+   --destructive-foreground: 0 0% 98%;
+   /* Destructive text color */
+ }
 }
 
 @layer base {

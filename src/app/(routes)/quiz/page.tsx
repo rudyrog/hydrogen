@@ -1,44 +1,45 @@
-'use client'
-import { GuessTheLocation } from '@/components/quiz/GuessTheLocation'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Checkbox } from '@/components/ui/checkbox'
-import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button'
-import gsap from 'gsap'
-import { useEffect, useRef, useState } from 'react'
-import ClassicQuiz from '../../../components/quiz/ClassicQuiz'
+"use client";
+import { GuessTheLocation } from "@/components/quiz/GuessTheLocation";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
+import gsap from "gsap";
+import { useEffect, useRef, useState } from "react";
+import ClassicQuiz from "../../../components/quiz/ClassicQuiz";
+import { Level } from "@/types/levels";
 
 export default function Quiz() {
-  const [isTimed, setIsTimed] = useState<boolean>(false)
-  const [time, setTime] = useState<number>(3)
-  const [level, setLevel] = useState<'Easy' | 'Medium' | 'Hard'>('Medium')
-  const [gameMode, setGameMode] = useState<'classic' | 'location'>('classic')
-  const [gameStarted, setGameStarted] = useState<boolean>(false)
+  const [isTimed, setIsTimed] = useState<boolean>(false);
+  const [time, setTime] = useState<number>(3);
+  const [level, setLevel] = useState<Level>("Medium");
+  const [gameMode, setGameMode] = useState<"classic" | "location">("classic");
+  const [gameStarted, setGameStarted] = useState<boolean>(false);
 
   const handleTimeChange = (newTime: number) => {
-    setTime(newTime)
-  }
+    setTime(newTime);
+  };
 
-  const handleLevelChange = (newLevel: 'Easy' | 'Medium' | 'Hard') => {
-    setLevel(newLevel)
-  }
+  const handleLevelChange = (newLevel: "Easy" | "Medium" | "Hard") => {
+    setLevel(newLevel);
+  };
 
-  const handleGameModeChange = (newGameMode: 'classic' | 'location') => {
-    setGameMode(newGameMode)
-  }
+  const handleGameModeChange = (newGameMode: "classic" | "location") => {
+    setGameMode(newGameMode);
+  };
 
-  const timeOptions = [1, 3, 5, 10]
-  const levels = ['Easy', 'Medium', 'Hard']
-  const letterRefs = useRef<(HTMLParagraphElement | null)[]>([])
+  const timeOptions = [1, 3, 5, 10];
+  const levels = ["Easy", "Medium", "Hard"];
+  const letterRefs = useRef<(HTMLParagraphElement | null)[]>([]);
 
   useEffect(() => {
-    letterRefs.current = letterRefs.current.slice(0, 4)
+    letterRefs.current = letterRefs.current.slice(0, 4);
 
     const tl = gsap.timeline({
       defaults: {
         duration: 1.2,
-        ease: 'elastic.out(1, 0.8)',
+        ease: "elastic.out(1, 0.8)",
       },
-    })
+    });
 
     tl.fromTo(
       letterRefs.current,
@@ -55,48 +56,48 @@ export default function Quiz() {
         scale: 1,
         stagger: {
           each: 0.1,
-          ease: 'power2.inOut',
+          ease: "power2.inOut",
         },
       },
     )
       .fromTo(
         letterRefs.current,
         {
-          filter: 'blur(10px)',
+          filter: "blur(10px)",
         },
         {
-          filter: 'blur(0px)',
+          filter: "blur(0px)",
           stagger: {
             each: 0.08,
-            from: 'start',
+            from: "start",
           },
           duration: 0.8,
         },
-        '<0.1',
+        "<0.1",
       )
       .fromTo(
-        '.card',
-        { opacity: 0, filter: 'blur(10px)' },
-        { opacity: 1, filter: 'blur(0px)' },
+        ".card",
+        { opacity: 0, filter: "blur(10px)" },
+        { opacity: 1, filter: "blur(0px)" },
       )
       .fromTo(
-        '.time',
+        ".time",
         { opacity: 0, y: 50 },
-        { opacity: 1, y: 0, stagger: 0.2, ease: 'power2.inOut' },
-        '<0.1',
+        { opacity: 1, y: 0, stagger: 0.2, ease: "power2.inOut" },
+        "<0.1",
       )
       .fromTo(
-        '.quiz-btn',
+        ".quiz-btn",
         { opacity: 0, x: -50 },
-        { opacity: 1, x: 0, duration: 2, ease: 'power2.inOut' },
-        '<0.1',
-      )
-  }, [])
+        { opacity: 1, x: 0, duration: 2, ease: "power2.inOut" },
+        "<0.1",
+      );
+  }, []);
 
   return (
     <div className="flex gap-3 flex-col ">
       <h1 className="quiz-title flex flex-row text-7xl md:text-start text-center title pt-20 container mx-auto p-3 w-5/6">
-        {['Q', 'U', 'I', 'Z'].map((letter, index) => (
+        {["Q", "U", "I", "Z"].map((letter, index) => (
           <p
             key={index}
             //  @ts-ignore
@@ -108,7 +109,7 @@ export default function Quiz() {
         ))}
       </h1>
       {gameStarted === true ? (
-        gameMode === 'classic' ? (
+        gameMode === "classic" ? (
           <div className="container mx-auto p-3 w-5/6">
             <ClassicQuiz
               level={level}
@@ -116,36 +117,36 @@ export default function Quiz() {
               noOfQuestions={(function (time) {
                 switch (time) {
                   case 1:
-                    return 2
+                    return 2;
                   case 3:
-                    return 4
+                    return 4;
                   case 5:
-                    return 6
+                    return 6;
                   case 10:
-                    return 10
+                    return 10;
                   default:
-                    return 10
+                    return 10;
                 }
               })(time)}
               setGameStarted={setGameStarted}
             />
           </div>
-        ) : gameMode === 'location' ? (
+        ) : gameMode === "location" ? (
           <GuessTheLocation
             level={level}
             time={time}
             noOfQuestions={(function (time) {
               switch (time) {
                 case 1:
-                  return 2
+                  return 2;
                 case 3:
-                  return 4
+                  return 4;
                 case 5:
-                  return 6
+                  return 6;
                 case 10:
-                  return 10
+                  return 10;
                 default:
-                  return 10
+                  return 10;
               }
             })(time)}
             setGameStarted={setGameStarted}
@@ -158,11 +159,11 @@ export default function Quiz() {
           <div className="flex gap-3 container mx-auto p-3 w-5/6">
             <Card
               className={`w-96 cursor-pointer${
-                gameMode === 'classic'
-                  ? 'border border-black transition-all duration-300 shadow-md shadow-gray-400 text-black rounded-none card'
-                  : 'border border-gray-200 card bg-gray-100/50 text-black/80 rounded-none'
+                gameMode === "classic"
+                  ? "border border-black transition-all duration-300 shadow-md shadow-gray-400 text-black rounded-none card"
+                  : "border border-gray-200 card bg-gray-100/50 text-black/80 rounded-none"
               }`}
-              onClick={() => handleGameModeChange('classic')}
+              onClick={() => handleGameModeChange("classic")}
             >
               <CardHeader>
                 <CardTitle className="font-medium subtitle">Classic</CardTitle>
@@ -177,11 +178,11 @@ export default function Quiz() {
 
             <Card
               className={`w-96 cursor-pointer ${
-                gameMode === 'location'
-                  ? 'border border-black transition-all duration-300 shadow-md shadow-gray-400 text-black rounded-none card'
-                  : 'border card border-gray-200 bg-gray-100/50 text-black/80 rounded-none'
+                gameMode === "location"
+                  ? "border border-black transition-all duration-300 shadow-md shadow-gray-400 text-black rounded-none card"
+                  : "border card border-gray-200 bg-gray-100/50 text-black/80 rounded-none"
               }`}
-              onClick={() => handleGameModeChange('location')}
+              onClick={() => handleGameModeChange("location")}
             >
               <CardHeader>
                 <CardTitle className="font-medium subtitle">
@@ -206,20 +207,14 @@ export default function Quiz() {
                 checked={isTimed}
                 onCheckedChange={(checked) => setIsTimed(checked as boolean)}
               />
-              <label
-                htmlFor="terms"
-                className="text-lg"
-              >
+              <label htmlFor="terms" className="text-lg">
                 Time the Quiz
               </label>
             </div>
 
             {isTimed && (
               <div className="time border border-black/30 p-3 w-1/3 h-fit shadow-md shadow-gray-300">
-                <label
-                  htmlFor=""
-                  className="text-lg"
-                >
+                <label htmlFor="" className="text-lg">
                   Duration
                 </label>
                 <div className="flex gap-2 pt-2">
@@ -228,12 +223,12 @@ export default function Quiz() {
                       key={option}
                       className={`btn-pr ${
                         time === option
-                          ? 'bg-emerald-400 text-black transition-all duration-500'
-                          : 'bg-gray-200 text-gray-500'
+                          ? "bg-emerald-400 text-black transition-all duration-500"
+                          : "bg-gray-200 text-gray-500"
                       }`}
                       onClick={() => handleTimeChange(option)}
                     >
-                      {option} Min{option > 1 ? 's' : ''}
+                      {option} Min{option > 1 ? "s" : ""}
                     </button>
                   ))}
                 </div>
@@ -241,10 +236,7 @@ export default function Quiz() {
             )}
 
             <div className="time border border-black/30 p-3 w-1/3 h-fit shadow-md shadow-gray-300">
-              <label
-                htmlFor="level"
-                className="text-lg"
-              >
+              <label htmlFor="level" className="text-lg">
                 Choose Difficulty
               </label>
               <div className="flex gap-2 pt-2">
@@ -253,12 +245,12 @@ export default function Quiz() {
                     key={_level}
                     className={`btn-pr ${
                       _level === level
-                        ? _level === 'Easy'
-                          ? 'bg-emerald-400 text-black transition-all duration-500'
-                          : _level === 'Medium'
-                          ? 'bg-yellow-400 text-black transition-all duration-500'
-                          : 'bg-red-500 text-black transition-all duration-500'
-                        : 'bg-gray-200 text-gray-500'
+                        ? _level === "Easy"
+                          ? "bg-emerald-400 text-black transition-all duration-500"
+                          : _level === "Medium"
+                            ? "bg-yellow-400 text-black transition-all duration-500"
+                            : "bg-red-500 text-black transition-all duration-500"
+                        : "bg-gray-200 text-gray-500"
                     }`}
                     // @ts-ignore
                     onClick={() => handleLevelChange(_level)}
@@ -279,5 +271,5 @@ export default function Quiz() {
         </>
       )}
     </div>
-  )
+  );
 }

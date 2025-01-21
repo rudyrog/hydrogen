@@ -11,11 +11,13 @@ interface AuthContextValue {
     email: string;
   } | null;
   profile: Profile | null;
+  setProfile: (profile: Profile | null) => void;
 }
 
 const AuthContext = createContext<AuthContextValue>({
   user: null,
   profile: null,
+  setProfile: () => {},
 });
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -50,7 +52,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, profile }}>
+    <AuthContext.Provider value={{ user, profile, setProfile }}>
       {children}
     </AuthContext.Provider>
   );

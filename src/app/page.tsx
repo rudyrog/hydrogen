@@ -68,12 +68,12 @@ export default function Home() {
   }, [])
 
   return (
-    <main className="relative w-full min-h-screen overflow-x-hidden">
+    <main className="relative w-full min-h-screen overflow-x-hidden bg-background">
       <Particles
-        className="fixed inset-0 w-full h-full"
+        className="fixed inset-0 w-full h-full animate-in"
         quantity={250}
         ease={150}
-        color="black"
+        color="hsl(var(--primary))"
         refresh
       />
       <section className="relative z-10 flex flex-col justify-center items-center w-full min-h-screen">
@@ -83,15 +83,15 @@ export default function Home() {
               key={index}
               // @ts-ignore
               ref={(el) => (letterRefs.current[index] = el)}
-              className="mx-3 transition-colors duration-300 cursor-default select-none"
+              className="mx-3 transition-colors duration-300 cursor-default select-none text-foreground hover:text-primary"
             >
               {letter}
             </p>
           ))}
         </div>
-        <div className="description max-w-[80%] md:max-w-[65%] border border-black/15 p-4 md:p-6 shadow-lg shadow-black/10 bg-white/90 backdrop-blur-md rounded mt-16">
-          <p className="text-center">
-            <span className="font font-serif">Hydrogen</span> is the chemical
+        <div className="description max-w-[80%] md:max-w-[65%] border border-border p-4 md:p-6 shadow-lg shadow-foreground/5 bg-background/90 backdrop-blur-md rounded-lg mt-16">
+          <p className="text-center text-muted-foreground">
+            <span className="font-serif text-foreground">Hydrogen</span> is the chemical
             element with the symbol H and atomic number 1. With a standard
             atomic weight of 1.008, It's the lightest element in the periodic
             table and the most abundant chemical substance in the universe,
