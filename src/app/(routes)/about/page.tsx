@@ -3,6 +3,18 @@ import gsap from 'gsap'
 import Image from 'next/image'
 import { useEffect, useRef } from 'react'
 
+const texts = [
+  'Using',
+  'Next.js',
+  'TailwindCss',
+  'TypeScript',
+  'Gsap',
+  'Made',
+  'To',
+  'Be',
+  'Smooth',
+]
+
 export default function About() {
   const letterRefs = useRef<(HTMLParagraphElement | null)[]>([])
   const contentRef = useRef(null)
