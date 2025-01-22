@@ -96,7 +96,7 @@ export default function Quiz() {
   }, [])
 
   return (
-    <div className="flex gap-3 flex-col">
+    <div className="flex gap-3 flex-col dark:shadow-none">
       <h1 className="quiz-title flex flex-row text-7xl md:text-start text-center title pt-20 container mx-auto p-3 w-5/6">
         {['Q', 'U', 'I', 'Z'].map((letter, index) => (
           <p
@@ -118,15 +118,15 @@ export default function Quiz() {
               noOfQuestions={(function (time) {
                 switch (time) {
                   case 1:
-                    return 2
+                    return 3
                   case 3:
-                    return 4
+                    return 5
                   case 5:
-                    return 6
+                    return 10
                   case 10:
-                    return 10
+                    return 15
                   default:
-                    return 10
+                    return 3
                 }
               })(time)}
               setGameStarted={setGameStarted}
@@ -139,15 +139,15 @@ export default function Quiz() {
             noOfQuestions={(function (time) {
               switch (time) {
                 case 1:
-                  return 2
+                  return 3
                 case 3:
-                  return 4
+                  return 5
                 case 5:
-                  return 6
+                  return 10
                 case 10:
-                  return 10
+                  return 15
                 default:
-                  return 10
+                  return 3
               }
             })(time)}
             setGameStarted={setGameStarted}
@@ -161,8 +161,8 @@ export default function Quiz() {
             <Card
               className={`w-96 cursor-pointer ${
                 gameMode === 'classic'
-                  ? 'border border-foreground/30 transition-all duration-300 shadow-sm shadow-foreground/20 text-foreground rounded-none card'
-                  : 'border border-foreground/10 card bg-background/50 text-foreground/80 rounded-none'
+                  ? 'border border-border dark:border-border/70 dark:border-2 transition-all duration-300 shadow-lg shadow-foreground/20 text-foreground rounded-lg card dark:shadow-none'
+                  : 'border border-border/50 dark:border-border/10 dark:border-2 card text-foreground/50 rounded-lg bg-foreground/10'
               }`}
               onClick={() => handleGameModeChange('classic')}
             >
@@ -180,8 +180,8 @@ export default function Quiz() {
             <Card
               className={`w-96 cursor-pointer ${
                 gameMode === 'location'
-                  ? 'border border-foreground transition-all duration-300 shadow-sm shadow-foreground/20 text-foreground rounded-none card'
-                  : 'border border-foreground/10 card bg-background/50 text-foreground/80 rounded-none'
+                  ? 'border border-border dark:border-border/70 dark:border-2 transition-all duration-300 shadow-lg shadow-foreground/20 text-foreground rounded-lg card dark:shadow-none'
+                  : 'border border-border/50 dark:border-border/10 dark:border-2 card text-foreground/50 rounded-lg bg-foreground/10'
               }`}
               onClick={() => handleGameModeChange('location')}
             >
@@ -200,10 +200,10 @@ export default function Quiz() {
             </Card>
           </div>
 
-          <div className="flex flex-col container mx-auto p-3 w-5/6 gap-2 ">
+          <div className="flex flex-col container mx-auto px-3 w-5/6 gap-2 ">
             <div className="time flex items-center space-x-2">
               <Checkbox
-                className="h-6 w-6 rounded-sm border border-foreground/30 data-[state=checked]:bg-background data-[state=checked]:text-foreground bg-background/50"
+                className="h-6 w-6 rounded-sm border border-border/50 data-[state=checked]:bg-background data-[state=checked]:text-foreground bg-background/50"
                 id="timed-quiz"
                 checked={isTimed}
                 onCheckedChange={(checked) => setIsTimed(checked as boolean)}
@@ -217,7 +217,7 @@ export default function Quiz() {
             </div>
 
             {isTimed && (
-              <div className="time border border-foreground/30 p-3 w-1/3 h-fit shadow-md shadow-foreground/10">
+              <div className="time border dark:border-2 border-border/50 p-3 w-1/3 h-fit shadow-md shadow-foreground/20 dark:shadow-none rounded-lg">
                 <label
                   htmlFor=""
                   className="text-lg"
@@ -230,8 +230,8 @@ export default function Quiz() {
                       key={option}
                       className={
                         time === option
-                          ? 'bg-emerald-400 text-black transition-all duration-500 px-3 py-1 rounded-sm border border-transparent'
-                          : 'bg-gray-300 text-gray-800 px-3 py-1 rounded-sm border border-foreground/30'
+                          ? 'bg-emerald-500 text-black transition-all duration-500 px-3 py-1 rounded-md border-2 border-transparent'
+                          : 'border border-border/50 dark:border-border/10 dark:border-2 card text-foreground/50 rounded-md bg-foreground/10 px-3 py-1'
                       }
                       onClick={() => handleTimeChange(option)}
                     >
@@ -242,7 +242,7 @@ export default function Quiz() {
               </div>
             )}
 
-            <div className="time border border-foreground/30 p-3 w-1/3 h-fit shadow-md shadow-foreground/10">
+            <div className="time border dark:border-2 border-border/50 p-3 w-1/3 h-fit shadow-md shadow-foreground/20 dark:shadow-none rounded-lg">
               <label
                 htmlFor="level"
                 className="text-lg"
@@ -256,11 +256,11 @@ export default function Quiz() {
                     className={
                       _level === level
                         ? _level === 'Easy'
-                          ? 'bg-emerald-400 text-black transition-all duration-500 px-3 py-1 rounded-sm border border-transparent'
+                          ? 'bg-emerald-400 text-black transition-all duration-500 px-3 py-1 rounded-md border-2 border-transparent'
                           : _level === 'Medium'
-                          ? 'bg-yellow-400 text-black transition-all duration-500 px-3 py-1 rounded-sm border border-transparent'
-                          : 'bg-red-500 text-black transition-all duration-500 px-3 py-1 rounded-sm border border-transparent'
-                        : 'bg-gray-300 text-gray-800 px-3 py-1 rounded-sm border border-foreground/30'
+                          ? 'bg-yellow-400 text-black transition-all duration-500 px-3 py-1 rounded-md border-2 border-transparent'
+                          : 'bg-red-500 text-black transition-all duration-500 px-3 py-1 rounded-md border-2 border-transparent'
+                        : 'border border-border/50 dark:border-border/10 dark:border-2 card text-foreground/50 rounded-lg bg-foreground/10 px-3 py-1'
                     }
                     //@ts-ignore
                     onClick={() => handleLevelChange(_level)}
@@ -270,21 +270,12 @@ export default function Quiz() {
                 ))}
               </div>
             </div>
-            {theme === 'light' ? (
-              <InteractiveHoverButton
-                onClick={() => setGameStarted(true)}
-                className="quiz-btn subtitle font-light w-fit mt-3 text-lg"
-              >
-                Start Quiz!
-              </InteractiveHoverButton>
-            ) : (
-              <InteractiveHoverButton
-                onClick={() => setGameStarted(true)}
-                className="quiz-btn subtitle font-light w-fit mt-3 text-lg bg-white text-black"
-              >
-                Start Quiz!
-              </InteractiveHoverButton>
-            )}
+            <InteractiveHoverButton
+              onClick={() => setGameStarted(true)}
+              className="quiz-btn subtitle font-light w-fit mt-3 text-lg"
+            >
+              Choose Quiz!
+            </InteractiveHoverButton>
           </div>
         </>
       )}

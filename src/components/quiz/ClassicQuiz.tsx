@@ -7,7 +7,7 @@ import {
 } from '@/lib/firebase/profileFunctions'
 import { Level } from '@/types/levels'
 import { Trophy } from 'lucide-react'
-import { useTheme } from '../../contexts/ThemeContext'
+import { useTheme } from 'next-themes'
 import { InteractiveHoverButton } from '../ui/interactive-hover-button'
 
 interface Element {
@@ -185,21 +185,12 @@ export default function ClassicQuiz({
                 <p className="text-xl text-foreground/50">
                   Almost had it? Challenge yourself again!
                 </p>
-                {theme === 'light' ? (
-                  <InteractiveHoverButton
-                    onClick={() => setGameStarted(false)}
-                    className="quiz-btn subtitle font-light w-fit mt-3 text-lg"
-                  >
-                    Choose Quiz!
-                  </InteractiveHoverButton>
-                ) : (
-                  <InteractiveHoverButton
-                    onClick={() => setGameStarted(false)}
-                    className="quiz-btn subtitle font-light w-fit mt-3 text-lg bg-white text-black"
-                  >
-                    Choose Quiz!
-                  </InteractiveHoverButton>
-                )}
+                <InteractiveHoverButton
+                  onClick={() => setGameStarted(false)}
+                  className="quiz-btn subtitle font-light w-fit mt-3 text-lg"
+                >
+                  Choose Quiz!
+                </InteractiveHoverButton>
               </div>
             ) : (
               <div className="flex flex-col items-center justify-center gap-8 p-8 text-center rounded-sm shadow-lg border border-foreground/20">
@@ -212,21 +203,12 @@ export default function ClassicQuiz({
                 <p className="text-xl text-foreground/50">
                   Congratulations on your victory! Ready for another challenge?
                 </p>
-                {theme === 'light' ? (
-                  <InteractiveHoverButton
-                    onClick={() => setGameStarted(false)}
-                    className="quiz-btn subtitle font-light w-fit mt-3 text-lg"
-                  >
-                    Choose Quiz!
-                  </InteractiveHoverButton>
-                ) : (
-                  <InteractiveHoverButton
-                    onClick={() => setGameStarted(false)}
-                    className="quiz-btn subtitle font-light w-fit mt-3 text-lg bg-white text-black"
-                  >
-                    Choose Quiz!
-                  </InteractiveHoverButton>
-                )}
+                <InteractiveHoverButton
+                  onClick={() => setGameStarted(false)}
+                  className="quiz-btn subtitle font-light w-fit mt-3 text-lg"
+                >
+                  Choose Quiz!
+                </InteractiveHoverButton>
               </div>
             )}
           </div>
@@ -240,7 +222,7 @@ export default function ClassicQuiz({
               ({currentQuestion} of {questions.length})
             </p>
           </div>
-          <div className="flex items-center justify-center gap-2 p-3 border border-foreground/40 text-center text-3xl w-fit">
+          <div className="flex items-center justify-center gap-2 p-3 border border-foreground/20 text-center text-3xl w-fit">
             {values.map((value, index) => (
               <input
                 key={index}
