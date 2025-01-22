@@ -3,18 +3,6 @@ import gsap from 'gsap'
 import Image from 'next/image'
 import { useEffect, useRef } from 'react'
 
-const texts = [
-  'Using',
-  'Next.js',
-  'TailwindCss',
-  'TypeScript',
-  'Gsap',
-  'Made',
-  'To',
-  'Be',
-  'Smooth',
-]
-
 export default function About() {
   const letterRefs = useRef<(HTMLParagraphElement | null)[]>([])
   const contentRef = useRef(null)
@@ -124,7 +112,7 @@ export default function About() {
         <div className="flex flex-row gap-3 justify-between w-full">
           <div
             ref={contentRef}
-            className="w-2/5 border border-black/30 p-5"
+            className="w-2/5 border border-foreground/30 p-5"
           >
             <h2 className="text-xl font-serif">Chemistry</h2>
             <div className="w-full">

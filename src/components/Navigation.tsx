@@ -1,37 +1,37 @@
 'use client'
-import { IoSunnyOutline } from "react-icons/io5";
-import { FaRegMoon } from "react-icons/fa";
 import SignInButton from '@/components/SignInButton'
 import { useAuth } from '@/contexts/AuthContext'
 import Link from 'next/link'
-import { useTheme } from "@/app/layout";
+import { FaRegMoon } from 'react-icons/fa'
+import { IoSunnyOutline } from 'react-icons/io5'
+import { useTheme } from '../contexts/ThemeContext'
 
 export default function Navigation() {
   const { user } = useAuth()
-  const {theme , toggleTheme} = useTheme()
+  const { theme, toggleTheme } = useTheme()
   return (
-    <nav className="fixed top-0 dark:bg-black/80 left-0 right-0 z-50 flex flex-row items-center justify-center dark:text-white bg-white gap-8 py-4 backdrop-blur-md border-b border-black/10 shadow-sm ">
+    <nav className="fixed top-0 bg-background/80 left-0 right-0 z-50 flex flex-row items-center justify-center text-foreground gap-8 py-4 backdrop-blur-md border-b border-border shadow-sm shadow-foreground/10">
       <Link
         href="/"
-        className="link"
+        className="name-link"
       >
         Home
       </Link>
       <Link
         href="/quiz"
-        className="link"
+        className="name-link"
       >
         Quiz
       </Link>
       <Link
         href="/p-table"
-        className="link"
+        className="name-link"
       >
         Table
       </Link>
       <Link
         href="/about"
-        className="link"
+        className="name-link"
       >
         About
       </Link>
@@ -39,14 +39,16 @@ export default function Navigation() {
       {user ? (
         <Link
           href="/profile"
-          className="link"
+          className="name-link"
         >
-          <span>{user.name}</span>
+          Profile
         </Link>
       ) : (
         <SignInButton />
       )}
-      <button onClick={toggleTheme}>{theme === "light" ? <IoSunnyOutline/> : <FaRegMoon />}</button>
+      <button onClick={toggleTheme}>
+        {theme === 'light' ? <IoSunnyOutline /> : <FaRegMoon />}
+      </button>
     </nav>
   )
 }

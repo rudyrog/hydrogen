@@ -9,8 +9,10 @@ import {
   CardHeader,
   CardTitle,
 } from '../../../components/ui/card'
+import { useTheme } from '../../../contexts/ThemeContext'
 export default function PTable() {
   const letterRefs = useRef<(HTMLParagraphElement | null)[]>([])
+  const theme = useTheme().theme
   useEffect(() => {
     letterRefs.current = letterRefs.current.slice(0, 14)
 
@@ -166,24 +168,40 @@ export default function PTable() {
       </div>
       <section id="dmitri-section">
         <div className="container mx-auto w-5/6">
-          <Card className="dmitri-card p-6 space-y-4 h-fit flex w-2/3 border-none bg-transparent">
-            <CardContent className="space-y-6">
+          <Card
+            className={`dmitri-card p-6 space-y-4 h-fit flex w-2/3 border-none bg-transparent ${
+              theme === 'dark' ? 'bg-slate-900' : 'bg-white'
+            }`}
+          >
+            <CardContent
+              className={`space-y-6 ${
+                theme === 'dark' ? 'text-white' : 'text-slate-800'
+              }`}
+            >
               <div className="space-y-4">
-                <h2 className="text-2xl font-semibold text-slate-800">
+                <h2 className="text-2xl font-semibold">
                   🎩 Meet Dmitri Mendeleev, the Chemistry Wizard! 🧪
                 </h2>
 
-                <p className="text-slate-700">
+                <p
+                  className={`${
+                    theme === 'dark' ? 'text-slate-400' : 'text-slate-700'
+                  }`}
+                >
                   In 1869, Dmitri had a big idea: organize all the universe's
                   building blocks, called <strong>elements</strong>, into a
                   magical chart—the <strong>Periodic Table</strong>! 🌍✨
                 </p>
 
                 <div className="space-y-2">
-                  <h3 className="text-xl font-semibold text-slate-800">
+                  <h3 className="text-xl font-semibold">
                     📜 What's the Periodic Table?
                   </h3>
-                  <ul className="space-y-2 list-disc list-inside text-slate-700">
+                  <ul
+                    className={`space-y-2 list-disc list-inside ${
+                      theme === 'dark' ? 'text-slate-400' : 'text-slate-700'
+                    }`}
+                  >
                     <li>It's like a superhero lineup where:</li>
                     <li>
                       Each box is an element (like gold, oxygen, or sodium 🧂).
@@ -200,10 +218,14 @@ export default function PTable() {
                 </div>
 
                 <div className="space-y-2">
-                  <h3 className="text-xl font-semibold text-slate-800">
+                  <h3 className="text-xl font-semibold">
                     🧙‍♂️ Why Is Dmitri Cool?
                   </h3>
-                  <p className="text-slate-700">
+                  <p
+                    className={`${
+                      theme === 'dark' ? 'text-slate-400' : 'text-slate-700'
+                    }`}
+                  >
                     He guessed new elements{' '}
                     <strong>before they were discovered</strong>! 🔮
                     <br />
@@ -216,16 +238,33 @@ export default function PTable() {
           </Card>
         </div>
       </section>
+
       <section id="legend-section">
         <div className="container mx-auto w-5/6 mb-28">
-          <Card className="max-w-2xl border-none legend-card">
+          <Card
+            className={`max-w-2xl border-none legend-card ${
+              theme === 'dark' ? 'bg-slate-900' : 'bg-white'
+            }`}
+          >
             <CardHeader className="pb-2">
-              <CardTitle className="text-2xl">
+              <CardTitle
+                className={`text-2xl ${
+                  theme === 'dark' ? 'text-white' : 'text-slate-800'
+                }`}
+              >
                 🧙‍♂️ Periodic Table Legend 🌈
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6">
-              <p className="text-slate-600">
+            <CardContent
+              className={`space-y-6 ${
+                theme === 'dark' ? 'text-white' : 'text-slate-800'
+              }`}
+            >
+              <p
+                className={`${
+                  theme === 'dark' ? 'text-slate-400' : 'text-slate-600'
+                }`}
+              >
                 Each group of elements has its own special color. Here's what
                 they mean:
               </p>
@@ -233,8 +272,18 @@ export default function PTable() {
                 <li className="flex items-center gap-3">
                   <span className="w-5 h-5 bg-red-300 rounded shrink-0"></span>
                   <span>
-                    <strong className="text-slate-900">Alkali Metals:</strong>
-                    <span className="text-slate-600 ml-2">
+                    <strong
+                      className={`${
+                        theme === 'dark' ? 'text-white' : 'text-slate-900'
+                      }`}
+                    >
+                      Alkali Metals:
+                    </strong>
+                    <span
+                      className={`${
+                        theme === 'dark' ? 'text-slate-400' : 'text-slate-600'
+                      } ml-2`}
+                    >
                       Super reactive metals! ⚡
                     </span>
                   </span>
@@ -242,10 +291,18 @@ export default function PTable() {
                 <li className="flex items-center gap-3">
                   <span className="w-5 h-5 bg-red-400 rounded shrink-0"></span>
                   <span>
-                    <strong className="text-slate-900">
+                    <strong
+                      className={`${
+                        theme === 'dark' ? 'text-white' : 'text-slate-900'
+                      }`}
+                    >
                       Alkaline Earth Metals:
                     </strong>
-                    <span className="text-slate-600 ml-2">
+                    <span
+                      className={`${
+                        theme === 'dark' ? 'text-slate-400' : 'text-slate-600'
+                      } ml-2`}
+                    >
                       Reactive, but not as much as alkali metals! 🪨
                     </span>
                   </span>
@@ -253,10 +310,18 @@ export default function PTable() {
                 <li className="flex items-center gap-3">
                   <span className="w-5 h-5 bg-orange-300 rounded shrink-0"></span>
                   <span>
-                    <strong className="text-slate-900">
+                    <strong
+                      className={`${
+                        theme === 'dark' ? 'text-white' : 'text-slate-900'
+                      }`}
+                    >
                       Transition Metals:
                     </strong>
-                    <span className="text-slate-600 ml-2">
+                    <span
+                      className={`${
+                        theme === 'dark' ? 'text-slate-400' : 'text-slate-600'
+                      } ml-2`}
+                    >
                       Tough, shiny, and versatile! 🛠️
                     </span>
                   </span>
@@ -264,8 +329,18 @@ export default function PTable() {
                 <li className="flex items-center gap-3">
                   <span className="w-5 h-5 bg-green-300 rounded shrink-0"></span>
                   <span>
-                    <strong className="text-slate-900">Halogens:</strong>
-                    <span className="text-slate-600 ml-2">
+                    <strong
+                      className={`${
+                        theme === 'dark' ? 'text-white' : 'text-slate-900'
+                      }`}
+                    >
+                      Halogens:
+                    </strong>
+                    <span
+                      className={`${
+                        theme === 'dark' ? 'text-slate-400' : 'text-slate-600'
+                      } ml-2`}
+                    >
                       Super smelly and reactive gases! 🌬️
                     </span>
                   </span>
@@ -273,8 +348,18 @@ export default function PTable() {
                 <li className="flex items-center gap-3">
                   <span className="w-5 h-5 bg-blue-300 rounded shrink-0"></span>
                   <span>
-                    <strong className="text-slate-900">Noble Gases:</strong>
-                    <span className="text-slate-600 ml-2">
+                    <strong
+                      className={`${
+                        theme === 'dark' ? 'text-white' : 'text-slate-900'
+                      }`}
+                    >
+                      Noble Gases:
+                    </strong>
+                    <span
+                      className={`${
+                        theme === 'dark' ? 'text-slate-400' : 'text-slate-600'
+                      } ml-2`}
+                    >
                       Calm and unreactive gases! 🎈
                     </span>
                   </span>
@@ -282,8 +367,18 @@ export default function PTable() {
                 <li className="flex items-center gap-3">
                   <span className="w-5 h-5 bg-yellow-300 rounded shrink-0"></span>
                   <span>
-                    <strong className="text-slate-900">Lanthanides:</strong>
-                    <span className="text-slate-600 ml-2">
+                    <strong
+                      className={`${
+                        theme === 'dark' ? 'text-white' : 'text-slate-900'
+                      }`}
+                    >
+                      Lanthanides:
+                    </strong>
+                    <span
+                      className={`${
+                        theme === 'dark' ? 'text-slate-400' : 'text-slate-600'
+                      } ml-2`}
+                    >
                       Rare and shiny metals! ✨
                     </span>
                   </span>
@@ -291,8 +386,18 @@ export default function PTable() {
                 <li className="flex items-center gap-3">
                   <span className="w-5 h-5 bg-purple-300 rounded shrink-0"></span>
                   <span>
-                    <strong className="text-slate-900">Actinides:</strong>
-                    <span className="text-slate-600 ml-2">
+                    <strong
+                      className={`${
+                        theme === 'dark' ? 'text-white' : 'text-slate-900'
+                      }`}
+                    >
+                      Actinides:
+                    </strong>
+                    <span
+                      className={`${
+                        theme === 'dark' ? 'text-slate-400' : 'text-slate-600'
+                      } ml-2`}
+                    >
                       Radioactive and powerful! ☢️
                     </span>
                   </span>

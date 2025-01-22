@@ -2,33 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
-/* CUSTOM */
-.btn-pr {
-  @apply px-3 py-1 rounded-sm border border-gray-400 shadow-md text-base;
-}
-.btn-inv {
-  @apply px-3 py-1 rounded-sm border border-black bg-black text-white shadow-md;
-}
 .link {
-  text-decoration: underline white;
-  &:hover {
-    text-decoration: underline black;
-  }
-  @apply subtitle underline-offset-4 text-base dark:text-white text-black/80 hover:text-black transition-all duration-300;
+  @apply text-base;
+  color: var(--link-color);
+  transition: all 0.3s;
 }
+.link:hover {
+  color: var(--link-hover);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .ab-link {
-  text-decoration: underline white;
-  &:hover {
-    text-decoration: underline black;
-  }
-  @apply underline-offset-4 text-base text-black transition-all duration-300;
+  @apply text-base;
+  color: var(--link-color);
+  transition: all 0.3s;
 }
+.ab-link:hover {
+  color: var(--link-hover);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .name-link {
-  text-decoration: underline white;
-  &:hover {
-    text-decoration: underline black;
-  }
-  @apply mx-0.5 underline-offset-4 text-base text-black transition-all duration-300;
+  @apply mx-0.5 text-base;
+  color: var(--link-color);
+  transition: all 0.3s;
+  letter-spacing: 0.1em;
+}
+.name-link:hover {
+  color: var(--link-hover);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 @font-face {
@@ -51,141 +56,60 @@
 .body {
   font-family: "Aptos", sans-serif;
 }
-:root {
-  --background-color: #000000;
-  --text-color: #000000;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background-color: #121212;
-    --text-color: #ffffff;
-    --primary-color: #ffffff;
-      --card: 0 0% 10%;
-        /* Background color for cards (black) */
-        --card-foreground: 0 0% 98%;
-        /* Foreground color for text (white) */
-      
-        --border: 0 0% 20%;
-        /* Border color for cards */
-        --input: 0 0% 15%;
-        /* Input background within cards */
-        --ring: 0 0% 40%;
-        /* Ring focus or hover color */
-      
-        --muted: 0 0% 20%;
-        /* Muted background within cards */
-        --muted-foreground: 0 0% 70%;
-        /* Muted text color in cards */
-      
-        --accent: 0 0% 20%;
-        /* Accent background within cards */
-        --accent-foreground: 0 0% 98%;
-        /* Accent text color */
-      
-        --secondary: 0 0% 15%;
-        /* Secondary background within cards */
-        --secondary-foreground: 0 0% 80%;
-        /* Secondary text color */
-      
-        --primary: 0 0% 98%;
-        /* Primary text color */
-        --primary-foreground: 0 0% 10%;
-        /* Primary foreground text color */
-      
-        --destructive: 0 60% 40%;
-        /* Destructive (e.g., error) background */
-        --destructive-foreground: 0 0% 98%;
-        /* Destructive text color */
-  }
-}
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
+    --background: 0 0% 100%; 
+    --foreground: 0 0% 0%;   
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 100%;
+    --card-foreground: 0 0% 0%;
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-    --radius: 0.5rem;
-    --color-1: 0 100% 63%;
-    --color-2: 270 100% 63%;
-    --color-3: 210 100% 63%;
-    --color-4: 195 100% 63%;
-    --color-5: 90 100% 63%;
+    --popover-foreground: 0 0% 0%;
+    --primary: 0 0% 0%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 0%;
+    --muted: 0 0% 96%; 
+    --muted-foreground: 0 0% 45%; 
+    --accent: 0 0% 87%; 
+    --accent-foreground: 0 0% 0%; 
+    --destructive: 0 84.2% 60.2%; 
+    --destructive-foreground: 0 0% 100%; 
+    --border: 0 0% 89%;
+    --input: 0 0% 89%;
+    --ring: 0 0% 0%;
+    --radius: 0.5rem; 
+    --link-color: rgba(0, 0, 0, 0.8);
+    --link-hover: rgba(0, 0, 0, 1);
+    --link-dark-color: rgba(255, 255, 255, 0.8);
+    --link-dark-hover: rgba(255, 255, 255, 1); 
   }
-.card {
-  background-color: hsl(var(--card));
-  color: hsl(var(--card-foreground));
-  border-color: hsl(var(--border));
-}
 
-.dark .text-primary {
-  color: hsl(var(--foreground));
-  /* Default light text color */
-}
+  .dark {
+    --background: 0 0% 0%; 
+    --foreground: 0 0% 100%; 
+    --card: 0 0% 0%;
+    --card-foreground: 0 0% 100%;
+    --popover: 0 0% 0%; 
+    --popover-foreground: 0 0% 100%; 
+    --primary: 0 0% 100
+    --primary-foreground: 0 0% 0
+    --secondary: 0 0% 13%; 
+    --secondary-foreground: 0 0% 100
+    --muted: 0 0% 13%; 
+    --muted-foreground: 0 0% 80%; 
+    --accent: 0 0% 87%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 20%; 
+    --input: 0 0% 30%; 
+    --ring: 0 0% 100%; 
+    --radius: 0.5rem; 
+    --link-color: rgba(255, 255, 255, 0.8);
+    --link-hover: rgba(255, 255, 255, 1);
 
-.dark .text-muted {
-  color: hsl(var(--muted-foreground));
-  /* Muted text color */
-}
- .dark {
-   --card: 0 0% 10%;
-   /* Background color for cards (black) */
-   --card-foreground: 0 0% 98%;
-   /* Foreground color for text (white) */
-
-   --border: 0 0% 20%;
-   /* Border color for cards */
-   --input: 0 0% 15%;
-   /* Input background within cards */
-   --ring: 0 0% 40%;
-   /* Ring focus or hover color */
-
-   --muted: 0 0% 20%;
-   /* Muted background within cards */
-   --muted-foreground: 0 0% 70%;
-   /* Muted text color in cards */
-
-   --accent: 0 0% 20%;
-   /* Accent background within cards */
-   --accent-foreground: 0 0% 98%;
-   /* Accent text color */
-
-   --secondary: 0 0% 15%;
-   /* Secondary background within cards */
-   --secondary-foreground: 0 0% 80%;
-   /* Secondary text color */
-
-   --primary: 0 0% 98%;
-   /* Primary text color */
-   --primary-foreground: 0 0% 10%;
-   /* Primary foreground text color */
-
-   --destructive: 0 60% 40%;
-   /* Destructive (e.g., error) background */
-   --destructive-foreground: 0 0% 98%;
-   /* Destructive text color */
- }
+  }
 }
 
 @layer base {
@@ -193,20 +117,7 @@
     @apply border-border;
   }
   body {
-    @apply body;
+    @apply bg-background text-foreground body;
   }
 }
 
-::-webkit-scrollbar {
-  width: 0px;
-  background: transparent; /* make scrollbar transparent */
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}

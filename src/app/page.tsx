@@ -1,12 +1,12 @@
 'use client'
-import Particles from '@/components/ui/particles'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 import { useEffect, useRef } from 'react'
-
+import { Particles } from '../components/ui/particles'
+import { useTheme } from '../contexts/ThemeContext'
 export default function Home() {
   const letterRefs = useRef<(HTMLParagraphElement | null)[]>([])
-
+  const theme = useTheme().theme
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger)
     letterRefs.current = letterRefs.current.slice(0, 8)
@@ -69,13 +69,24 @@ export default function Home() {
 
   return (
     <main className="relative w-full min-h-screen overflow-x-hidden bg-background">
-      <Particles
-        className="fixed inset-0 w-full h-full animate-in"
-        quantity={250}
-        ease={150}
-        color="hsl(var(--primary))"
-        refresh
-      />
+      {theme === 'dark' ? (
+        <Particles
+          className="fixed inset-0 w-full h-full animate-in"
+          quantity={250}
+          ease={150}
+          color="#ffffff"
+          refresh
+        />
+      ) : (
+        <Particles
+          className="fixed inset-0 w-full h-full animate-in"
+          quantity={250}
+          ease={150}
+          color="#000000"
+          refresh
+        />
+      )}
+
       <section className="relative z-10 flex flex-col justify-center items-center w-full min-h-screen">
         <div className="flex flex-row items-center justify-center title tracking-widest perspective-[1000px] text-6xl md:text-[10rem]">
           {['H', 'Y', 'D', 'R', 'O', 'G', 'E', 'N'].map((letter, index) => (
@@ -83,19 +94,19 @@ export default function Home() {
               key={index}
               // @ts-ignore
               ref={(el) => (letterRefs.current[index] = el)}
-              className="mx-3 transition-colors duration-300 cursor-default select-none text-foreground hover:text-primary"
+              className="mx-3 transition-colors duration-300 cursor-default select-none text-foreground"
             >
               {letter}
             </p>
           ))}
         </div>
         <div className="description max-w-[80%] md:max-w-[65%] border border-border p-4 md:p-6 shadow-lg shadow-foreground/5 bg-background/90 backdrop-blur-md rounded-lg mt-16">
-          <p className="text-center text-muted-foreground">
-            <span className="font-serif text-foreground">Hydrogen</span> is the chemical
-            element with the symbol H and atomic number 1. With a standard
-            atomic weight of 1.008, It's the lightest element in the periodic
-            table and the most abundant chemical substance in the universe,
-            constituting roughly 75% of all baryonic mass.
+          <p className="text-center text-foreground">
+            <span className="font-serif">Hydrogen</span> is the chemical element
+            with the symbol H and atomic number 1. With a standard atomic weight
+            of 1.008, it's the lightest element in the periodic table and the
+            most abundant substance in the universe, constituting roughly 75% of
+            all baryonic mass.
           </p>
         </div>
       </section>
