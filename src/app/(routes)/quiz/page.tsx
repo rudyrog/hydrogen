@@ -203,7 +203,7 @@ export default function Quiz() {
           <div className="flex flex-col container mx-auto px-3 w-5/6 gap-2 ">
             <div className="time flex items-center space-x-2">
               <Checkbox
-                className="h-6 w-6 rounded-sm border border-border/50 data-[state=checked]:bg-background data-[state=checked]:text-foreground bg-background/50"
+                className="h-6 w-6 rounded-md border-2 border-border/50 data-[state=checked]:bg-background data-[state=checked]:text-foreground bg-background/50"
                 id="timed-quiz"
                 checked={isTimed}
                 onCheckedChange={(checked) => setIsTimed(checked as boolean)}
@@ -272,7 +272,7 @@ export default function Quiz() {
             </div>
             <InteractiveHoverButton
               onClick={() => setGameStarted(true)}
-              className="quiz-btn subtitle font-light w-fit mt-3 text-lg"
+              className="quiz-btn subtitle font-light w-fit mt-3 text-lg border-border/30 border-2"
             >
               Choose Quiz!
             </InteractiveHoverButton>

@@ -133,7 +133,7 @@ export default function PTable() {
   return (
     <div className="flex flex-col gap-12 py-8">
       <div className="flex flex-col gap-3 container mx-auto  w-5/6">
-        <h1 className="quiz-title flex flex-row text-7xl md:text-start text-center title pt-20">
+        <h1 className="quiz-title flex flex-row text-3xl md:text-7xl md:text-start text-center title pt-20">
           {[
             'P',
             'E',
