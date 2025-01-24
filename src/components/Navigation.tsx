@@ -10,7 +10,7 @@ export default function Navigation() {
   const { user } = useAuth()
   const { theme, toggleTheme } = useTheme()
   return (
-    <nav className="fixed top-0 bg-background/80 left-0 right-0 z-50 flex flex-row items-center justify-center text-foreground gap-8 py-4 backdrop-blur-md border-b border-border/30 shadow-sm shadow-foreground/10">
+    <nav className="fixed top-0 bg-background/80 left-0 right-0 z-50 flex flex-row items-center justify-center text-foreground gap-8 py-4 backdrop-blur-md border-b border-border/20 shadow-sm shadow-foreground/10">
       <Link
         href="/"
         className="name-link"

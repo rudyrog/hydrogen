@@ -96,7 +96,7 @@ export default function About() {
 
   return (
     <div>
-      <div className="flex gap-3 flex-col container mx-auto p-3 w-5/6">
+      <div className="flex gap-2 flex-col container mx-auto p-3 w-5/6">
         <h1 className="about-title flex flex-row text-7xl md:text-start text-center title pt-20">
           {['A', 'B', 'O', 'U', 'T'].map((letter, index) => (
             <p
@@ -112,7 +112,7 @@ export default function About() {
         <div className="flex flex-row gap-3 justify-between w-full">
           <div
             ref={contentRef}
-            className="w-2/5 border border-foreground/30 p-5"
+            className="w-2/5 border border-border/50 p-5"
           >
             <h2 className="text-xl font-serif">Chemistry</h2>
             <div className="w-full">
@@ -205,19 +205,19 @@ export default function About() {
           <div className="w-2/3 flex flex-row justify-evenly gap-2">
             <Image
               width={370}
-              height={200}
+              height={190}
               src="/images/mercury.jpg"
               alt="Mercury"
-              className="border border-black-20"
+              className="border border-border/30"
               //@ts-ignore
               ref={(el) => (imagesRef.current[0] = el as HTMLImageElement)}
             />
             <Image
               width={400}
-              height={200}
+              height={190}
               src="/images/bonds.jpg"
               alt="test tube"
-              className="border border-black-20"
+              className="border border-border dark:border-border/30"
               //@ts-ignore
               ref={(el) => (imagesRef.current[1] = el as HTMLImageElement)}
             />

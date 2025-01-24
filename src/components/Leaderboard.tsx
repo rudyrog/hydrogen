@@ -8,15 +8,12 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { getLeaderboard } from '@/lib/firebase/profileFunctions'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FaTrophy } from 'react-icons/fa'
 import { MdLeaderboard } from 'react-icons/md'
+import CopyEmailButton from './EmailButton'
 
-interface LeaderboardProps {
-  onEmailClick?: (email: string) => void
-}
-
-export const Leaderboard: React.FC<LeaderboardProps> = ({ onEmailClick }) => {
+export const Leaderboard = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [leaderboard, setLeaderboard] = useState<
     | {
@@ -45,9 +42,9 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({ onEmailClick }) => {
   }, [])
 
   return (
-    <Card className="w-full bg-cardBackground text-cardForeground">
-      <CardHeader className="p-4 bg-foreground/10 border-b">
-        <CardTitle className="subtitle text-headerForeground font-normal flex items-center gap-2">
+    <Card className="w-full border-border/10 dark:border-border/50 border-2">
+      <CardHeader className="p-4 bg-foreground/10 border-b border rounded-t-md dark:border-border/20">
+        <CardTitle className="subtitle font-normal flex items-center gap-2">
           <MdLeaderboard />
           Leaderboard
         </CardTitle>
@@ -60,7 +57,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({ onEmailClick }) => {
         ) : leaderboard && leaderboard.length > 0 ? (
           <Table>
             <TableHeader className="p-3">
-              <TableRow>
+              <TableRow className="border-b dark:border-border/30">
                 <TableHead className="text-left text-foreground/50">
                   Position
                 </TableHead>
@@ -77,8 +74,11 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({ onEmailClick }) => {
             </TableHeader>
             <TableBody>
               {leaderboard.map((profile, index) => (
-                <TableRow key={index}>
-                  <TableCell className="text-2xl text-center text-textPrimary">
+                <TableRow
+                  key={index}
+                  className="border-b dark:border-border/30"
+                >
+                  <TableCell className="text-2xl text-center">
                     {index + 1 === 1 ? (
                       <FaTrophy className="text-yellow-400" />
                     ) : index + 1 === 2 ? (
@@ -89,20 +89,11 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({ onEmailClick }) => {
                       index + 1
                     )}
                   </TableCell>
-                  <TableCell className="text-textPrimary">
+                  <TableCell className="text-foreground">
                     {profile.nickname}
                   </TableCell>
                   <TableCell>
-                    {onEmailClick ? (
-                      <button
-                        onClick={() => onEmailClick(profile.email)}
-                        className="text-textSecondary hover:text-blue-800 hover:underline focus:outline-none"
-                      >
-                        {profile.email}
-                      </button>
-                    ) : (
-                      profile.email
-                    )}
+                    <CopyEmailButton email={profile.email} />
                   </TableCell>
                   <TableCell className="text-textPrimary">
                     {profile.points}

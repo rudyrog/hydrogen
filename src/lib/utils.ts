@@ -12,9 +12,9 @@ export function formatTimeSpent(timeSpent: number): string {
   const minutes = totalMinutes % 60
 
   if (hours === 0) {
-    return `${minutes} min`
+    return minutes <= 1 ? `${minutes} Min` : `${minutes} Mins`
   } else if (minutes === 0) {
-    return hours === 1 ? `1 hr` : `${hours} hrs`
+    return hours === 1 ? `1 Hr` : `${hours} Hrs`
   } else {
     return `${hours} hr ${minutes} min`
   }

@@ -1,25 +1,31 @@
 'use client'
 import { Leaderboard } from '@/components/Leaderboard'
-import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { useAuth } from '@/contexts/AuthContext'
+import {
+  getUserProfile,
+  updateNickname,
+  updateRank,
+} from '@/lib/firebase/profileFunctions'
+// @ts-ignore
+import { Profile } from '@/types/profile'
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
-  DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { useAuth } from '@/contexts/AuthContext'
-import { getUserProfile, updateNickname } from '@/lib/firebase/profileFunctions'
-import { Profile } from '@/types/profile'
+} from '@radix-ui/react-dialog'
 import gsap from 'gsap'
-import { Clock, Edit2, Medal, Search, Trophy } from 'lucide-react'
+import { Clock, Edit2, Medal, Trophy } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { FaExclamation, FaFire, FaWind } from 'react-icons/fa'
+import { IoPersonCircle } from 'react-icons/io5'
 import { toast } from 'sonner'
+import { Button } from '../../../components/ui/button'
+import { DialogFooter, DialogHeader } from '../../../components/ui/dialog'
+import { InteractiveHoverButton } from '../../../components/ui/interactive-hover-button'
 import { formatTimeSpent } from '../../../lib/utils'
 
 export default function Profile() {
@@ -35,6 +41,7 @@ export default function Profile() {
   const [displayedProfile, setDisplayedProfile] = useState<Profile | null>(null)
   const [isEditingNickname, setIsEditingNickname] = useState(false)
   const [newNickname, setNewNickname] = useState('')
+  const [rank, setRank] = useState('')
 
   const handleNicknameUpdate = async () => {
     if (!displayedProfile?.email) return
@@ -65,6 +72,8 @@ export default function Profile() {
           const updatedProfile = await getUserProfile(user.email)
           setProfile(updatedProfile)
           setDisplayedProfile(updatedProfile)
+          setRank(updatedProfile.rank)
+          await updateRank(user.email, updatedProfile.points)
         } catch (error) {
           console.error('Error refetching profile:', error)
         }
@@ -210,7 +219,6 @@ export default function Profile() {
       console.error('Error fetching profile from leaderboard:', error)
     }
   }
-
   return (
     <div className="flex gap-3 flex-col container mx-auto p-3 w-5/6 bg-background text-foreground">
       <h1 className="quiz-title flex flex-row text-7xl md:text-start text-center title pt-20">
@@ -230,22 +238,20 @@ export default function Profile() {
           <div className="max-w-6xl space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Card
-                className="shadow-lg h-full bg-background text-foreground"
+                className="shadow-lg h-full bg-background text-foreground border-border/10 dark:border-border/50 border-2"
                 ref={cardOneRef}
               >
-                <CardHeader className="p-4 border-b bg-foreground/10">
-                  <CardTitle className="subtitle text-foreground font-normal">
-                    Personal Info
+                <CardHeader className="p-4 border-b dark:border-border/20 bg-foreground/10 rounded-t-md">
+                  <CardTitle className="subtitle font-normal flex items-center gap-2">
+                    <IoPersonCircle className="h-7 w-7" />
+                    <span className="text-foreground">Personal Info</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-0">
                   <div className="divide-y divide-secondary/20">
-                    <div className="grid grid-cols-2 p-3 items-center hover:bg-secondary/10 transition-colors">
-                      <div className="text-foreground/50 font-medium">
-                        Nickname
-                      </div>
-                      <div className="text-foreground flex items-center justify-between">
-                        <span>{displayedProfile?.nickname || 'Not set'}</span>
+                    <div className="grid grid-cols-2 p-3 items-center">
+                      <div className="text-foreground/50 font-medium flex items-center gap-3">
+                        <p>Nickname</p>
                         {(!searchedProfile ||
                           displayedProfile?.email === user?.email) && (
                           <Dialog
@@ -256,9 +262,9 @@ export default function Profile() {
                               <Button
                                 variant="ghost"
                                 size="icon"
-                                className="h-8 w-8"
+                                className="h-3 w-3"
                               >
-                                <Edit2 className="h-3 w-3 text-foreground/50" />
+                                <Edit2 className="h-1 w-1 text-foreground/50" />
                               </Button>
                             </DialogTrigger>
                             <DialogContent className="bg-background text-foreground">
@@ -296,8 +302,11 @@ export default function Profile() {
                           </Dialog>
                         )}
                       </div>
+                      <div className="text-foreground flex items-center">
+                        <span>{displayedProfile?.nickname || 'Not set'}</span>
+                      </div>
                     </div>
-                    <div className="grid grid-cols-2 p-3 hover:bg-secondary/10 transition-colors">
+                    <div className="grid grid-cols-2 p-3 dark:border-b dark:border-border/50">
                       <div className="text-foreground/50 font-medium">
                         Email
                       </div>
@@ -305,7 +314,7 @@ export default function Profile() {
                         {displayedProfile?.email || 'john@example.com'}
                       </div>
                     </div>
-                    <div className="grid grid-cols-2 p-3 hover:bg-secondary/10 transition-colors">
+                    <div className="grid grid-cols-2 p-3 dark:border-t dark:border-border/50">
                       <div className="text-foreground/50 font-medium">
                         Member Since
                       </div>
@@ -318,10 +327,10 @@ export default function Profile() {
                 className="relative w-full gap-2 flex flex-col mx-auto"
                 ref={statsRef}
               >
-                <Card className="shadow-lg bg-background text-foreground">
-                  <CardContent className="p-2">
+                <Card className="shadow-lg bg-background text-foreground border-border/10 dark:border-border/50 border-2 rounded-xl">
+                  <CardContent className="py-2 px-3">
                     <div className="flex items-center gap-4">
-                      <div className="p-3 bg-purple-100 rounded-lg">
+                      <div className="p-3 bg-purple-100 rounded-xl">
                         <Clock className="h-5 w-5 text-purple-600" />
                       </div>
                       <div>
@@ -338,71 +347,73 @@ export default function Profile() {
                   </CardContent>
                 </Card>
 
-                <Card className="shadow-lg bg-background text-foreground">
-                  <CardContent className="p-2">
+                <Card className="shadow-lg bg-background text-foreground border-border/10 dark:border-border/50 border-2 rounded-xl">
+                  <CardContent className="py-2 px-3">
                     <div className="flex items-center gap-4">
-                      <div className="p-3 bg-green-100 rounded-lg">
+                      <div className="p-3 bg-green-100 rounded-xl">
                         <Medal className="h-5 w-5 text-green-600" />
                       </div>
                       <div>
                         <div className="text-sm text-foreground/50">Rank</div>
-                        <div className="text-lg text-foreground">Advanced</div>
+                        <div className="text-lg text-foreground">
+                          {displayedProfile.rank}
+                        </div>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
 
-                <Card className="shadow-lg bg-background text-foreground">
-                  <CardContent className="p-2">
-                    <div className="flex items-center gap-4">
-                      <div className="w-4/6">
-                        <form
-                          onSubmit={handleSearch}
-                          className="flex-1 flex gap-2"
-                        >
-                          <Input
-                            type="email"
-                            placeholder="Find a user by email..."
-                            value={searchEmail}
-                            onChange={(e) => setSearchEmail(e.target.value)}
-                            className="border-0 shadow-none bg-background text-foreground"
-                          />
-                          <Button
-                            type="submit"
-                            disabled={isSearching}
-                            variant="outline"
-                          >
-                            <Search className="h-2 w-2" />
-                            {isSearching ? 'Searching...' : 'Search'}
-                          </Button>
-                          {searchedProfile && (
-                            <Button onClick={viewOwnProfile}>
-                              View Profile
-                            </Button>
-                          )}
-                        </form>
-                      </div>
+                <form
+                  onSubmit={handleSearch}
+                  className="flex gap-2 w-full items-center shadow-lg bg-background text-foreground border-border/10 dark:border-border/50 border-2 rounded-xl h-full"
+                >
+                  <div className="flex-1 p-3">
+                    <Input
+                      type="email"
+                      placeholder="Find a user by email..."
+                      value={searchEmail}
+                      onChange={(e) => setSearchEmail(e.target.value)}
+                      className="appearance-none border-none shadow-none bg-background text-foreground h-full"
+                    />
+                  </div>
+                  {!searchedProfile ? (
+                    <div className="flex gap-1 p-3">
+                      <InteractiveHoverButton
+                        type="submit"
+                        disabled={isSearching}
+                        className="border border-border/30 dark:border-border/50 text-foreground font-normal"
+                      >
+                        {isSearching ? 'Searching...' : 'Search'}
+                      </InteractiveHoverButton>
                     </div>
-                  </CardContent>
-                </Card>
+                  ) : (
+                    <div className="flex gap-1 p-3">
+                      <InteractiveHoverButton
+                        type="button"
+                        onClick={viewOwnProfile}
+                        className="border border-border/30 dark:border-border/50 text-foreground font-normal"
+                      >
+                        {user?.email === searchEmail ? user.name : 'No Results'}
+                      </InteractiveHoverButton>
+                    </div>
+                  )}
+                </form>
               </div>
             </div>
             <div
               ref={cardTwoRef}
               className="grid grid-cols-1 md:grid-cols-4 gap-6"
             >
-              <Card className="shadow-lg w-6/6 col-span-3 bg-background text-foreground">
-                <CardHeader className="p-4 border-b bg-foreground/10">
+              <Card className="shadow-lg w-6/6 col-span-3 bg-background text-foreground border-border/10 dark:border-border/50 border-2">
+                <CardHeader className="p-4 border-b border dark:border-border/20 bg-foreground/10 rounded-t-md">
                   <CardTitle className="subtitle font-normal flex items-center gap-2">
-                    <Trophy className="h-5 w-5 text-secondary" />
-                    <span className="text-foreground font-medium">
-                      Achievements
-                    </span>
+                    <Trophy className="h-5 w-6 text-foreground" />
+                    <span className="text-foreground">Achievements</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-0">
                   <div className="divide-y divide-secondary/20">
-                    <div className="grid grid-cols-2 p-3 hover:bg-secondary/10 transition-colors">
+                    <div className="grid grid-cols-2 p-3">
                       <div className="text-foreground/50 font-medium">
                         Classic Quiz
                       </div>
@@ -412,7 +423,7 @@ export default function Profile() {
                         ) || 'None'}
                       </div>
                     </div>
-                    <div className="grid grid-cols-2 p-3 hover:bg-secondary/10 transition-colors">
+                    <div className="grid grid-cols-2 p-3 dark:border-t dark:border-border/50">
                       <div className="text-foreground/50 font-medium">
                         Guess the Location
                       </div>
@@ -420,7 +431,7 @@ export default function Profile() {
                         {displayedProfile?.guessTheLocationCompleted || 0}
                       </div>
                     </div>
-                    <div className="grid grid-cols-2 p-3 hover:bg-secondary/10 transition-colors">
+                    <div className="grid grid-cols-2 p-3 dark:border-t dark:border-border/50">
                       <div className="text-foreground/50 font-medium">
                         Total Points
                       </div>
@@ -432,7 +443,7 @@ export default function Profile() {
                 </CardContent>
               </Card>
               <div className="flex flex-col gap-2">
-                <Card className="shadow-lg bg-background text-foreground">
+                <Card className="shadow-lg bg-background text-foreground border-border/10 dark:border-border/50 border-2">
                   <CardContent className="p-2">
                     <div className="flex items-center gap-4">
                       <div className="p-3 bg-red-100 rounded-lg">
@@ -448,7 +459,7 @@ export default function Profile() {
                   </CardContent>
                 </Card>
 
-                <Card className="shadow-lg">
+                <Card className="shadow-lg border-border/10 dark:border-border/50 border-2">
                   <CardContent className="p-2">
                     <div className="flex items-center gap-4">
                       <div className="p-3 bg-yellow-100 rounded-lg">
@@ -464,7 +475,7 @@ export default function Profile() {
                   </CardContent>
                 </Card>
 
-                <Card className="shadow-lg">
+                <Card className="shadow-lg border-border/10 dark:border-border/50 border-2">
                   <CardContent className="p-2">
                     <div className="flex items-center gap-4">
                       <div className="p-3 bg-green-100 rounded-lg">

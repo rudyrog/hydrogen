@@ -1,4 +1,5 @@
 import { useAuth } from '@/contexts/AuthContext'
+import { useTheme } from '@/contexts/ThemeContext'
 import elements from '@/data/elements.json'
 import {
   incrementGuessTheLocationCompleted,
@@ -30,7 +31,6 @@ export const GuessTheLocation = ({
   const [badEnding, setBadEnding] = useState(false)
   const [hintElements, setHintElements] = useState<number[]>([])
   const [hintUsed, setHintUsed] = useState(false)
-
   useEffect(() => {
     fetchQuestions()
 
@@ -205,6 +205,7 @@ const HiddenPeriodicTable = ({
   hintElements: number[]
   level: Level
 }) => {
+  const theme = useTheme()
   const { user } = useAuth()
   const checkAnswer = (element: Element) => {
     if (element.AtomicNumber === currentQuestionElementNumber) {
@@ -228,17 +229,39 @@ const HiddenPeriodicTable = ({
     return (
       <button
         onClick={() => checkAnswer(element)}
-        className={`w-16 h-16 p-1 text-center border rounded cursor-pointer flex flex-col justify-around items-center transition-all duration-300 ${
-          isHinted ? 'ring-4 ring-black ' : ''
+        className={`w-16 h-16 p-1 text-center border border-border/50 dark:border-border/50 rounded cursor-pointer flex flex-col justify-around items-center transition-transform hover:scale-105 ${
+          isHinted ? 'ring-4 ring-black dark:ring-white' : ''
         }`}
         style={{
-          backgroundColor: `#${element.CPKHexColor || '808080'}`,
+          backgroundColor: `#${
+            // @ts-ignore
+            theme === 'dark' && element.CPKHexColor
+              ? ((r, g, b) => {
+                  const lightenFactor = 0.2
+                  return [
+                    Math.min(255, Math.round(parseInt(r, 16) * lightenFactor))
+                      .toString(16)
+                      .padStart(2, '0'),
+                    Math.min(255, Math.round(parseInt(g, 16) * lightenFactor))
+                      .toString(16)
+                      .padStart(2, '0'),
+                    Math.min(255, Math.round(parseInt(b, 16) * lightenFactor))
+                      .toString(16)
+                      .padStart(2, '0'),
+                  ].join('')
+                })(
+                  element.CPKHexColor.slice(0, 2),
+                  element.CPKHexColor.slice(2, 4),
+                  element.CPKHexColor.slice(4, 6),
+                )
+              : element.CPKHexColor || '808080'
+          }`,
           gridColumn: getGridColumn(element.AtomicNumber),
           gridRow: getGridRow(element.AtomicNumber),
         }}
       >
-        <div className="text-xs">{element.AtomicNumber}</div>
-        <div className="text-xs font-bold">?</div>
+        <div className="text-xs dark:text-black">{element.AtomicNumber}</div>
+        <div className="text-xs font-bold dark:text-black">?</div>
       </button>
     )
   }
