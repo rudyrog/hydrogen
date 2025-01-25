@@ -96,7 +96,7 @@ export default function Quiz() {
   }, [])
 
   return (
-    <div className="flex gap-3 flex-col dark:shadow-none">
+    <div className="flex gap-3 flex-col dark:shadow-none bg-background">
       <h1 className="quiz-title flex flex-row text-7xl md:text-start text-center title pt-20 container mx-auto p-3 w-5/6">
         {['Q', 'U', 'I', 'Z'].map((letter, index) => (
           <p

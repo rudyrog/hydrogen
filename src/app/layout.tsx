@@ -26,7 +26,7 @@ const ThemeConsumer: React.FC<{ children: ReactNode }> = ({ children }) => {
       className={theme}
     >
       <AuthProvider>
-        <body className="antialiased dark:bg-black dark:text-white">
+        <body className="antialiased dark:text-white">
           <Navigation />
           <main>{children}</main>
         </body>

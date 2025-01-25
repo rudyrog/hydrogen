@@ -33,6 +33,8 @@ export default function Profile() {
   const cardOneRef = useRef<HTMLDivElement | null>(null)
   const cardTwoRef = useRef<HTMLDivElement | null>(null)
   const statsRef = useRef<HTMLDivElement | null>(null)
+  const diffRef = useRef<HTMLDivElement | null>(null)
+  const leaderboardRef = useRef<HTMLDivElement | null>(null)
 
   const { user, profile, setProfile } = useAuth()
   const [searchEmail, setSearchEmail] = useState('')
@@ -84,106 +86,146 @@ export default function Profile() {
   }, [user?.email])
 
   useEffect(() => {
-    letterRefs.current = letterRefs.current.slice(0, 7)
+    if (displayedProfile) {
+      letterRefs.current = letterRefs.current.slice(0, 7)
 
-    const tl = gsap.timeline({
-      defaults: {
-        duration: 1.2,
-        ease: 'elastic.out(1, 0.8)',
-      },
-    })
-
-    tl.fromTo(
-      letterRefs.current,
-      {
-        y: 120,
-        opacity: 0,
-        rotateX: -80,
-        scale: 0.8,
-      },
-      {
-        y: 0,
-        opacity: 1,
-        rotateX: 0,
-        scale: 1,
-        stagger: {
-          each: 0.1,
-          ease: 'power2.inOut',
+      const tl = gsap.timeline({
+        defaults: {
+          duration: 1.2,
+          ease: 'elastic.out(1, 0.8)',
         },
-      },
-    )
-      .fromTo(
+      })
+
+      tl.fromTo(
         letterRefs.current,
         {
-          filter: 'blur(10px)',
+          y: 120,
+          opacity: 0,
+          rotateX: -80,
+          scale: 0.8,
         },
         {
-          filter: 'blur(0px)',
+          y: 0,
+          opacity: 1,
+          rotateX: 0,
+          scale: 1,
           stagger: {
-            each: 0.14,
-            from: 'start',
+            each: 0.1,
+            ease: 'power2.inOut',
           },
-          duration: 0.8,
-        },
-        '<0.1',
-      )
-      .fromTo(
-        cardOneRef.current,
-        {
-          filter: 'blur(10px)',
-          opacity: 0,
-          y: 50,
-          scale: 0.95,
-        },
-        {
-          filter: 'blur(0px)',
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 1,
-          ease: 'power3.out',
-        },
-        '-=0.5',
-      )
-      .fromTo(
-        cardTwoRef.current,
-        {
-          opacity: 0,
-          y: 50,
-          scale: 0.95,
-          filter: 'blur(10px)',
-        },
-        {
-          filter: 'blur(0px)',
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 1,
-          ease: 'power3.out',
         },
       )
-      .fromTo(
-        statsRef.current,
-        {
-          filter: 'blur(10px)',
-          opacity: 0,
-          x: 100,
-          rotateY: 15,
-          scale: 0.9,
-        },
-        {
-          filter: 'blur(0px)',
-          opacity: 1,
-          x: 0,
-          rotateY: 0,
-          scale: 1,
-          stagger: 0.2,
-          duration: 1.2,
-          ease: 'power2.out',
-        },
-        '-=0.8',
-      )
-  }, [])
+        .fromTo(
+          letterRefs.current,
+          {
+            filter: 'blur(10px)',
+          },
+          {
+            filter: 'blur(0px)',
+            stagger: {
+              each: 0.14,
+              from: 'start',
+            },
+            duration: 0.8,
+          },
+          '<0.1',
+        )
+        .fromTo(
+          cardOneRef.current,
+          {
+            filter: 'blur(10px)',
+            opacity: 0,
+            y: 50,
+            scale: 0.95,
+          },
+          {
+            filter: 'blur(0px)',
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 1,
+            ease: 'power3.out',
+          },
+          '-=0.5',
+        )
+        .fromTo(
+          cardTwoRef.current,
+          {
+            opacity: 0,
+            y: 50,
+            scale: 0.95,
+            filter: 'blur(10px)',
+          },
+          {
+            filter: 'blur(0px)',
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 1,
+            ease: 'power3.out',
+          },
+        )
+        .fromTo(
+          statsRef.current,
+          {
+            filter: 'blur(10px)',
+            opacity: 0,
+            x: 100,
+            rotateY: 15,
+            scale: 0.9,
+          },
+          {
+            filter: 'blur(0px)',
+            opacity: 1,
+            x: 0,
+            rotateY: 0,
+            scale: 1,
+            stagger: 0.2,
+            duration: 1.2,
+            ease: 'power2.out',
+          },
+          '-=0.8',
+        )
+        .fromTo(
+          diffRef.current,
+          {
+            filter: 'blur(10px)',
+            opacity: 0,
+            x: 100,
+            rotateY: 15,
+            scale: 0.9,
+          },
+          {
+            filter: 'blur(0px)',
+            opacity: 1,
+            x: 0,
+            rotateY: 0,
+            scale: 1,
+            stagger: 0.2,
+            duration: 1.2,
+            ease: 'power2.out',
+          },
+          '-=0.8',
+        )
+        .fromTo(
+          leaderboardRef.current,
+          {
+            opacity: 0,
+            y: 50,
+            scale: 0.95,
+            filter: 'blur(10px)',
+          },
+          {
+            filter: 'blur(0px)',
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 1,
+            ease: 'power3.out',
+          },
+        )
+    }
+  }, [displayedProfile])
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -203,7 +245,7 @@ export default function Profile() {
     }
   }
 
-  const viewOwnProfile = () => {
+  const viewProfile = () => {
     setDisplayedProfile(profile)
     setSearchEmail('')
     setSearchedProfile(null)
@@ -390,7 +432,7 @@ export default function Profile() {
                     <div className="flex gap-1 p-3">
                       <InteractiveHoverButton
                         type="button"
-                        onClick={viewOwnProfile}
+                        onClick={viewProfile}
                         className="border border-border/30 dark:border-border/50 text-foreground font-normal"
                       >
                         {user?.email === searchEmail ? user.name : 'No Results'}
@@ -442,7 +484,10 @@ export default function Profile() {
                   </div>
                 </CardContent>
               </Card>
-              <div className="flex flex-col gap-2">
+              <div
+                className="flex flex-col gap-2"
+                ref={diffRef}
+              >
                 <Card className="shadow-lg bg-background text-foreground border-border/10 dark:border-border/50 border-2">
                   <CardContent className="p-2">
                     <div className="flex items-center gap-4">
@@ -492,8 +537,10 @@ export default function Profile() {
                 </Card>
               </div>
             </div>
-            {/* @ts-ignore */}
-            <Leaderboard handleLeaderboardClick={handleLeaderboardClick} />
+            <div ref={leaderboardRef}>
+              {/* @ts-ignore */}
+              <Leaderboard handleLeaderboardClick={handleLeaderboardClick} />
+            </div>
           </div>
         </div>
       )}

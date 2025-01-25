@@ -75,8 +75,8 @@ export default function Home() {
     <main className="relative w-full min-h-screen overflow-x-hidden bg-background">
       <Particles
         className="fixed inset-0 w-full h-full animate-in"
-        quantity={250}
-        ease={150}
+        quantity={300}
+        ease={90}
         color={color}
         refresh
       />
