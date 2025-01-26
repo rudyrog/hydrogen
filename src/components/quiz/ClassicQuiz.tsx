@@ -1,33 +1,33 @@
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 //@ts-ignore
-import { useAuth } from '@/contexts/AuthContext'
+import { useAuth } from "@/contexts/AuthContext";
 import {
   incrementClassicQuizCompleted,
   incrementTimeSpent,
-} from '@/lib/firebase/profileFunctions'
-import { Level } from '@/types/levels'
-import { Trophy } from 'lucide-react'
-import { useTheme } from 'next-themes'
-import { InteractiveHoverButton } from '../ui/interactive-hover-button'
+} from "@/lib/firebase/profileFunctions";
+import { Level } from "@/types/levels";
+import { Trophy } from "lucide-react";
+import { useTheme } from "next-themes";
+import { InteractiveHoverButton } from "../ui/interactive-hover-button";
 
 interface Element {
-  AtomicNumber: number
-  Symbol: string
-  Name: string
-  AtomicMass: number
-  CPKHexColor: string
-  ElectronConfiguration: string
-  Electronegativity: number
-  AtomicRadius: number
-  IonizationEnergy: number
-  ElectronAffinity: number
-  OxidationStates: string
-  StandardState: string
-  MeltingPoint: number
-  BoilingPoint: number
-  Density: number
-  GroupBlock: string
-  YearDiscovered: string
+  AtomicNumber: number;
+  Symbol: string;
+  Name: string;
+  AtomicMass: number;
+  CPKHexColor: string;
+  ElectronConfiguration: string;
+  Electronegativity: number;
+  AtomicRadius: number;
+  IonizationEnergy: number;
+  ElectronAffinity: number;
+  OxidationStates: string;
+  StandardState: string;
+  MeltingPoint: number;
+  BoilingPoint: number;
+  Density: number;
+  GroupBlock: string;
+  YearDiscovered: string;
 }
 
 export default function ClassicQuiz({
@@ -36,144 +36,142 @@ export default function ClassicQuiz({
   noOfQuestions,
   setGameStarted,
 }: {
-  level: Level
-  time: number
-  noOfQuestions: number
-  setGameStarted: Dispatch<SetStateAction<boolean>>
+  level: Level;
+  time: number;
+  noOfQuestions: number;
+  setGameStarted: Dispatch<SetStateAction<boolean>>;
 }) {
-  const [currentQuestion, setCurrentQuestion] = useState(1)
-  const [questions, setQuestions] = useState<Element[]>([])
-  const [inputLength, setInputLength] = useState(0)
-  const [values, setValues] = useState<string[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [timeRemaining, setTimeRemaining] = useState(time * 60)
-  const inputRefs = useRef<(HTMLInputElement | null)[]>([])
-  const [noOfHints, setNoOfHints] = useState(1)
-  const [isCompleted, setIsCompleted] = useState(false)
-  const [badEnding, setBadEnding] = useState(false)
-  const { user } = useAuth()
-  const theme = useTheme().theme
+  const [currentQuestion, setCurrentQuestion] = useState(1);
+  const [questions, setQuestions] = useState<Element[]>([]);
+  const [inputLength, setInputLength] = useState(0);
+  const [values, setValues] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [timeRemaining, setTimeRemaining] = useState(time * 60);
+  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const [noOfHints, setNoOfHints] = useState(1);
+  const [isCompleted, setIsCompleted] = useState(false);
+  const [badEnding, setBadEnding] = useState(false);
+  const { user } = useAuth();
+  const theme = useTheme().theme;
   useEffect(() => {
-    fetchQuestions()
+    fetchQuestions();
 
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-      event.preventDefault()
-      event.returnValue = ''
-    }
+      event.preventDefault();
+      event.returnValue = "";
+    };
 
-    window.addEventListener('beforeunload', handleBeforeUnload)
+    window.addEventListener("beforeunload", handleBeforeUnload);
 
     return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload)
-    }
-  }, [])
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
 
   useEffect(() => {
-    if (isLoading || isCompleted) return
+    if (isLoading || isCompleted) return;
 
     const timer = setInterval(() => {
       setTimeRemaining((prevTime) => {
         if (prevTime <= 1) {
-          clearInterval(timer)
-          setIsCompleted(true)
-          setBadEnding(true)
-          return 0
+          clearInterval(timer);
+          setIsCompleted(true);
+          setBadEnding(true);
+          return 0;
         }
-        return prevTime - 1
-      })
-    }, 1000)
+        return prevTime - 1;
+      });
+    }, 1000);
 
-    return () => clearInterval(timer)
-  }, [isLoading, isCompleted])
+    return () => clearInterval(timer);
+  }, [isLoading, isCompleted]);
 
   useEffect(() => {
     if (questions.length > 0 && currentQuestion <= questions.length) {
-      const questionNameLength = questions[currentQuestion - 1].Name.length
-      setInputLength(questionNameLength)
-      setValues(Array(questionNameLength).fill(''))
-      setIsLoading(false)
+      const questionNameLength = questions[currentQuestion - 1].Name.length;
+      setInputLength(questionNameLength);
+      setValues(Array(questionNameLength).fill(""));
+      setIsLoading(false);
     }
-  }, [questions, currentQuestion])
+  }, [questions, currentQuestion]);
 
   const formatTime = (seconds: number) => {
-    const minutes = Math.floor(seconds / 60)
-    const remainingSeconds = seconds % 60
-    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`
-  }
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
+  };
 
   const fetchQuestions = async () => {
     try {
-      const max = level === 'Easy' ? 10 : level === 'Medium' ? 20 : 30
-      const response = await fetch(
-        `http://localhost:3000/api/v1/getQuestion?min=1&max=${max}`,
-      )
-      const data = await response.json()
+      const max = level === "Easy" ? 10 : level === "Medium" ? 20 : 30;
+      const response = await fetch(`/api/v1/getQuestion?min=1&max=${max}`);
+      const data = await response.json();
       const shuffledQuestions = data
         .sort(() => 0.5 - Math.random())
-        .slice(0, noOfQuestions)
-      setQuestions(shuffledQuestions)
+        .slice(0, noOfQuestions);
+      setQuestions(shuffledQuestions);
     } catch (error) {
-      console.error('Error fetching questions:', error)
+      console.error("Error fetching questions:", error);
     }
-  }
+  };
 
   const handleChange = (
     index: number,
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    const newValues = [...values]
-    newValues[index] = e.target.value.slice(-1)
-    setValues(newValues)
+    const newValues = [...values];
+    newValues[index] = e.target.value.slice(-1);
+    setValues(newValues);
 
     if (e.target.value && index < inputLength - 1) {
-      inputRefs.current[index + 1]?.focus()
+      inputRefs.current[index + 1]?.focus();
     }
-  }
+  };
 
   const handleKeyDown = (
     index: number,
     e: React.KeyboardEvent<HTMLInputElement>,
   ) => {
-    if (e.key === 'Backspace' && !values[index] && index > 0) {
-      inputRefs.current[index - 1]?.focus()
+    if (e.key === "Backspace" && !values[index] && index > 0) {
+      inputRefs.current[index - 1]?.focus();
     }
-  }
+  };
 
   const checkAnswer = () => {
-    if (!questions[currentQuestion - 1]) return
+    if (!questions[currentQuestion - 1]) return;
 
-    const word = values.join('')
+    const word = values.join("");
     if (
       word.toLowerCase() === questions[currentQuestion - 1].Name.toLowerCase()
     ) {
       if (currentQuestion < questions.length) {
-        setCurrentQuestion((prev) => prev + 1)
-        setNoOfHints(1)
-        inputRefs.current[0]?.focus()
+        setCurrentQuestion((prev) => prev + 1);
+        setNoOfHints(1);
+        inputRefs.current[0]?.focus();
       } else {
-        setIsCompleted(true)
+        setIsCompleted(true);
         if (user?.email && !badEnding) {
-          incrementClassicQuizCompleted(user?.email, level)
-          incrementTimeSpent(user?.email, (time * 60 - timeRemaining) / 60)
+          incrementClassicQuizCompleted(user?.email, level);
+          incrementTimeSpent(user?.email, (time * 60 - timeRemaining) / 60);
         }
       }
     }
-  }
+  };
 
   useEffect(() => {
-    if (values.join('').length === inputLength) {
-      checkAnswer()
+    if (values.join("").length === inputLength) {
+      checkAnswer();
     }
-  }, [values])
+  }, [values]);
 
   if (isLoading) {
-    return <div className="p-3">Loading...</div>
+    return <div className="p-3">Loading...</div>;
   }
 
   return (
     <div className="p-3">
       {isCompleted ? (
-        <div className="cmp-txt text-3xl h-1/2 w-1/2 p-4 gap-2">
+        <div className="cmp-txt text-3xl md:h-1/2 md:w-1/2 p-4 gap-2">
           <div className="text-lg">
             {badEnding ? (
               <div className="flex flex-col items-center justify-center gap-8 p-8 text-center rounded-sm shadow-lg border border-foreground/20">
@@ -214,15 +212,15 @@ export default function ClassicQuiz({
           </div>
         </div>
       ) : (
-        <div className="border border-foreground/20 h-1/2 w-1/2 p-4 flex flex-col items-center justify-center bg-background/70">
+        <div className="border border-foreground/20 md:h-1/2 md:w-1/2 p-4 flex flex-col items-center justify-center bg-background/70">
           <div className="text-2xl text-center font-medium p-2 flex flex-col items-center justify-center gap-1">
             <div className="text-xl font-bold">{formatTime(timeRemaining)}</div>
-            Classic{' '}
+            Classic{" "}
             <p className="text-sm text-foreground/60">
               ({currentQuestion} of {questions.length})
             </p>
           </div>
-          <div className="flex items-center justify-center gap-2 p-3 border border-foreground/20 text-center text-3xl w-fit">
+          <div className="flex items-center justify-center gap-2 p-3 border border-foreground/20 text-center md:text-3xl w-fit">
             {values.map((value, index) => (
               <input
                 key={index}
@@ -233,36 +231,36 @@ export default function ClassicQuiz({
                 maxLength={1}
                 onChange={(e) => handleChange(index, e)}
                 onKeyDown={(e) => handleKeyDown(index, e)}
-                className={`w-10 h-14 text-center text-xl bg-background ${
-                  value ? 'border-none' : 'border-b-2 border-foreground/30'
+                className={`md:w-10 w-6 h-14 text-center text-xl bg-background ${
+                  value ? "border-none" : "border-b-2 border-foreground/30"
                 } outline-none focus:border-b-2 focus:border-foreground`}
               />
             ))}
           </div>
           <div className="p-3 text-lg text-foreground/70">Hints!</div>
-          <div className="flex justify-between gap-10 w-2/3">
+          <div className="flex justify-between gap-10 md:w-2/3">
             <div className="flex flex-col justify-center items-center gap-2">
               <div className="rounded-full border border-foreground/20 flex items-center justify-center p-3 w-16 h-16">
                 {noOfHints >= 1
                   ? questions[currentQuestion - 1].AtomicNumber
-                  : 'AN'}
+                  : "AN"}
               </div>
-              {noOfHints >= 1 ? 'AtomicNo' : ''}
+              {noOfHints >= 1 ? "AtomicNo" : ""}
             </div>
 
             <div className="flex flex-col justify-center items-center gap-2">
               <div className="rounded-full border border-foreground/20 flex items-center justify-center p-3 w-16 h-16 ">
                 {noOfHints >= 2
                   ? questions[currentQuestion - 1].StandardState
-                  : '?'}
+                  : "?"}
               </div>
-              {noOfHints >= 1 ? 'State' : ''}
+              {noOfHints >= 1 ? "State" : ""}
             </div>
             <div className="flex flex-col justify-center items-center gap-2">
               <div className="rounded-full border border-foreground/20 flex items-center justify-center p-3 w-16 h-16">
-                {noOfHints >= 3 ? questions[currentQuestion - 1].Symbol : '?'}
+                {noOfHints >= 3 ? questions[currentQuestion - 1].Symbol : "?"}
               </div>
-              {noOfHints >= 1 ? 'Symbol' : ''}
+              {noOfHints >= 1 ? "Symbol" : ""}
             </div>
           </div>
           <InteractiveHoverButton
@@ -274,5 +272,5 @@ export default function ClassicQuiz({
         </div>
       )}
     </div>
-  )
+  );
 }

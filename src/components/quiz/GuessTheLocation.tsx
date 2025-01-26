@@ -1,16 +1,16 @@
-import { useAuth } from '@/contexts/AuthContext'
-import { useTheme } from '@/contexts/ThemeContext'
-import elements from '@/data/elements.json'
+import { useAuth } from "@/contexts/AuthContext";
+import { useTheme } from "@/contexts/ThemeContext";
+import elements from "@/data/elements.json";
 import {
   incrementGuessTheLocationCompleted,
   incrementTimeSpent,
-} from '@/lib/firebase/profileFunctions'
-import { Element } from '@/types/element'
-import { Level } from '@/types/levels'
-import { Trophy } from 'lucide-react'
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { AuroraText } from '../ui/aurora-text'
-import { InteractiveHoverButton } from '../ui/interactive-hover-button'
+} from "@/lib/firebase/profileFunctions";
+import { Element } from "@/types/element";
+import { Level } from "@/types/levels";
+import { Trophy } from "lucide-react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { AuroraText } from "../ui/aurora-text";
+import { InteractiveHoverButton } from "../ui/interactive-hover-button";
 
 export const GuessTheLocation = ({
   level,
@@ -18,96 +18,94 @@ export const GuessTheLocation = ({
   noOfQuestions,
   setGameStarted,
 }: {
-  level: string
-  time: number
-  noOfQuestions: number
-  setGameStarted: Dispatch<SetStateAction<boolean>>
+  level: string;
+  time: number;
+  noOfQuestions: number;
+  setGameStarted: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const [questions, setQuestions] = useState<Element[]>([])
-  const [currentQuestion, setCurrentQuestion] = useState(1)
-  const [isGameCompleted, setIsGameCompleted] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
-  const [timeRemaining, setTimeRemaining] = useState(time * 60)
-  const [badEnding, setBadEnding] = useState(false)
-  const [hintElements, setHintElements] = useState<number[]>([])
-  const [hintUsed, setHintUsed] = useState(false)
+  const [questions, setQuestions] = useState<Element[]>([]);
+  const [currentQuestion, setCurrentQuestion] = useState(1);
+  const [isGameCompleted, setIsGameCompleted] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [timeRemaining, setTimeRemaining] = useState(time * 60);
+  const [badEnding, setBadEnding] = useState(false);
+  const [hintElements, setHintElements] = useState<number[]>([]);
+  const [hintUsed, setHintUsed] = useState(false);
   useEffect(() => {
-    fetchQuestions()
+    fetchQuestions();
 
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-      event.preventDefault()
-      event.returnValue = ''
-    }
+      event.preventDefault();
+      event.returnValue = "";
+    };
 
-    window.addEventListener('beforeunload', handleBeforeUnload)
+    window.addEventListener("beforeunload", handleBeforeUnload);
 
     return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload)
-    }
-  }, [])
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
 
   const fetchQuestions = async () => {
     try {
-      const max = level === 'Easy' ? 10 : level === 'Medium' ? 20 : 30
-      const response = await fetch(
-        `http://localhost:3000/api/v1/getQuestion?min=1&max=${max}`,
-      )
-      const data = await response.json()
+      const max = level === "Easy" ? 10 : level === "Medium" ? 20 : 30;
+      const response = await fetch(`/api/v1/getQuestion?min=1&max=${max}`);
+      const data = await response.json();
       const shuffledQuestions = data
         .sort(() => 0.5 - Math.random())
-        .slice(0, noOfQuestions)
-      setQuestions(shuffledQuestions)
-      setIsLoading(false)
+        .slice(0, noOfQuestions);
+      setQuestions(shuffledQuestions);
+      setIsLoading(false);
     } catch (error) {
-      console.error('Error fetching questions:', error)
+      console.error("Error fetching questions:", error);
     }
-  }
+  };
 
   const formatTime = (seconds: number) => {
-    const minutes = Math.floor(seconds / 60)
-    const remainingSeconds = seconds % 60
-    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`
-  }
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
+  };
 
   const getHint = () => {
-    if (hintUsed) return
+    if (hintUsed) return;
 
-    const currentElement = questions[currentQuestion - 1]
+    const currentElement = questions[currentQuestion - 1];
     const otherElements = elements
       .filter((e) => e.AtomicNumber !== currentElement.AtomicNumber)
       .sort(() => 0.5 - Math.random())
-      .slice(0, 3)
+      .slice(0, 3);
 
     const hintArray = [...otherElements, currentElement]
       .sort(() => 0.5 - Math.random())
-      .map((e) => e.AtomicNumber)
+      .map((e) => e.AtomicNumber);
 
-    setHintElements(hintArray)
-    setHintUsed(true)
-  }
-
-  useEffect(() => {
-    setHintElements([])
-    setHintUsed(false)
-  }, [currentQuestion])
+    setHintElements(hintArray);
+    setHintUsed(true);
+  };
 
   useEffect(() => {
-    if (isLoading || isGameCompleted) return
+    setHintElements([]);
+    setHintUsed(false);
+  }, [currentQuestion]);
+
+  useEffect(() => {
+    if (isLoading || isGameCompleted) return;
 
     const timer = setInterval(() => {
       setTimeRemaining((prevTime) => {
         if (prevTime <= 1) {
-          clearInterval(timer)
-          setBadEnding(true)
-          setIsGameCompleted(true)
-          return 0
+          clearInterval(timer);
+          setBadEnding(true);
+          setIsGameCompleted(true);
+          return 0;
         }
-        return prevTime - 1
-      })
-    }, 1000)
+        return prevTime - 1;
+      });
+    }, 1000);
 
-    return () => clearInterval(timer)
-  }, [isLoading, isGameCompleted])
+    return () => clearInterval(timer);
+  }, [isLoading, isGameCompleted]);
 
   return (
     !isLoading && (
@@ -117,7 +115,7 @@ export const GuessTheLocation = ({
             badEnding ? (
               <div className="flex flex-col items-center justify-center gap-8 p-8 text-center rounded-sm shadow-lg border border-black/30">
                 <div className="flex flex-row items-center gap-4">
-                  {' '}
+                  {" "}
                   <AuroraText className="text-6xl font-bold tracking-tighter">
                     You Lose!
                   </AuroraText>
@@ -153,16 +151,16 @@ export const GuessTheLocation = ({
                 <InteractiveHoverButton
                   onClick={getHint}
                   disabled={hintUsed}
-                  className={hintUsed ? 'opacity-50 cursor-not-allowed' : ''}
+                  className={hintUsed ? "opacity-50 cursor-not-allowed" : ""}
                 >
-                  {hintUsed ? 'Hint Used' : 'Get Hint'}
+                  {hintUsed ? "Hint Used" : "Get Hint"}
                 </InteractiveHoverButton>
               </div>
             </div>
           )}
         </div>
         {!isGameCompleted && (
-          <div className="relative w-screen flex items-end justify-center mb-10">
+          <div className="relative md:overflow-x-auto overflow-x-scroll w-screen md:flex p-5 items-end justify-center mb-10">
             <HiddenPeriodicTable
               currentQuestionElementNumber={
                 questions[currentQuestion - 1].AtomicNumber
@@ -181,8 +179,8 @@ export const GuessTheLocation = ({
         )}
       </div>
     )
-  )
-}
+  );
+};
 
 const HiddenPeriodicTable = ({
   currentQuestionElementNumber,
@@ -195,66 +193,66 @@ const HiddenPeriodicTable = ({
   hintElements,
   level,
 }: {
-  currentQuestionElementNumber: number
-  setCurrentQuestion: Dispatch<SetStateAction<number>>
-  currentQuestion: number
-  noOfQuestions: number
-  setIsGameCompleted: Dispatch<SetStateAction<boolean>>
-  totalTime: number
-  timeRemaining: number
-  hintElements: number[]
-  level: Level
+  currentQuestionElementNumber: number;
+  setCurrentQuestion: Dispatch<SetStateAction<number>>;
+  currentQuestion: number;
+  noOfQuestions: number;
+  setIsGameCompleted: Dispatch<SetStateAction<boolean>>;
+  totalTime: number;
+  timeRemaining: number;
+  hintElements: number[];
+  level: Level;
 }) => {
-  const theme = useTheme()
-  const { user } = useAuth()
+  const theme = useTheme();
+  const { user } = useAuth();
   const checkAnswer = (element: Element) => {
     if (element.AtomicNumber === currentQuestionElementNumber) {
       if (currentQuestion < noOfQuestions)
-        setCurrentQuestion(currentQuestion + 1)
+        setCurrentQuestion(currentQuestion + 1);
       else {
-        setIsGameCompleted(true)
+        setIsGameCompleted(true);
         if (user?.email) {
-          incrementGuessTheLocationCompleted(user.email, level)
-          incrementTimeSpent(user.email, (totalTime * 60 - timeRemaining) / 60)
+          incrementGuessTheLocationCompleted(user.email, level);
+          incrementTimeSpent(user.email, (totalTime * 60 - timeRemaining) / 60);
         }
       }
     }
-  }
+  };
 
   const ElementCard = ({ element }: { element: Element | undefined }) => {
-    if (!element) return <div className="w-16 h-16 invisible" />
+    if (!element) return <div className="w-16 h-16 invisible" />;
 
-    const isHinted = hintElements.includes(element.AtomicNumber)
+    const isHinted = hintElements.includes(element.AtomicNumber);
 
     return (
       <button
         onClick={() => checkAnswer(element)}
-        className={`w-16 h-16 p-1 text-center border border-border/50 dark:border-border/50 rounded cursor-pointer flex flex-col justify-around items-center transition-transform hover:scale-105 ${
-          isHinted ? 'ring-4 ring-black dark:ring-white' : ''
+        className={`md:w-16 md:h-16 w-12 h-12 p-1 text-center border border-border/50 dark:border-border/50 rounded cursor-pointer flex flex-col justify-around items-center transition-transform hover:scale-105 ${
+          isHinted ? "ring-4 ring-black dark:ring-white" : ""
         }`}
         style={{
           backgroundColor: `#${
             // @ts-ignore
-            theme === 'dark' && element.CPKHexColor
+            theme === "dark" && element.CPKHexColor
               ? ((r, g, b) => {
-                  const lightenFactor = 0.2
+                  const lightenFactor = 0.2;
                   return [
                     Math.min(255, Math.round(parseInt(r, 16) * lightenFactor))
                       .toString(16)
-                      .padStart(2, '0'),
+                      .padStart(2, "0"),
                     Math.min(255, Math.round(parseInt(g, 16) * lightenFactor))
                       .toString(16)
-                      .padStart(2, '0'),
+                      .padStart(2, "0"),
                     Math.min(255, Math.round(parseInt(b, 16) * lightenFactor))
                       .toString(16)
-                      .padStart(2, '0'),
-                  ].join('')
+                      .padStart(2, "0"),
+                  ].join("");
                 })(
                   element.CPKHexColor.slice(0, 2),
                   element.CPKHexColor.slice(2, 4),
                   element.CPKHexColor.slice(4, 6),
                 )
-              : element.CPKHexColor || '808080'
+              : element.CPKHexColor || "808080"
           }`,
           gridColumn: getGridColumn(element.AtomicNumber),
           gridRow: getGridRow(element.AtomicNumber),
@@ -263,20 +261,20 @@ const HiddenPeriodicTable = ({
         <div className="text-xs dark:text-black">{element.AtomicNumber}</div>
         <div className="text-xs font-bold dark:text-black">?</div>
       </button>
-    )
-  }
+    );
+  };
 
   const renderLanthanidesAndActinides = () => {
     const lanthanides = elements.filter(
       (e) => e.AtomicNumber >= 57 && e.AtomicNumber <= 70,
-    )
+    );
     const actinides = elements.filter(
       (e) => e.AtomicNumber >= 89 && e.AtomicNumber <= 102,
-    )
+    );
 
     return (
-      <div className="">
-        <div className="flex justify-center gap-2 mt-2">
+      <div className="w-[200vw] md:w-auto">
+        <div className="flex md:justify-center md:gap-2 gap-5 mt-2">
           {lanthanides.map((element) => (
             <ElementCard
               key={element.AtomicNumber}
@@ -285,7 +283,7 @@ const HiddenPeriodicTable = ({
             />
           ))}
         </div>
-        <div className="flex justify-center gap-2 mt-2">
+        <div className="flex md:justify-center gap-2 mt-2">
           {actinides.map((element) => (
             <ElementCard
               key={element.AtomicNumber}
@@ -295,12 +293,12 @@ const HiddenPeriodicTable = ({
           ))}
         </div>
       </div>
-    )
-  }
+    );
+  };
 
   const getGridColumn = (atomicNumber: number): string => {
-    if (atomicNumber === 1) return '1'
-    if (atomicNumber === 2) return '18'
+    if (atomicNumber === 1) return "1";
+    if (atomicNumber === 2) return "18";
 
     if (
       atomicNumber === 3 ||
@@ -310,7 +308,7 @@ const HiddenPeriodicTable = ({
       atomicNumber === 55 ||
       atomicNumber === 87
     )
-      return '1'
+      return "1";
     if (
       atomicNumber === 4 ||
       atomicNumber === 12 ||
@@ -319,59 +317,60 @@ const HiddenPeriodicTable = ({
       atomicNumber === 56 ||
       atomicNumber === 88
     )
-      return '2'
+      return "2";
 
-    if (atomicNumber >= 5 && atomicNumber <= 10) return String(atomicNumber + 8)
-    if (atomicNumber >= 13 && atomicNumber <= 18) return String(atomicNumber)
+    if (atomicNumber >= 5 && atomicNumber <= 10)
+      return String(atomicNumber + 8);
+    if (atomicNumber >= 13 && atomicNumber <= 18) return String(atomicNumber);
     if (atomicNumber >= 31 && atomicNumber <= 36)
-      return String(atomicNumber - 18)
+      return String(atomicNumber - 18);
     if (atomicNumber >= 49 && atomicNumber <= 54)
-      return String(atomicNumber - 36)
+      return String(atomicNumber - 36);
     if (atomicNumber >= 81 && atomicNumber <= 86)
-      return String(atomicNumber - 68)
+      return String(atomicNumber - 68);
     if (atomicNumber >= 113 && atomicNumber <= 118)
-      return String(atomicNumber - 100)
+      return String(atomicNumber - 100);
 
     if (atomicNumber >= 21 && atomicNumber <= 30)
-      return String(atomicNumber - 18)
+      return String(atomicNumber - 18);
     if (atomicNumber >= 39 && atomicNumber <= 48)
-      return String(atomicNumber - 36)
+      return String(atomicNumber - 36);
     if (atomicNumber >= 71 && atomicNumber <= 80)
-      return String(atomicNumber - 68)
+      return String(atomicNumber - 68);
     if (atomicNumber >= 103 && atomicNumber <= 112)
-      return String(atomicNumber - 100)
+      return String(atomicNumber - 100);
 
     if (atomicNumber >= 57 && atomicNumber <= 70)
-      return String(atomicNumber - 56)
+      return String(atomicNumber - 56);
     if (atomicNumber >= 89 && atomicNumber <= 102)
-      return String(atomicNumber - 88)
+      return String(atomicNumber - 88);
 
-    return '1'
-  }
+    return "1";
+  };
 
   const getGridRow = (atomicNumber: number): string => {
-    if (atomicNumber <= 2) return '1'
-    if (atomicNumber <= 10) return '2'
-    if (atomicNumber <= 18) return '3'
-    if (atomicNumber <= 36) return '4'
-    if (atomicNumber <= 54) return '5'
-    if (atomicNumber <= 86) return '6'
-    if (atomicNumber <= 118) return '7'
+    if (atomicNumber <= 2) return "1";
+    if (atomicNumber <= 10) return "2";
+    if (atomicNumber <= 18) return "3";
+    if (atomicNumber <= 36) return "4";
+    if (atomicNumber <= 54) return "5";
+    if (atomicNumber <= 86) return "6";
+    if (atomicNumber <= 118) return "7";
 
-    if (atomicNumber >= 57 && atomicNumber <= 70) return '9'
-    if (atomicNumber >= 89 && atomicNumber <= 102) return '10'
+    if (atomicNumber >= 57 && atomicNumber <= 70) return "9";
+    if (atomicNumber >= 89 && atomicNumber <= 102) return "10";
 
-    return '1'
-  }
+    return "1";
+  };
 
   return (
     <div className="">
       <div
-        className="grid"
+        className="grid md:gap-[0.3rem] gap-[0.0rem]"
         style={{
-          gridTemplateColumns: 'repeat(18, 4rem)',
-          gridTemplateRows: 'repeat(7, 4rem)',
-          gridGap: '0.3rem',
+          gridTemplateColumns: "repeat(18, 4rem)",
+          gridTemplateRows: "repeat(7, 4rem)",
+          //gridGap: "0.3rem",
         }}
       >
         {elements.map((element) => (
@@ -384,5 +383,5 @@ const HiddenPeriodicTable = ({
       </div>
       {renderLanthanidesAndActinides()}
     </div>
-  )
-}
+  );
+};
