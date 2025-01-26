@@ -4,10 +4,11 @@ import elements from "@/data/elements.json";
 import {
   incrementGuessTheLocationCompleted,
   incrementTimeSpent,
+  incrementPoints,
 } from "@/lib/firebase/profileFunctions";
 import { Element } from "@/types/element";
 import { Level } from "@/types/levels";
-import { Trophy } from "lucide-react";
+import { Trophy, XCircle } from "lucide-react";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { AuroraText } from "../ui/aurora-text";
 import { InteractiveHoverButton } from "../ui/interactive-hover-button";
@@ -31,6 +32,10 @@ export const GuessTheLocation = ({
   const [badEnding, setBadEnding] = useState(false);
   const [hintElements, setHintElements] = useState<number[]>([]);
   const [hintUsed, setHintUsed] = useState(false);
+  const [isTimelessMode, setIsTimelessMode] = useState(time > 199);
+  const [totalQuestionsAnswered, setTotalQuestionsAnswered] = useState(0);
+  const { user } = useAuth();
+
   useEffect(() => {
     fetchQuestions();
 
@@ -53,8 +58,9 @@ export const GuessTheLocation = ({
       const data = await response.json();
       const shuffledQuestions = data
         .sort(() => 0.5 - Math.random())
-        .slice(0, noOfQuestions);
+        .slice(0, 10);
       setQuestions(shuffledQuestions);
+      setCurrentQuestion(1);
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching questions:", error);
@@ -90,7 +96,7 @@ export const GuessTheLocation = ({
   }, [currentQuestion]);
 
   useEffect(() => {
-    if (isLoading || isGameCompleted) return;
+    if (isLoading || isGameCompleted || isTimelessMode) return;
 
     const timer = setInterval(() => {
       setTimeRemaining((prevTime) => {
@@ -105,7 +111,18 @@ export const GuessTheLocation = ({
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [isLoading, isGameCompleted]);
+  }, [isLoading, isGameCompleted, isTimelessMode]);
+
+  const handleQuit = () => {
+    if (isTimelessMode) {
+      // In timeless mode, save total questions answered
+      if (user?.email) {
+        incrementGuessTheLocationCompleted(user.email, level);
+        incrementTimeSpent(user.email, totalQuestionsAnswered / 6); // Approximate time spent
+      }
+    }
+    setGameStarted(false);
+  };
 
   return (
     !isLoading && (
@@ -145,7 +162,13 @@ export const GuessTheLocation = ({
             )
           ) : (
             <div className="p-3 rounded-3xl border w-fit text-xl">
-              {currentQuestion} / {noOfQuestions} | {formatTime(timeRemaining)}
+              {time < 199 ? currentQuestion + " / " + noOfQuestions : ""} |{" "}
+              {time < 199 ? formatTime(timeRemaining) : "Infinite!"}
+              {isTimelessMode && (
+                <div className="text-sm text-gray-600">
+                  Total Questions: {totalQuestionsAnswered}
+                </div>
+              )}
               <div className="flex items-center gap-4">
                 <div>Find {questions[currentQuestion - 1].Name}!</div>
                 <InteractiveHoverButton
@@ -172,9 +195,21 @@ export const GuessTheLocation = ({
               totalTime={time}
               timeRemaining={timeRemaining}
               hintElements={hintElements}
-              // @ts-ignore
               level={level}
+              isTimelessMode={isTimelessMode}
+              setTotalQuestionsAnswered={setTotalQuestionsAnswered}
+              fetchQuestions={fetchQuestions}
             />
+          </div>
+        )}
+        {isTimelessMode && !isGameCompleted && (
+          <div className="flex justify-center">
+            <InteractiveHoverButton
+              onClick={handleQuit}
+              className="btn-secondary font-light w-fit mt-3 text-lg border border-foreground/20 flex items-center gap-2"
+            >
+              <XCircle className="w-5 h-5" /> Quit
+            </InteractiveHoverButton>
           </div>
         )}
       </div>
@@ -192,6 +227,9 @@ const HiddenPeriodicTable = ({
   timeRemaining,
   hintElements,
   level,
+  isTimelessMode,
+  setTotalQuestionsAnswered,
+  fetchQuestions,
 }: {
   currentQuestionElementNumber: number;
   setCurrentQuestion: Dispatch<SetStateAction<number>>;
@@ -202,18 +240,41 @@ const HiddenPeriodicTable = ({
   timeRemaining: number;
   hintElements: number[];
   level: Level;
+  isTimelessMode: boolean;
+  setTotalQuestionsAnswered: Dispatch<SetStateAction<number>>;
+  fetchQuestions: () => Promise<void>;
 }) => {
   const theme = useTheme();
   const { user } = useAuth();
+
   const checkAnswer = (element: Element) => {
     if (element.AtomicNumber === currentQuestionElementNumber) {
-      if (currentQuestion < noOfQuestions)
+      // Increment points
+      if (user?.email) {
+        incrementPoints(user.email, 1);
+      }
+
+      // Update total questions answered
+      if (isTimelessMode) {
+        setTotalQuestionsAnswered((prev) => prev + 1);
+      }
+
+      if (currentQuestion < noOfQuestions) {
         setCurrentQuestion(currentQuestion + 1);
-      else {
-        setIsGameCompleted(true);
-        if (user?.email) {
-          incrementGuessTheLocationCompleted(user.email, level);
-          incrementTimeSpent(user.email, (totalTime * 60 - timeRemaining) / 60);
+      } else {
+        if (isTimelessMode) {
+          fetchQuestions();
+          setCurrentQuestion(1);
+        } else {
+          // Regular mode completion
+          setIsGameCompleted(true);
+          if (user?.email) {
+            incrementGuessTheLocationCompleted(user.email, level);
+            incrementTimeSpent(
+              user.email,
+              (totalTime * 60 - timeRemaining) / 60,
+            );
+          }
         }
       }
     }
@@ -295,7 +356,6 @@ const HiddenPeriodicTable = ({
       </div>
     );
   };
-
   const getGridColumn = (atomicNumber: number): string => {
     if (atomicNumber === 1) return "1";
     if (atomicNumber === 2) return "18";

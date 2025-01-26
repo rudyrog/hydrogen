@@ -4,9 +4,10 @@ import { useAuth } from "@/contexts/AuthContext";
 import {
   incrementClassicQuizCompleted,
   incrementTimeSpent,
+  incrementPoints,
 } from "@/lib/firebase/profileFunctions";
 import { Level } from "@/types/levels";
-import { Trophy } from "lucide-react";
+import { Trophy, XCircle } from "lucide-react";
 import { useTheme } from "next-themes";
 import { InteractiveHoverButton } from "../ui/interactive-hover-button";
 
@@ -51,8 +52,11 @@ export default function ClassicQuiz({
   const [noOfHints, setNoOfHints] = useState(1);
   const [isCompleted, setIsCompleted] = useState(false);
   const [badEnding, setBadEnding] = useState(false);
+  const [totalQuestionsAnswered, setTotalQuestionsAnswered] = useState(0);
+  const [isTimelessMode, setIsTimelessMode] = useState(time > 199);
   const { user } = useAuth();
   const theme = useTheme().theme;
+
   useEffect(() => {
     fetchQuestions();
 
@@ -71,20 +75,22 @@ export default function ClassicQuiz({
   useEffect(() => {
     if (isLoading || isCompleted) return;
 
-    const timer = setInterval(() => {
-      setTimeRemaining((prevTime) => {
-        if (prevTime <= 1) {
-          clearInterval(timer);
-          setIsCompleted(true);
-          setBadEnding(true);
-          return 0;
-        }
-        return prevTime - 1;
-      });
-    }, 1000);
+    if (!isTimelessMode) {
+      const timer = setInterval(() => {
+        setTimeRemaining((prevTime) => {
+          if (prevTime <= 1) {
+            clearInterval(timer);
+            setIsCompleted(true);
+            setBadEnding(true);
+            return 0;
+          }
+          return prevTime - 1;
+        });
+      }, 1000);
 
-    return () => clearInterval(timer);
-  }, [isLoading, isCompleted]);
+      return () => clearInterval(timer);
+    }
+  }, [isLoading, isCompleted, isTimelessMode]);
 
   useEffect(() => {
     if (questions.length > 0 && currentQuestion <= questions.length) {
@@ -108,7 +114,7 @@ export default function ClassicQuiz({
       const data = await response.json();
       const shuffledQuestions = data
         .sort(() => 0.5 - Math.random())
-        .slice(0, noOfQuestions);
+        .slice(0, 10);
       setQuestions(shuffledQuestions);
     } catch (error) {
       console.error("Error fetching questions:", error);
@@ -144,15 +150,28 @@ export default function ClassicQuiz({
     if (
       word.toLowerCase() === questions[currentQuestion - 1].Name.toLowerCase()
     ) {
+      if (user?.email) {
+        incrementPoints(user.email, 1);
+      }
+
+      const newTotalQuestions = totalQuestionsAnswered + 1;
+      setTotalQuestionsAnswered(newTotalQuestions);
+
       if (currentQuestion < questions.length) {
         setCurrentQuestion((prev) => prev + 1);
         setNoOfHints(1);
         inputRefs.current[0]?.focus();
       } else {
-        setIsCompleted(true);
-        if (user?.email && !badEnding) {
-          incrementClassicQuizCompleted(user?.email, level);
-          incrementTimeSpent(user?.email, (time * 60 - timeRemaining) / 60);
+        if (isTimelessMode) {
+          fetchQuestions();
+          setCurrentQuestion(1);
+          inputRefs.current[0]?.focus();
+        } else {
+          setIsCompleted(true);
+          if (user?.email && !badEnding) {
+            incrementClassicQuizCompleted(user?.email, level);
+            incrementTimeSpent(user?.email, (time * 60 - timeRemaining) / 60);
+          }
         }
       }
     }
@@ -163,6 +182,16 @@ export default function ClassicQuiz({
       checkAnswer();
     }
   }, [values]);
+
+  const handleQuit = () => {
+    if (isTimelessMode) {
+      if (user?.email) {
+        incrementClassicQuizCompleted(user.email, level);
+        incrementTimeSpent(user.email, totalQuestionsAnswered / 6);
+      }
+    }
+    setGameStarted(false);
+  };
 
   if (isLoading) {
     return <div className="p-3">Loading...</div>;
@@ -214,11 +243,20 @@ export default function ClassicQuiz({
       ) : (
         <div className="border border-foreground/20 md:h-1/2 md:w-1/2 p-4 flex flex-col items-center justify-center bg-background/70">
           <div className="text-2xl text-center font-medium p-2 flex flex-col items-center justify-center gap-1">
-            <div className="text-xl font-bold">{formatTime(timeRemaining)}</div>
+            {!isTimelessMode && (
+              <div className="text-xl font-bold">
+                {formatTime(timeRemaining)}
+              </div>
+            )}
             Classic{" "}
             <p className="text-sm text-foreground/60">
               ({currentQuestion} of {questions.length})
             </p>
+            {isTimelessMode && (
+              <p className="text-sm text-foreground/60">
+                Total Questions: {totalQuestionsAnswered}
+              </p>
+            )}
           </div>
           <div className="flex items-center justify-center gap-2 p-3 border border-foreground/20 text-center md:text-3xl w-fit">
             {values.map((value, index) => (
@@ -263,12 +301,22 @@ export default function ClassicQuiz({
               {noOfHints >= 1 ? "Symbol" : ""}
             </div>
           </div>
-          <InteractiveHoverButton
-            onClick={() => setNoOfHints(noOfHints + 1)}
-            className="btn-pr font-light w-fit mt-3 text-lg border border-foreground/20"
-          >
-            Add Hint
-          </InteractiveHoverButton>
+          <div className="flex gap-4 items-center justify-center">
+            <InteractiveHoverButton
+              onClick={() => setNoOfHints(noOfHints + 1)}
+              className="btn-pr font-light w-fit mt-3 text-lg border border-foreground/20"
+            >
+              Add Hint
+            </InteractiveHoverButton>
+            {isTimelessMode && (
+              <InteractiveHoverButton
+                onClick={handleQuit}
+                className="btn-secondary font-light w-fit mt-3 text-lg border border-foreground/20 flex items-center gap-2"
+              >
+                <XCircle className="w-5 h-5" /> Quit
+              </InteractiveHoverButton>
+            )}
+          </div>
         </div>
       )}
     </div>

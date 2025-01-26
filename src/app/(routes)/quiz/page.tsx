@@ -12,7 +12,7 @@ import ClassicQuiz from "../../../components/quiz/ClassicQuiz";
 import { useTheme } from "../../../contexts/ThemeContext";
 
 export default function Quiz() {
-  const [isTimed, setIsTimed] = useState<boolean>(false);
+  const [isTimed, setIsTimed] = useState<boolean>(true);
   const [isCustom, setIsCustom] = useState<boolean>(false);
   const [time, setTime] = useState<number>(3);
   const [customTime, setCustomTime] = useState<number>(3);
@@ -128,7 +128,7 @@ export default function Quiz() {
           <div className="container mx-auto p-3 md:w-5/6">
             <ClassicQuiz
               level={level}
-              time={time}
+              time={isTimed ? time : 200}
               noOfQuestions={
                 isCustom
                   ? customQuestions
@@ -153,7 +153,7 @@ export default function Quiz() {
         ) : gameMode === "location" ? (
           <GuessTheLocation
             level={level}
-            time={time}
+            time={isTimed ? time : 200}
             noOfQuestions={
               isCustom
                 ? customQuestions
