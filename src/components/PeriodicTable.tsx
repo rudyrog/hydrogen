@@ -15,20 +15,34 @@ import React from "react";
 import { useTheme } from "../contexts/ThemeContext";
 import AtomModel from "./AtomModel";
 
-const PeriodicTable: React.FC = () => {
+const PeriodicTable = ({
+  highlighted,
+  normal,
+  half,
+}: {
+  highlighted?: Array<number>;
+  normal: boolean;
+  half?: boolean;
+}) => {
   const [selectedElement, setSelectedElement] = React.useState<Element | null>(
     null,
   );
   const { theme } = useTheme();
-  const ElementCard = ({ element }: { element: Element }) => {
+  const ElementCard = ({
+    element,
+    normal,
+    highlighted,
+  }: {
+    element: Element;
+    normal: boolean;
+    highlighted?: boolean;
+  }) => {
     if (!element) return <div className="w-16 h-16 invisible" />;
 
     return (
       <DrawerTrigger asChild>
         <div
-          className={`md:w-16 md:h-16 h-12 w-12 p-1 text-center border border-border/20  rounded transition-transform hover:scale-105 cursor-pointer flex flex-col justify-between ${
-            theme === "dark" ? "text-white" : "text-black"
-          }`}
+          className={`md:w-16 ${normal === false ? (highlighted === true ? "opacity-100 border-black border-2" : "opacity-25") : ""} md:h-16 h-12 w-12 p-1 text-center border border-border/20  rounded transition-transform hover:scale-105 cursor-pointer flex flex-col justify-between ${theme === "dark" ? "text-white" : "text-black"}`}
           style={{
             backgroundColor: `#${
               theme === "dark" && element.CPKHexColor
@@ -203,14 +217,17 @@ const PeriodicTable: React.FC = () => {
           {elements.map((element) => (
             <ElementCard
               key={element.AtomicNumber}
+              normal={normal}
+              highlighted={highlighted?.includes(element.AtomicNumber)}
               //@ts-ignore
-
               element={element}
             />
           ))}
         </div>
         <div className="md:p-0 px-20 w-full flex items-center justify-center">
-          {renderLanthanidesAndActinides()}
+          {half === false || half === undefined || half === null
+            ? renderLanthanidesAndActinides()
+            : ""}
         </div>
         <DrawerContent>
           <ElementDetails element={selectedElement} />

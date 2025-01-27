@@ -106,7 +106,7 @@ export default function PTable() {
         </h1>
       </div>
       <div className="relative p-10 md:p-10 md:overflow-hidden overflow-x-scroll md:flex items-center justify-center">
-        <PeriodicTable />
+        <PeriodicTable normal={true} highlighted={[5, 3, 7, 10]} />
       </div>
     </div>
   );
