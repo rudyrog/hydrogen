@@ -86,7 +86,7 @@ const PeriodicTable = ({
       <div className="flex flex-col items-center justify-center">
         <div className="text-center w-8 h-2 bg-gray-400 rounded-lg"></div>
         <div className="flex md:flex-row flex-col overflow-y-scroll h-[80vh] md:justify-around px-40">
-          <div className="md:container md:mx-auto md:flex flex-col items-center justify-center  py-3">
+          <div className="md:container md:mx-auto md:flex flex-col items-sart justify-start  py-3">
             <DrawerHeader>
               <DrawerTitle className="text-2xl">
                 {element.Name} ({element.Symbol})

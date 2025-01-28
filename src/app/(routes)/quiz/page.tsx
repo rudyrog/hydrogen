@@ -10,6 +10,7 @@ import gsap from "gsap";
 import { useEffect, useRef, useState } from "react";
 import ClassicQuiz from "../../../components/quiz/ClassicQuiz";
 import { useTheme } from "../../../contexts/ThemeContext";
+import ElementsAlike from "@/components/quiz/ElementsAlike";
 
 export default function Quiz() {
   const [isTimed, setIsTimed] = useState<boolean>(true);
@@ -18,7 +19,7 @@ export default function Quiz() {
   const [customTime, setCustomTime] = useState<number>(3);
   const [level, setLevel] = useState<Level>("Medium");
   const [customLevel, setCustomLevel] = useState<Level>("Medium");
-  const [gameMode, setGameMode] = useState<"classic" | "location">("classic");
+  const [gameMode, setGameMode] = useState<"classic" | "location" | "elementsAlike">("classic");
   const [gameStarted, setGameStarted] = useState<boolean>(false);
   const [customQuestions, setCustomQuestions] = useState<number>(5);
 
@@ -35,7 +36,7 @@ export default function Quiz() {
     setLevel(newLevel);
   };
 
-  const handleGameModeChange = (newGameMode: "classic" | "location") => {
+  const handleGameModeChange = (newGameMode: "classic" | "location" | "elementsAlike") => {
     setGameMode(newGameMode);
   };
 
@@ -116,6 +117,7 @@ export default function Quiz() {
         {["Q", "U", "I", "Z"].map((letter, index) => (
           <p
             key={index}
+            //@ts-ignore
             ref={(el) => (letterRefs.current[index] = el)}
             className="mx-3 transition-colors duration-300 cursor-default select-none"
           >
@@ -174,7 +176,30 @@ export default function Quiz() {
             }
             setGameStarted={setGameStarted}
           />
-        ) : null
+        ) :  gameMode === "elementsAlike" ? (
+          <ElementsAlike
+            level={level}
+            time={isTimed ? time : 200}
+            noOfQuestions={
+              isCustom
+                ? customQuestions
+                : (function (time) {
+                    switch (time) {
+                      case 1:
+                        return 1;
+                      case 3:
+                        return 3;
+                      case 5:
+                        return 6;
+                      case 10:
+                        return 9;
+                      default:
+                        return 3;
+                    }
+                  })(time)
+            }
+            setGameStarted={setGameStarted}
+          /> ): null
       ) : (
         <>
           <div className="flex gap-3 md:flex-row flex-col container mx-auto p-3 md:w-5/6">
@@ -215,6 +240,23 @@ export default function Quiz() {
                   We'll give you the name of an element, and your challenge is
                   to find its spot on the periodic table! Can you pinpoint its
                   exact location? Let the search begin!
+                </p>
+              </CardContent>
+            </Card>
+            <Card
+              className={`md:w-96 cursor-pointer ${
+                gameMode === "elementsAlike"
+                  ? "border border-border dark:border-border/70 dark:border-2 transition-all duration-300 shadow-lg shadow-foreground/20 text-foreground rounded-lg card dark:shadow-none"
+                  : "border border-border/50 dark:border-border/10 dark:border-2 card text-foreground/50 rounded-lg bg-foreground/10"
+              }`}
+              onClick={() => handleGameModeChange("elementsAlike")}
+            >
+              <CardHeader>
+                <CardTitle className="font-medium subtitle">Elements Alike</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p>
+                  We will give you a group and you have to find the elements belonging to that group! Good luck with this quest!
                 </p>
               </CardContent>
             </Card>
@@ -292,8 +334,8 @@ export default function Quiz() {
                             ? _level === "Easy"
                               ? "bg-emerald-400 text-black transition-all duration-500 px-3 py-1 rounded-md border-2 border-transparent"
                               : _level === "Medium"
-                                ? "bg-yellow-400 text-black transition-all duration-500 px-3 py-1 rounded-md border-2 border-transparent"
-                                : "bg-red-500 text-black transition-all duration-500 px-3 py-1 rounded-md border-2 border-transparent"
+                              ? "bg-yellow-400 text-black transition-all duration-500 px-3 py-1 rounded-md border-2 border-transparent"
+                              : "bg-red-500 text-black transition-all duration-500 px-3 py-1 rounded-md border-2 border-transparent"
                             : "border border-border/50 dark:border-border/10 dark:border-2 card text-foreground/50 rounded-lg bg-foreground/10 px-3 py-1"
                         }
                         onClick={() => setCustomLevel(_level)}
@@ -333,8 +375,8 @@ export default function Quiz() {
                           ? _level === "Easy"
                             ? "bg-emerald-400 text-black transition-all duration-500 px-3 py-1 rounded-md border-2 border-transparent"
                             : _level === "Medium"
-                              ? "bg-yellow-400 text-black transition-all duration-500 px-3 py-1 rounded-md border-2 border-transparent"
-                              : "bg-red-500 text-black transition-all duration-500 px-3 py-1 rounded-md border-2 border-transparent"
+                            ? "bg-yellow-400 text-black transition-all duration-500 px-3 py-1 rounded-md border-2 border-transparent"
+                            : "bg-red-500 text-black transition-all duration-500 px-3 py-1 rounded-md border-2 border-transparent"
                           : "border border-border/50 dark:border-border/10 dark:border-2 card text-foreground/50 rounded-lg bg-foreground/10 px-3 py-1"
                       }
                       onClick={() => handleLevelChange(_level)}
@@ -358,3 +400,10 @@ export default function Quiz() {
     </div>
   );
 }
+// "Nonmetal",
+//     "Noble gas",
+    // "Alkali metal",
+    // "Alkaline earth metal",
+    // "Metalloid",
+    // "Halogen",
+    // "Post-transition metal",

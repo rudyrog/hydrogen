@@ -10,26 +10,9 @@ import { Level } from "@/types/levels";
 import { Trophy, XCircle } from "lucide-react";
 import { useTheme } from "next-themes";
 import { InteractiveHoverButton } from "../ui/interactive-hover-button";
+import { Element } from "@/types/element";
 
-interface Element {
-  AtomicNumber: number;
-  Symbol: string;
-  Name: string;
-  AtomicMass: number;
-  CPKHexColor: string;
-  ElectronConfiguration: string;
-  Electronegativity: number;
-  AtomicRadius: number;
-  IonizationEnergy: number;
-  ElectronAffinity: number;
-  OxidationStates: string;
-  StandardState: string;
-  MeltingPoint: number;
-  BoilingPoint: number;
-  Density: number;
-  GroupBlock: string;
-  YearDiscovered: string;
-}
+
 
 export default function ClassicQuiz({
   level,

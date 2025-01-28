@@ -8,6 +8,7 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import PeriodicTable from "@/components/PeriodicTable";
+import Trends from "@/components/learn/Trends";
 
 export default function Learn() {
   const [selectedGroup, setSelectedGroup] = useState<number>(0);
@@ -19,7 +20,7 @@ export default function Learn() {
       examples: "Examples: Lithium, Sodium",
       highlighted: [3, 11, 19, 37, 55, 87],
       details:
-        "⚡ **Did you know?** Alkali metals are so reactive, they can even explode when they touch water! They're like the superheroes of the periodic table, always ready to react and show off their powers!",
+        "⚡ Did you know? Alkali metals are so reactive, they can even explode when they touch water! They're like the superheroes of the periodic table, always ready to react and show off their powers!",
     },
     {
       name: "Group 2: Alkaline Earth Metals",
@@ -27,7 +28,7 @@ export default function Learn() {
       examples: "Examples: Calcium, Magnesium",
       highlighted: [4, 12, 20, 38, 56, 88],
       details:
-        "💪 **Fun fact:** These metals are strong and tough, but not as explosive as Alkali metals. They’re still pretty cool, though – ever heard of magnesium flares that light up the night sky?",
+        "💪 Fun fact: These metals are strong and tough, but not as explosive as Alkali metals. They’re still pretty cool, though – ever heard of magnesium flares that light up the night sky?",
     },
     {
       name: "Groups 3–12: Transition Metals",
@@ -35,7 +36,7 @@ export default function Learn() {
       examples: "Examples: Iron, Copper",
       highlighted: [26, 27, 28, 29, 30, 31, 32],
       details:
-        "🔧 **Spotlight moment:** These metals are like the all-arounders of the periodic table. Iron builds bridges, Copper conducts electricity, and Gold? It’s the bling of the table!",
+        "🔧 Spotlight moment: These metals are like the all-arounders of the periodic table. Iron builds bridges, Copper conducts electricity, and Gold? It’s the bling of the table!",
     },
     {
       name: "Group 13: Boron Group",
@@ -43,7 +44,7 @@ export default function Learn() {
       examples: "Examples: Boron, Aluminum",
       highlighted: [5, 13, 31, 49, 81, 113],
       details:
-        "🤖 **Cool fact:** This group is a mix of metals and metalloids, making them versatile! Aluminum is the lightweight hero in your soda cans, while Boron is used in everything from glass to semiconductors!",
+        "🤖 Cool fact: This group is a mix of metals and metalloids, making them versatile! Aluminum is the lightweight hero in your soda cans, while Boron is used in everything from glass to semiconductors!",
     },
     {
       name: "Group 14: Carbon Group",
@@ -51,7 +52,7 @@ export default function Learn() {
       examples: "Examples: Carbon, Silicon",
       highlighted: [6, 14, 32, 50, 82],
       details:
-        "🧠 **Mind-blowing:** Carbon is the building block of life itself! From diamonds to graphite, it’s the versatile element that makes your pencils write and makes up all living things.",
+        "🧠 Mind-blowing: Carbon is the building block of life itself! From diamonds to graphite, it’s the versatile element that makes your pencils write and makes up all living things.",
     },
     {
       name: "Group 15: Nitrogen Group (Pnictogens)",
@@ -59,7 +60,7 @@ export default function Learn() {
       examples: "Examples: Nitrogen, Phosphorus",
       highlighted: [7, 15, 33, 51, 83],
       details:
-        "💨 **Did you know?** Nitrogen is the most abundant gas in our atmosphere, but it’s super chill and doesn’t like to react easily. Phosphorus, however, is super reactive and even glows in the dark!",
+        "💨 Did you know? Nitrogen is the most abundant gas in our atmosphere, but it’s super chill and doesn’t like to react easily. Phosphorus, however, is super reactive and even glows in the dark!",
     },
     {
       name: "Group 16: Oxygen Group (Chalcogens)",
@@ -67,7 +68,7 @@ export default function Learn() {
       examples: "Examples: Oxygen, Sulfur",
       highlighted: [8, 16, 34, 52, 84],
       details:
-        "🌋 **Hot stuff:** Oxygen helps us breathe and is the most abundant element in the Earth’s crust. Sulfur smells like rotten eggs – trust us, you’ll never forget it!",
+        "🌋 Hot stuff: Oxygen helps us breathe and is the most abundant element in the Earth’s crust. Sulfur smells like rotten eggs – trust us, you’ll never forget it!",
     },
     {
       name: "Group 17: Halogens",
@@ -75,7 +76,7 @@ export default function Learn() {
       examples: "Examples: Fluorine, Chlorine",
       highlighted: [9, 17, 35, 53, 85],
       details:
-        "💥 **Explosive facts:** These elements are super reactive! Chlorine helps sanitize pools, but be careful – Fluorine is so reactive, it’s one of the most dangerous elements!",
+        "💥 Explosive facts: These elements are super reactive! Chlorine helps sanitize pools, but be careful – Fluorine is so reactive, it’s one of the most dangerous elements!",
     },
     {
       name: "Group 18: Noble Gases",
@@ -83,40 +84,43 @@ export default function Learn() {
       examples: "Examples: Helium, Neon",
       highlighted: [2, 10, 18, 36, 54],
       details:
-        "🎈 **Fun fact:** Noble gases are the cool, quiet types. Helium fills up your party balloons, and Neon gives signs their bright, glowing colors – they’re just chill, doing their own thing!",
+        "🎈 Fun fact: Noble gases are the cool, quiet types. Helium fills up your party balloons, and Neon gives signs their bright, glowing colors – they’re just chill, doing their own thing!",
     },
   ];
 
   return (
-    <div className="container mx-auto my-24 p-3">
-      <h1 className="quiz-title flex flex-row text-7xl md:text-start text-center title ">
+    <div className="container mx-auto my-24 p-3 subaptos">
+      <h1 className="flex flex-row text-7xl md:text-start text-center title ">
         <p className="mx-3 transition-colors duration-300 cursor-default select-none">
           Let's Learn the Periodic Table!
         </p>
       </h1>
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-2 p-5 text-xl">
         <div>The Periodic Table has 118 confirmed elements!</div>
         <div>
-          <b>Rows (Periods):</b> There are 7 periods. Each row represents the
+          -Rows (Periods) There are 7 periods. Each row represents the
           number of electron shells an atom has.
         </div>
         <div>
-          <b>Columns (Groups):</b> There are 18 groups. Elements in the same
+          -Columns (Groups) There are 18 groups. Elements in the same
           group have similar chemical properties because they have the same
           number of electrons in their outermost shell.
         </div>
+        <h1 className="text-7xl mt-4">
+          <p className="title">Groups</p>
+        </h1>
 
-        <div className="mt-4">
+        <div>
           <Select
             defaultValue={String(0)}
             onValueChange={(value) => setSelectedGroup(Number(value))}
           >
-            <SelectTrigger className="bg-gray-800 text-white p-2 rounded-md">
+            <SelectTrigger className="w-fit gap-4 text-lg body text-foreground shadow-md rounded-lg bg-background border border-border outline-none">
               <SelectValue placeholder="Select Group" />
             </SelectTrigger>
-            <SelectContent className="bg-white p-2 shadow-md rounded-lg">
+            <SelectContent className="bg-background border border-border shadow-md backdrop-blur-sm">
               {groups.map((group, index) => (
-                <SelectItem key={index} value={String(index)}>
+                <SelectItem key={index} value={String(index)} className="hover:bg-foreground/20 transition-colors duration-300">
                   {group.name}
                 </SelectItem>
               ))}
@@ -148,6 +152,10 @@ export default function Learn() {
           />
           {groups[selectedGroup].details}
         </div>
+        <h1 className="text-7xl mt-4">
+          <p className="title">Trends</p>
+        </h1>
+        <Trends />
       </div>
     </div>
   );

@@ -23,7 +23,7 @@ const ThemeConsumer: React.FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <html lang="en" className={theme}>
       <AuthProvider>
-        <body className="antialiased dark:text-white">
+        <body className="antialiased dark:text-white body">
           <Navigation />
           <main className="md:py-0 pb-20">{children}</main>
         </body>

@@ -5,9 +5,9 @@
 b {
   position: relative;
   z-index: 1;
-  padding: 0.4rem;
+  padding: 0.6rem;
   padding-inline: 0.6rem;
-  @apply dark:text-black;
+  @apply text-black;
 }
 
 b::before {
@@ -17,7 +17,7 @@ b::before {
   left: 0;
   right: 0;
   bottom: 0;
-  background: #abfe89; /* Tailwind yellow-300 equivalent */
+  background-color: #abfe89; /* Tailwind yellow-300 equivalent */
   z-index: -1; /* Send background behind the text */
   clip-path: polygon(0 0, 100% 10%, 90% 90%, 0 90%);
 }
@@ -76,7 +76,6 @@ b::before {
 .body {
   font-family: "Aptos", sans-serif;
 }
-
 @layer base {
   :root {
     --background: 0 0% 100%;
