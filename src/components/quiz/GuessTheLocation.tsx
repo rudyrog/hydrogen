@@ -54,12 +54,23 @@ export const GuessTheLocation = ({
   const fetchQuestions = async () => {
     try {
       const max = level === "Easy" ? 10 : level === "Medium" ? 20 : 30;
-      const response = await fetch(`/api/v1/getQuestion?min=1&max=${max}`);
-      const data = await response.json();
-      const shuffledQuestions = data
-        .sort(() => 0.5 - Math.random())
-        .slice(0, 10);
-      setQuestions(shuffledQuestions);
+      const batchSize = 10; // Fetch 10 questions at a time
+      let fetchedQuestions: Element[] = [];
+
+      while (fetchedQuestions.length < noOfQuestions) {
+        const response = await fetch(`/api/v1/getQuestion?min=1&max=${max}`);
+        const data = await response.json();
+        const shuffledQuestions = data
+          .sort(() => 0.5 - Math.random())
+          .slice(0, batchSize);
+        fetchedQuestions = [...fetchedQuestions, ...shuffledQuestions];
+
+        if (fetchedQuestions.length >= noOfQuestions) {
+          break;
+        }
+      }
+
+      setQuestions(fetchedQuestions.slice(0, noOfQuestions));
       setCurrentQuestion(1);
       setIsLoading(false);
     } catch (error) {
@@ -115,8 +126,8 @@ export const GuessTheLocation = ({
 
   const handleQuit = () => {
     if (isTimelessMode) {
-      // In timeless mode, save total questions answered
       if (user?.email) {
+        //@ts-ignore
         incrementGuessTheLocationCompleted(user.email, level);
         incrementTimeSpent(user.email, totalQuestionsAnswered / 6); // Approximate time spent
       }
@@ -195,6 +206,7 @@ export const GuessTheLocation = ({
               totalTime={time}
               timeRemaining={timeRemaining}
               hintElements={hintElements}
+              //@ts-ignore
               level={level}
               isTimelessMode={isTimelessMode}
               setTotalQuestionsAnswered={setTotalQuestionsAnswered}
@@ -356,6 +368,7 @@ const HiddenPeriodicTable = ({
       </div>
     );
   };
+
   const getGridColumn = (atomicNumber: number): string => {
     if (atomicNumber === 1) return "1";
     if (atomicNumber === 2) return "18";
@@ -430,7 +443,6 @@ const HiddenPeriodicTable = ({
         style={{
           gridTemplateColumns: "repeat(18, 4rem)",
           gridTemplateRows: "repeat(7, 4rem)",
-          //gridGap: "0.3rem",
         }}
       >
         {elements.map((element) => (

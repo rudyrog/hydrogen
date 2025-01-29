@@ -12,8 +12,6 @@ import { useTheme } from "next-themes";
 import { InteractiveHoverButton } from "../ui/interactive-hover-button";
 import { Element } from "@/types/element";
 
-
-
 export default function ClassicQuiz({
   level,
   time,
@@ -104,6 +102,23 @@ export default function ClassicQuiz({
     }
   };
 
+  const fetchNextBatch = async () => {
+    try {
+      const max = level === "Easy" ? 10 : level === "Medium" ? 20 : 30;
+      const response = await fetch(`/api/v1/getQuestion?min=1&max=${max}`);
+      const data = await response.json();
+      const shuffledQuestions = data
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 10);
+      setQuestions(shuffledQuestions);
+      setCurrentQuestion(1);
+      setNoOfHints(1);
+      inputRefs.current[0]?.focus();
+    } catch (error) {
+      console.error("Error fetching next batch of questions:", error);
+    }
+  };
+
   const handleChange = (
     index: number,
     e: React.ChangeEvent<HTMLInputElement>,
@@ -145,10 +160,8 @@ export default function ClassicQuiz({
         setNoOfHints(1);
         inputRefs.current[0]?.focus();
       } else {
-        if (isTimelessMode) {
-          fetchQuestions();
-          setCurrentQuestion(1);
-          inputRefs.current[0]?.focus();
+        if (newTotalQuestions < noOfQuestions) {
+          fetchNextBatch();
         } else {
           setIsCompleted(true);
           if (user?.email && !badEnding) {
@@ -179,7 +192,6 @@ export default function ClassicQuiz({
   if (isLoading) {
     return <div className="p-3">Loading...</div>;
   }
-
   return (
     <div className="p-3">
       {isCompleted ? (

@@ -35,6 +35,8 @@ export async function initializeUserProfile(email: string) {
       const newProfile = {
         email,
         classicQuizCompleted: 0,
+        guessTheLocationCompleted: 0,
+        elementsAlikeCompleted: 0,
       };
 
       await addDoc(collection(db, "profile"), newProfile);
@@ -127,6 +129,46 @@ export async function incrementGuessTheLocationCompleted(
       error,
     );
     throw new Error("Unable to increment guess the location completion");
+  }
+}
+export async function incrementElementsAlikeCompleted(
+  email: string,
+  level: Level,
+) {
+  try {
+    const profileQuery = query(
+      collection(db, "profile"),
+      where("email", "==", email),
+    );
+    const querySnapshot = await getDocs(profileQuery);
+
+    if (querySnapshot.empty) {
+      console.error("Profile not found for email:", email);
+      throw new Error("Profile not found");
+    }
+
+    const docRef = querySnapshot.docs[0].ref;
+    const data = querySnapshot.docs[0].data();
+
+    const commonLevelField = `${level.toLowerCase()}`;
+
+    await updateDoc(docRef, {
+      elementsAlikeCompleted: (data.elementsAlikeCompleted || 0) + 1,
+      [commonLevelField.toLowerCase()]: (data[commonLevelField] || 0) + 1,
+      points:
+        (data.points || 0) +
+        10 * (level === "Easy" ? 1 : level === "Medium" ? 2 : 3),
+    });
+
+    console.log(
+      `ElementsAlike completion incremented for ${email} (Level: ${level})`,
+    );
+  } catch (error) {
+    console.error(
+      "[FIREBASE]: Error incrementing elementsAlikeCompleted completion:",
+      error,
+    );
+    throw new Error("Unable to increment elementsAlikeCompleted completion");
   }
 }
 
