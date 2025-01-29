@@ -1,56 +1,58 @@
-'use client'
-import { Leaderboard } from '@/components/Leaderboard'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { useAuth } from '@/contexts/AuthContext'
+"use client";
+import { Leaderboard } from "@/components/Leaderboard";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   getUserProfile,
   updateNickname,
   updateRank,
-} from '@/lib/firebase/profileFunctions'
+} from "@/lib/firebase/profileFunctions";
 // @ts-ignore
-import { Button } from '@/components/ui/button'
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog'
+} from "@/components/ui/dialog";
 // @ts-ignore
-import { Profile } from '@/types/profile'
-import gsap from 'gsap'
-import { Clock, Edit2, Medal, Trophy } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
-import { FaExclamation, FaFire, FaWind } from 'react-icons/fa'
-import { IoPersonCircle } from 'react-icons/io5'
-import { toast } from 'sonner'
-import { DialogFooter, DialogHeader } from '../../../components/ui/dialog'
-import { InteractiveHoverButton } from '../../../components/ui/interactive-hover-button'
-import { formatTimeSpent } from '../../../lib/utils'
+import { Profile } from "@/types/profile";
+import gsap from "gsap";
+import { Clock, Edit2, Medal, Trophy } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { FaExclamation, FaFire, FaWind } from "react-icons/fa";
+import { IoPersonCircle } from "react-icons/io5";
+import { toast } from "sonner";
+import { DialogFooter, DialogHeader } from "../../../components/ui/dialog";
+import { InteractiveHoverButton } from "../../../components/ui/interactive-hover-button";
+import { formatTimeSpent } from "../../../lib/utils";
 
 export default function Profile() {
-  const letterRefs = useRef<(HTMLParagraphElement | null)[]>([])
-  const cardOneRef = useRef<HTMLDivElement | null>(null)
-  const cardTwoRef = useRef<HTMLDivElement | null>(null)
-  const statsRef = useRef<HTMLDivElement | null>(null)
-  const diffRef = useRef<HTMLDivElement | null>(null)
-  const leaderboardRef = useRef<HTMLDivElement | null>(null)
+  const letterRefs = useRef<(HTMLParagraphElement | null)[]>([]);
+  const cardOneRef = useRef<HTMLDivElement | null>(null);
+  const cardTwoRef = useRef<HTMLDivElement | null>(null);
+  const statsRef = useRef<HTMLDivElement | null>(null);
+  const diffRef = useRef<HTMLDivElement | null>(null);
+  const leaderboardRef = useRef<HTMLDivElement | null>(null);
 
-  const { user, profile, setProfile } = useAuth()
-  const [searchEmail, setSearchEmail] = useState('')
-  const [searchedProfile, setSearchedProfile] = useState(null)
-  const [isSearching, setIsSearching] = useState(false)
-  const [displayedProfile, setDisplayedProfile] = useState<Profile | null>(null)
-  const [isEditingNickname, setIsEditingNickname] = useState(false)
-  const [newNickname, setNewNickname] = useState('')
-  const [rank, setRank] = useState('')
+  const { user, profile, setProfile } = useAuth();
+  const [searchEmail, setSearchEmail] = useState("");
+  const [searchedProfile, setSearchedProfile] = useState(null);
+  const [isSearching, setIsSearching] = useState(false);
+  const [displayedProfile, setDisplayedProfile] = useState<Profile | null>(
+    null,
+  );
+  const [isEditingNickname, setIsEditingNickname] = useState(false);
+  const [newNickname, setNewNickname] = useState("");
+  const [rank, setRank] = useState("");
 
   const handleNicknameUpdate = async () => {
-    if (!displayedProfile?.email) return
+    if (!displayedProfile?.email) return;
 
     try {
-      await updateNickname(displayedProfile.email, newNickname)
+      await updateNickname(displayedProfile.email, newNickname);
       setDisplayedProfile((prev) =>
         prev
           ? {
@@ -58,44 +60,44 @@ export default function Profile() {
               nickname: newNickname,
             }
           : null,
-      )
-      setIsEditingNickname(false)
-      setNewNickname('')
-      toast.success('Nickname updated successfully!')
+      );
+      setIsEditingNickname(false);
+      setNewNickname("");
+      toast.success("Nickname updated successfully!");
     } catch (error) {
-      toast.error('Failed to update nickname')
-      console.error(error)
+      toast.error("Failed to update nickname");
+      console.error(error);
     }
-  }
+  };
 
   useEffect(() => {
     const refetchProfile = async () => {
       if (user?.email) {
         try {
-          const updatedProfile = await getUserProfile(user.email)
-          setProfile(updatedProfile)
-          setDisplayedProfile(updatedProfile)
-          setRank(updatedProfile.rank)
-          await updateRank(user.email, updatedProfile.points)
+          const updatedProfile = await getUserProfile(user.email);
+          setProfile(updatedProfile);
+          setDisplayedProfile(updatedProfile);
+          setRank(updatedProfile.rank);
+          await updateRank(user.email, updatedProfile.points);
         } catch (error) {
-          console.error('Error refetching profile:', error)
+          console.error("Error refetching profile:", error);
         }
       }
-    }
+    };
 
-    refetchProfile()
-  }, [user?.email])
+    refetchProfile();
+  }, [user?.email]);
 
   useEffect(() => {
     if (displayedProfile) {
-      letterRefs.current = letterRefs.current.slice(0, 7)
+      letterRefs.current = letterRefs.current.slice(0, 7);
 
       const tl = gsap.timeline({
         defaults: {
           duration: 1.2,
-          ease: 'elastic.out(1, 0.8)',
+          ease: "elastic.out(1, 0.8)",
         },
-      })
+      });
 
       tl.fromTo(
         letterRefs.current,
@@ -112,42 +114,42 @@ export default function Profile() {
           scale: 1,
           stagger: {
             each: 0.1,
-            ease: 'power2.inOut',
+            ease: "power2.inOut",
           },
         },
       )
         .fromTo(
           letterRefs.current,
           {
-            filter: 'blur(10px)',
+            filter: "blur(10px)",
           },
           {
-            filter: 'blur(0px)',
+            filter: "blur(0px)",
             stagger: {
               each: 0.14,
-              from: 'start',
+              from: "start",
             },
             duration: 0.8,
           },
-          '<0.1',
+          "<0.1",
         )
         .fromTo(
           cardOneRef.current,
           {
-            filter: 'blur(10px)',
+            filter: "blur(10px)",
             opacity: 0,
             y: 50,
             scale: 0.95,
           },
           {
-            filter: 'blur(0px)',
+            filter: "blur(0px)",
             opacity: 1,
             y: 0,
             scale: 1,
             duration: 1,
-            ease: 'power3.out',
+            ease: "power3.out",
           },
-          '-=0.5',
+          "-=0.5",
         )
         .fromTo(
           cardTwoRef.current,
@@ -155,58 +157,58 @@ export default function Profile() {
             opacity: 0,
             y: 50,
             scale: 0.95,
-            filter: 'blur(10px)',
+            filter: "blur(10px)",
           },
           {
-            filter: 'blur(0px)',
+            filter: "blur(0px)",
             opacity: 1,
             y: 0,
             scale: 1,
             duration: 1,
-            ease: 'power3.out',
+            ease: "power3.out",
           },
         )
         .fromTo(
           statsRef.current,
           {
-            filter: 'blur(10px)',
+            filter: "blur(10px)",
             opacity: 0,
             x: 100,
             rotateY: 15,
             scale: 0.9,
           },
           {
-            filter: 'blur(0px)',
+            filter: "blur(0px)",
             opacity: 1,
             x: 0,
             rotateY: 0,
             scale: 1,
             stagger: 0.2,
             duration: 1.2,
-            ease: 'power2.out',
+            ease: "power2.out",
           },
-          '-=0.8',
+          "-=0.8",
         )
         .fromTo(
           diffRef.current,
           {
-            filter: 'blur(10px)',
+            filter: "blur(10px)",
             opacity: 0,
             x: 100,
             rotateY: 15,
             scale: 0.9,
           },
           {
-            filter: 'blur(0px)',
+            filter: "blur(0px)",
             opacity: 1,
             x: 0,
             rotateY: 0,
             scale: 1,
             stagger: 0.2,
             duration: 1.2,
-            ease: 'power2.out',
+            ease: "power2.out",
           },
-          '-=0.8',
+          "-=0.8",
         )
         .fromTo(
           leaderboardRef.current,
@@ -214,58 +216,58 @@ export default function Profile() {
             opacity: 0,
             y: 50,
             scale: 0.95,
-            filter: 'blur(10px)',
+            filter: "blur(10px)",
           },
           {
-            filter: 'blur(0px)',
+            filter: "blur(0px)",
             opacity: 1,
             y: 0,
             scale: 1,
             duration: 1,
-            ease: 'power3.out',
+            ease: "power3.out",
           },
-        )
+        );
     }
-  }, [displayedProfile])
+  }, [displayedProfile]);
 
   const handleSearch = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!searchEmail) return
+    e.preventDefault();
+    if (!searchEmail) return;
 
-    setIsSearching(true)
+    setIsSearching(true);
     try {
-      const foundProfile = await getUserProfile(searchEmail)
+      const foundProfile = await getUserProfile(searchEmail);
       if (foundProfile != null) {
-        setSearchedProfile(foundProfile)
-        setDisplayedProfile(foundProfile)
+        setSearchedProfile(foundProfile);
+        setDisplayedProfile(foundProfile);
       }
     } catch (error) {
-      console.error('Error searching profile:', error)
+      console.error("Error searching profile:", error);
     } finally {
-      setIsSearching(false)
+      setIsSearching(false);
     }
-  }
+  };
 
   const viewProfile = () => {
-    setDisplayedProfile(profile)
-    setSearchEmail('')
-    setSearchedProfile(null)
-  }
+    setDisplayedProfile(profile);
+    setSearchEmail("");
+    setSearchedProfile(null);
+  };
 
   const handleLeaderboardClick = async (email: string) => {
     try {
-      const foundProfile = await getUserProfile(email)
-      setSearchedProfile(foundProfile)
-      setDisplayedProfile(foundProfile)
-      setSearchEmail(email)
+      const foundProfile = await getUserProfile(email);
+      setSearchedProfile(foundProfile);
+      setDisplayedProfile(foundProfile);
+      setSearchEmail(email);
     } catch (error) {
-      console.error('Error fetching profile from leaderboard:', error)
+      console.error("Error fetching profile from leaderboard:", error);
     }
-  }
+  };
   return (
     <div className="flex gap-3 flex-col container mx-auto p-2 sm:p-3 md:p-4 lg:p-6 w-full lg:w-5/6 bg-background text-foreground">
       <h1 className="quiz-title flex flex-row text-3xl sm:text-4xl md:text-6xl lg:text-8xl md:text-start text-center title pt-14 md:pt-16 lg:pt-20 px-2 sm:px-3 md:px-4">
-        {['P', 'R', 'O', 'F', 'I', 'L', 'E'].map((letter, index) => (
+        {["P", "R", "O", "F", "I", "L", "E"].map((letter, index) => (
           <p
             key={index}
             //@ts-ignore
@@ -354,7 +356,7 @@ export default function Profile() {
                         )}
                       </div>
                       <div className="text-foreground flex items-center gap-2 text-xs sm:text-sm md:text-base">
-                        <span>{displayedProfile?.nickname || 'Not set'}</span>
+                        <span>{displayedProfile?.nickname || "Not set"}</span>
                       </div>
                     </div>
                     <div className="grid grid-cols-2 p-2 sm:p-3 dark:border-b dark:border-border/50">
@@ -362,7 +364,7 @@ export default function Profile() {
                         Email
                       </div>
                       <div className="text-foreground text-xs sm:text-sm md:text-base">
-                        {displayedProfile?.email || 'john@example.com'}
+                        {displayedProfile?.email || "john@example.com"}
                       </div>
                     </div>
                     <div className="grid grid-cols-2 p-2 sm:p-3 dark:border-t dark:border-border/50">
@@ -393,7 +395,7 @@ export default function Profile() {
                         <div className="text-sm sm:text-base md:text-lg text-foreground">
                           {displayedProfile?.timeSpent
                             ? formatTimeSpent(displayedProfile.timeSpent)
-                            : '0 min'}
+                            : "0 min"}
                         </div>
                       </div>
                     </div>
@@ -438,7 +440,7 @@ export default function Profile() {
                         disabled={isSearching}
                         className="border border-border/30 dark:border-border/50 text-foreground font-normal text-xs sm:text-sm whitespace-nowrap"
                       >
-                        {isSearching ? 'Searching...' : 'Search'}
+                        {isSearching ? "Searching..." : "Search"}
                       </InteractiveHoverButton>
                     </div>
                   ) : (
@@ -448,7 +450,7 @@ export default function Profile() {
                         onClick={viewProfile}
                         className="border border-border/30 dark:border-border/50 text-foreground font-normal text-xs sm:text-sm whitespace-nowrap"
                       >
-                        {user?.email === searchEmail ? user.name : 'No Results'}
+                        {user?.email === searchEmail ? user.name : "No Results"}
                       </InteractiveHoverButton>
                     </div>
                   )}
@@ -477,7 +479,7 @@ export default function Profile() {
                       <div className="text-foreground text-xs sm:text-sm md:text-base">
                         {JSON.stringify(
                           displayedProfile?.classicQuizCompleted,
-                        ) || 'None'}
+                        ) || "None"}
                       </div>
                     </div>
                     <div className="grid grid-cols-2 p-2 sm:p-3 dark:border-t dark:border-border/50">
@@ -488,6 +490,15 @@ export default function Profile() {
                         {displayedProfile?.guessTheLocationCompleted || 0}
                       </div>
                     </div>
+                    <div className="grid grid-cols-2 p-2 sm:p-3 dark:border-t dark:border-border/50">
+                      <div className="text-foreground/50 font-medium text-xs sm:text-sm md:text-base">
+                        Elements Alike
+                      </div>
+                      <div className="text-foreground text-xs sm:text-sm md:text-base">
+                        {displayedProfile?.elementsAlikeCompleted || 0}
+                      </div>
+                    </div>
+
                     <div className="grid grid-cols-2 p-2 sm:p-3 dark:border-t dark:border-border/50">
                       <div className="text-foreground/50 font-medium text-xs sm:text-sm md:text-base">
                         Total Points
@@ -514,7 +525,7 @@ export default function Profile() {
                           Hard
                         </div>
                         <div className="text-sm sm:text-base text-foreground">
-                          {displayedProfile?.hard || 'None'}
+                          {displayedProfile?.hard || "None"}
                         </div>
                       </div>
                     </div>
@@ -532,7 +543,7 @@ export default function Profile() {
                           Medium
                         </div>
                         <div className="text-sm sm:text-base text-foreground">
-                          {displayedProfile?.medium || 'None'}
+                          {displayedProfile?.medium || "None"}
                         </div>
                       </div>
                     </div>
@@ -550,7 +561,7 @@ export default function Profile() {
                           Easy
                         </div>
                         <div className="text-sm sm:text-base text-foreground">
-                          {displayedProfile?.easy || 'None'}
+                          {displayedProfile?.easy || "None"}
                         </div>
                       </div>
                     </div>
@@ -566,5 +577,5 @@ export default function Profile() {
         </div>
       )}
     </div>
-  )
+  );
 }
