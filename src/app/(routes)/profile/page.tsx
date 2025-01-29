@@ -9,21 +9,22 @@ import {
   updateRank,
 } from '@/lib/firebase/profileFunctions'
 // @ts-ignore
-import { Profile } from '@/types/profile'
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogTitle,
   DialogTrigger,
-} from '@radix-ui/react-dialog'
+} from '@/components/ui/dialog'
+// @ts-ignore
+import { Profile } from '@/types/profile'
 import gsap from 'gsap'
 import { Clock, Edit2, Medal, Trophy } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { FaExclamation, FaFire, FaWind } from 'react-icons/fa'
 import { IoPersonCircle } from 'react-icons/io5'
 import { toast } from 'sonner'
-import { Button } from '../../../components/ui/button'
 import { DialogFooter, DialogHeader } from '../../../components/ui/dialog'
 import { InteractiveHoverButton } from '../../../components/ui/interactive-hover-button'
 import { formatTimeSpent } from '../../../lib/utils'
@@ -262,37 +263,39 @@ export default function Profile() {
     }
   }
   return (
-    <div className="flex gap-3 flex-col container mx-auto p-3 w-5/6 bg-background text-foreground">
-      <h1 className="quiz-title flex flex-row text-7xl md:text-start text-center title pt-20">
+    <div className="flex gap-3 flex-col container mx-auto p-2 sm:p-3 md:p-4 lg:p-6 w-full lg:w-5/6 bg-background text-foreground">
+      <h1 className="quiz-title flex flex-row text-3xl sm:text-4xl md:text-6xl lg:text-8xl md:text-start text-center title pt-14 md:pt-16 lg:pt-20 px-2 sm:px-3 md:px-4">
         {['P', 'R', 'O', 'F', 'I', 'L', 'E'].map((letter, index) => (
           <p
             key={index}
-            // @ts-ignore
+            //@ts-ignore
             ref={(el) => (letterRefs.current[index] = el)}
-            className="mx-3 transition-colors duration-300 cursor-default select-none text-foreground"
+            className="mx-1 sm:mx-2 md:mx-3 transition-colors duration-300 cursor-default select-none text-foreground"
           >
             {letter}
           </p>
         ))}
       </h1>
       {displayedProfile?.email && (
-        <div className="p-3">
-          <div className="max-w-6xl space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="p-2 sm:p-3 md:p-4">
+          <div className="max-w-6xl space-y-4 sm:space-y-5 md:space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
               <Card
                 className="shadow-lg h-full bg-background text-foreground border-border/10 dark:border-border/50 border-2"
                 ref={cardOneRef}
               >
-                <CardHeader className="p-4 border-b dark:border-border/20 bg-foreground/10 rounded-t-md">
+                <CardHeader className="p-3 sm:p-4 border-b border-border/10 bg-foreground/10 rounded-t-md">
                   <CardTitle className="subtitle font-normal flex items-center gap-2">
-                    <IoPersonCircle className="h-7 w-7" />
-                    <span className="text-foreground">Personal Info</span>
+                    <IoPersonCircle className="h-5 w-5 sm:h-6 sm:w-6 md:h-7 md:w-7" />
+                    <span className="text-foreground text-sm sm:text-base md:text-lg lg:text-xl">
+                      Personal Info
+                    </span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-0">
                   <div className="divide-y divide-secondary/20">
-                    <div className="grid grid-cols-2 p-3 items-center">
-                      <div className="text-foreground/50 font-medium flex items-center gap-3">
+                    <div className="grid grid-cols-2 p-2 sm:p-3 items-center">
+                      <div className="text-foreground/50 font-medium flex items-center gap-2 sm:gap-3 text-xs sm:text-sm md:text-base">
                         <p>Nickname</p>
                         {(!searchedProfile ||
                           displayedProfile?.email === user?.email) && (
@@ -304,82 +307,90 @@ export default function Profile() {
                               <Button
                                 variant="ghost"
                                 size="icon"
-                                className="h-3 w-3"
+                                className="h-6 w-6 sm:h-8 sm:w-8"
                               >
-                                <Edit2 className="h-1 w-1 text-foreground/50" />
+                                <Edit2 className="h-3 w-3 sm:h-4 sm:w-4 text-foreground/50" />
                               </Button>
                             </DialogTrigger>
-                            <DialogContent className="bg-background text-foreground">
-                              <DialogHeader>
-                                <DialogTitle>Edit Nickname</DialogTitle>
-                                <DialogDescription className="text-foreground/70">
-                                  Enter your new nickname below.
-                                </DialogDescription>
-                              </DialogHeader>
-                              <div className="py-4">
-                                <Input
-                                  placeholder="Enter new nickname"
-                                  value={newNickname}
-                                  onChange={(e) =>
-                                    setNewNickname(e.target.value)
-                                  }
-                                  className="bg-background text-foreground"
-                                />
+                            <DialogContent className="sm:max-w-md">
+                              <div className="w-full p-4 sm:p-6 rounded-lg shadow-lg text-sm sm:text-base">
+                                <DialogHeader>
+                                  <DialogTitle className="text-base sm:text-lg md:text-xl">
+                                    Edit Nickname
+                                  </DialogTitle>
+                                  <DialogDescription className="text-foreground/70 text-sm sm:text-base">
+                                    Enter your new nickname below.
+                                  </DialogDescription>
+                                </DialogHeader>
+                                <div className="py-3 sm:py-4">
+                                  <Input
+                                    placeholder="Enter new nickname"
+                                    value={newNickname}
+                                    onChange={(e) =>
+                                      setNewNickname(e.target.value)
+                                    }
+                                    className="bg-background text-foreground border-border/30 border text-sm sm:text-base"
+                                  />
+                                </div>
+                                <DialogFooter className="flex flex-row gap-2 sm:gap-3">
+                                  <Button
+                                    variant="outline"
+                                    onClick={() => setIsEditingNickname(false)}
+                                    className="border-border/30 border w-1/2 text-xs sm:text-sm"
+                                  >
+                                    Cancel
+                                  </Button>
+                                  <Button
+                                    onClick={handleNicknameUpdate}
+                                    className="border-border/30 border w-1/2 text-xs sm:text-sm"
+                                    disabled={!newNickname.trim()}
+                                  >
+                                    Save
+                                  </Button>
+                                </DialogFooter>
                               </div>
-                              <DialogFooter>
-                                <Button
-                                  variant="outline"
-                                  onClick={() => setIsEditingNickname(false)}
-                                >
-                                  Cancel
-                                </Button>
-                                <Button
-                                  onClick={handleNicknameUpdate}
-                                  disabled={!newNickname.trim()}
-                                >
-                                  Save
-                                </Button>
-                              </DialogFooter>
                             </DialogContent>
                           </Dialog>
                         )}
                       </div>
-                      <div className="text-foreground flex items-center">
+                      <div className="text-foreground flex items-center gap-2 text-xs sm:text-sm md:text-base">
                         <span>{displayedProfile?.nickname || 'Not set'}</span>
                       </div>
                     </div>
-                    <div className="grid grid-cols-2 p-3 dark:border-b dark:border-border/50">
-                      <div className="text-foreground/50 font-medium">
+                    <div className="grid grid-cols-2 p-2 sm:p-3 dark:border-b dark:border-border/50">
+                      <div className="text-foreground/50 font-medium text-xs sm:text-sm md:text-xs lg:text-base">
                         Email
                       </div>
-                      <div className="text-foreground">
+                      <div className="text-foreground text-xs sm:text-sm md:text-base">
                         {displayedProfile?.email || 'john@example.com'}
                       </div>
                     </div>
-                    <div className="grid grid-cols-2 p-3 dark:border-t dark:border-border/50">
-                      <div className="text-foreground/50 font-medium">
+                    <div className="grid grid-cols-2 p-2 sm:p-3 dark:border-t dark:border-border/50">
+                      <div className="text-foreground/50 font-medium text-xs sm:text-sm md:text-base">
                         Member Since
                       </div>
-                      <div className="text-foreground">January 2024</div>
+                      <div className="text-foreground text-xs sm:text-sm md:text-base">
+                        January 2024
+                      </div>
                     </div>
                   </div>
                 </CardContent>
               </Card>
               <div
-                className="relative w-full gap-2 flex flex-col mx-auto"
+                className="w-full flex flex-col gap-1 sm:gap-2 md:gap-3 lg:gap-3"
                 ref={statsRef}
               >
-                <Card className="shadow-lg bg-background text-foreground border-border/10 dark:border-border/50 border-2 rounded-xl">
-                  <CardContent className="py-2 px-3">
-                    <div className="flex items-center gap-4">
-                      <div className="p-3 bg-purple-100 rounded-xl">
-                        <Clock className="h-5 w-5 text-purple-600" />
+                <Card className="w-full shadow-lg bg-background text-foreground border-border/10 dark:border-border/50 border-2 rounded-lg">
+                  <CardContent className="py-2 px-2 sm:px-3">
+                    <div className="flex items-center gap-3 sm:gap-4">
+                      <div className="p-2 sm:p-3 bg-purple-100 rounded-xl">
+                        <Clock className="h-4 w-4 sm:h-5 sm:w-5 text-purple-600" />
                       </div>
-                      <div>
-                        <div className="text-sm text-foreground/50">
+                      <div className="flex-grow">
+                        <div className="text-xs sm:text-sm text-foreground/50">
                           Time Spent
                         </div>
-                        <div className="text-lg text-foreground">
+                        <div className="text-sm sm:text-base md:text-lg text-foreground">
                           {displayedProfile?.timeSpent
                             ? formatTimeSpent(displayedProfile.timeSpent)
                             : '0 min'}
@@ -389,15 +400,17 @@ export default function Profile() {
                   </CardContent>
                 </Card>
 
-                <Card className="shadow-lg bg-background text-foreground border-border/10 dark:border-border/50 border-2 rounded-xl">
-                  <CardContent className="py-2 px-3">
-                    <div className="flex items-center gap-4">
-                      <div className="p-3 bg-green-100 rounded-xl">
-                        <Medal className="h-5 w-5 text-green-600" />
+                <Card className="w-full shadow-lg bg-background text-foreground border-border/10 dark:border-border/50 border-2 rounded-lg">
+                  <CardContent className="py-2 px-2 sm:px-3">
+                    <div className="flex items-center gap-3 sm:gap-4">
+                      <div className="p-2 sm:p-3 bg-green-100 rounded-xl">
+                        <Medal className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
                       </div>
-                      <div>
-                        <div className="text-sm text-foreground/50">Rank</div>
-                        <div className="text-lg text-foreground">
+                      <div className="flex-grow">
+                        <div className="text-xs sm:text-sm text-foreground/50">
+                          Rank
+                        </div>
+                        <div className="text-sm sm:text-base md:text-lg text-foreground">
                           {displayedProfile.rank}
                         </div>
                       </div>
@@ -407,33 +420,33 @@ export default function Profile() {
 
                 <form
                   onSubmit={handleSearch}
-                  className="flex gap-2 w-full items-center shadow-lg bg-background text-foreground border-border/10 dark:border-border/50 border-2 rounded-xl h-full"
+                  className="w-full flex gap-2 items-center shadow-lg bg-background text-foreground border-border/10 dark:border-border/50 border-2 rounded-lg"
                 >
-                  <div className="flex-1 p-3">
+                  <div className="flex-1 p-2 sm:p-3">
                     <Input
                       type="email"
                       placeholder="Find a user by email..."
                       value={searchEmail}
                       onChange={(e) => setSearchEmail(e.target.value)}
-                      className="appearance-none border-none shadow-none bg-background text-foreground h-full"
+                      className="w-full appearance-none border-none shadow-none bg-background text-foreground h-full text-xs sm:text-sm md:text-base"
                     />
                   </div>
                   {!searchedProfile ? (
-                    <div className="flex gap-1 p-3">
+                    <div className="p-2 sm:p-3">
                       <InteractiveHoverButton
                         type="submit"
                         disabled={isSearching}
-                        className="border border-border/30 dark:border-border/50 text-foreground font-normal"
+                        className="border border-border/30 dark:border-border/50 text-foreground font-normal text-xs sm:text-sm whitespace-nowrap"
                       >
                         {isSearching ? 'Searching...' : 'Search'}
                       </InteractiveHoverButton>
                     </div>
                   ) : (
-                    <div className="flex gap-1 p-3">
+                    <div className="p-2 sm:p-3">
                       <InteractiveHoverButton
                         type="button"
                         onClick={viewProfile}
-                        className="border border-border/30 dark:border-border/50 text-foreground font-normal"
+                        className="border border-border/30 dark:border-border/50 text-foreground font-normal text-xs sm:text-sm whitespace-nowrap"
                       >
                         {user?.email === searchEmail ? user.name : 'No Results'}
                       </InteractiveHoverButton>
@@ -444,40 +457,42 @@ export default function Profile() {
             </div>
             <div
               ref={cardTwoRef}
-              className="grid grid-cols-1 md:grid-cols-4 gap-6"
+              className="grid grid-cols-1 gap-4 sm:gap-5 md:gap-6"
             >
-              <Card className="shadow-lg w-6/6 col-span-3 bg-background text-foreground border-border/10 dark:border-border/50 border-2">
-                <CardHeader className="p-4 border-b border dark:border-border/20 bg-foreground/10 rounded-t-md">
+              <Card className="shadow-lg w-full bg-background text-foreground border-border/10 dark:border-border/50 border-2 h-fit">
+                <CardHeader className="p-3 sm:p-4 border-b border dark:border-border/20 bg-foreground/10 rounded-t-md">
                   <CardTitle className="subtitle font-normal flex items-center gap-2">
-                    <Trophy className="h-5 w-6 text-foreground" />
-                    <span className="text-foreground">Achievements</span>
+                    <Trophy className="h-4 w-4 sm:h-5 sm:w-5 text-foreground" />
+                    <span className="text-foreground text-sm sm:text-base md:text-lg lg:text-xl">
+                      Achievements
+                    </span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-0">
                   <div className="divide-y divide-secondary/20">
-                    <div className="grid grid-cols-2 p-3">
-                      <div className="text-foreground/50 font-medium">
+                    <div className="grid grid-cols-2 p-2 sm:p-3">
+                      <div className="text-foreground/50 font-medium text-xs sm:text-sm md:text-base">
                         Classic Quiz
                       </div>
-                      <div className="text-foreground">
+                      <div className="text-foreground text-xs sm:text-sm md:text-base">
                         {JSON.stringify(
                           displayedProfile?.classicQuizCompleted,
                         ) || 'None'}
                       </div>
                     </div>
-                    <div className="grid grid-cols-2 p-3 dark:border-t dark:border-border/50">
-                      <div className="text-foreground/50 font-medium">
+                    <div className="grid grid-cols-2 p-2 sm:p-3 dark:border-t dark:border-border/50">
+                      <div className="text-foreground/50 font-medium text-xs sm:text-sm md:text-base">
                         Guess the Location
                       </div>
-                      <div className="text-foreground">
+                      <div className="text-foreground text-xs sm:text-sm md:text-base">
                         {displayedProfile?.guessTheLocationCompleted || 0}
                       </div>
                     </div>
-                    <div className="grid grid-cols-2 p-3 dark:border-t dark:border-border/50">
-                      <div className="text-foreground/50 font-medium">
+                    <div className="grid grid-cols-2 p-2 sm:p-3 dark:border-t dark:border-border/50">
+                      <div className="text-foreground/50 font-medium text-xs sm:text-sm md:text-base">
                         Total Points
                       </div>
-                      <div className="text-foreground">
+                      <div className="text-foreground text-xs sm:text-sm md:text-base">
                         {displayedProfile?.points || 0}
                       </div>
                     </div>
@@ -485,18 +500,20 @@ export default function Profile() {
                 </CardContent>
               </Card>
               <div
-                className="flex flex-col gap-2"
+                className="w-full flex flex-col gap-1 sm:gap-2 md:gap-3 lg:gap-3"
                 ref={diffRef}
               >
-                <Card className="shadow-lg bg-background text-foreground border-border/10 dark:border-border/50 border-2">
-                  <CardContent className="p-2">
-                    <div className="flex items-center gap-4">
-                      <div className="p-3 bg-red-100 rounded-lg">
-                        <FaFire className="h-5 w-5 text-red-600" />
+                <Card className="w-full shadow-lg bg-background text-foreground border-border/10 dark:border-border/50 border-2 rounded-lg">
+                  <CardContent className="py-1.5 px-2">
+                    <div className="flex items-center gap-2 sm:gap-3">
+                      <div className="p-1.5 sm:p-2 bg-red-100 rounded-lg shrink-0">
+                        <FaFire className="h-4 w-4 text-red-600" />
                       </div>
-                      <div>
-                        <div className="text-sm text-foreground/50">Hard</div>
-                        <div className="text-lg text-foreground">
+                      <div className="flex-grow">
+                        <div className="text-xs sm:text-sm text-foreground/50">
+                          Hard
+                        </div>
+                        <div className="text-sm sm:text-base text-foreground">
                           {displayedProfile?.hard || 'None'}
                         </div>
                       </div>
@@ -504,15 +521,17 @@ export default function Profile() {
                   </CardContent>
                 </Card>
 
-                <Card className="shadow-lg border-border/10 dark:border-border/50 border-2">
-                  <CardContent className="p-2">
-                    <div className="flex items-center gap-4">
-                      <div className="p-3 bg-yellow-100 rounded-lg">
-                        <FaExclamation className="h-5 w-5 text-yellow-600" />
+                <Card className="w-full shadow-lg border-border/10 dark:border-border/50 border-2">
+                  <CardContent className="py-1.5 px-2">
+                    <div className="flex items-center gap-2 sm:gap-3">
+                      <div className="p-1.5 sm:p-2 bg-yellow-100 rounded-lg shrink-0">
+                        <FaExclamation className="h-4 w-4 text-yellow-600" />
                       </div>
-                      <div>
-                        <div className="text-sm text-foreground/50">Medium</div>
-                        <div className="text-lg text-foreground">
+                      <div className="flex-grow">
+                        <div className="text-xs sm:text-sm text-foreground/50">
+                          Medium
+                        </div>
+                        <div className="text-sm sm:text-base text-foreground">
                           {displayedProfile?.medium || 'None'}
                         </div>
                       </div>
@@ -520,15 +539,17 @@ export default function Profile() {
                   </CardContent>
                 </Card>
 
-                <Card className="shadow-lg border-border/10 dark:border-border/50 border-2">
-                  <CardContent className="p-2">
-                    <div className="flex items-center gap-4">
-                      <div className="p-3 bg-green-100 rounded-lg">
-                        <FaWind className="h-5 w-5 text-green-600" />
+                <Card className="w-full shadow-lg border-border/10 dark:border-border/50 border-2">
+                  <CardContent className="py-1.5 px-2">
+                    <div className="flex items-center gap-2 sm:gap-3">
+                      <div className="p-1.5 sm:p-2 bg-green-100 rounded-lg shrink-0">
+                        <FaWind className="h-4 w-4 text-green-600" />
                       </div>
-                      <div>
-                        <div className="text-sm text-foreground/50">Easy</div>
-                        <div className="text-lg text-foreground">
+                      <div className="flex-grow">
+                        <div className="text-xs sm:text-sm text-foreground/50">
+                          Easy
+                        </div>
+                        <div className="text-sm sm:text-base text-foreground">
                           {displayedProfile?.easy || 'None'}
                         </div>
                       </div>

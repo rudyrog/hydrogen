@@ -120,15 +120,15 @@ export default function Trends() {
           defaultValue={String(0)}
           onValueChange={(value) => setSelectedTrend(Number(value))}
         >
-          <SelectTrigger className="w-fit gap-4 text-lg body text-foreground shadow-md rounded-lg bg-background border border-border outline-none">
+          <SelectTrigger className="w-fit gap-4 text-xl body text-foreground shadow-md rounded-lg bg-background border border-border/60 outline-none">
             <SelectValue placeholder="Select Trend" />
           </SelectTrigger>
-          <SelectContent className="bg-background border border-border shadow-md backdrop-blur-sm">
+          <SelectContent className="bg-background border border-border/30 shadow-md backdrop-blur-sm text-lg">
             {trends.map((trend, index) => (
               <SelectItem
                 key={index}
                 value={String(index)}
-                className="hover:bg-foreground/20 transition-colors duration-300"
+                className="hover:bg-foreground/10 transition-colors duration-300 text-lg"
               >
                 {trend.name}
               </SelectItem>
@@ -139,11 +139,8 @@ export default function Trends() {
       <div className="mt-4">
         {selectedTrend !== null && (
           <div>
-            <h2 className="text-xl font-semibold">
-              {trends[selectedTrend].name}
-            </h2>
             <p className="mt-2">{trends[selectedTrend].description}</p>
-            <p className="text-gray-600 font-medium mt-2">
+            <p className="text-foreground/50 font-medium mt-2">
               {trends[selectedTrend].details}
             </p>
           </div>

@@ -89,13 +89,15 @@ export default function Learn() {
   ]
 
   return (
-    <div className="container mx-auto my-24">
+    <div className="container mx-auto mt-24">
       <h1 className="flex flex-row text-7xl md:text-start text-center">
         <p className="mx-3 title">Learn the Periodic Table!</p>
       </h1>
       <div className="flex flex-col gap-2 p-5 text-xl">
-        <div className="flex flex-col gap-1 mb-2">
-          <b className="text-4xl font-normal tracking-tight w-fit">Groups</b>
+        <div className="flex flex-col gap-3 mb-2">
+          <b className="text-4xl font-normal font-[Monty] tracking-tight w-fit">
+            Groups
+          </b>
           <div>
             <p>
               There's 18 Groups. Each group represents a set of elements with
@@ -109,15 +111,15 @@ export default function Learn() {
             defaultValue={String(0)}
             onValueChange={(value) => setSelectedGroup(Number(value))}
           >
-            <SelectTrigger className="w-fit gap-4 text-xl body text-foreground shadow-md rounded-lg bg-background border border-border outline-none">
+            <SelectTrigger className="w-fit gap-4 text-xl body text-foreground shadow-md rounded-lg bg-background border border-border/60 outline-none">
               <SelectValue placeholder="Select Group" />
             </SelectTrigger>
-            <SelectContent className="bg-background border border-border shadow-md backdrop-blur-sm">
+            <SelectContent className="bg-background border border-border/30 shadow-md backdrop-blur-sm text-lg">
               {groups.map((group, index) => (
                 <SelectItem
                   key={index}
                   value={String(index)}
-                  className="hover:bg-foreground/20 transition-colors duration-300"
+                  className="hover:bg-foreground/10 transition-colors duration-300 text-lg"
                 >
                   {group.name}
                 </SelectItem>
@@ -147,11 +149,12 @@ export default function Learn() {
           />
           <p className="text-pretty">{groups[selectedGroup].details}</p>
         </div>
+
+        <b className="text-4xl font-normal font-[Monty] tracking-tight w-fit mt-5">
+          Trends
+        </b>
+        <Trends />
       </div>
-      <h1 className="text-7xl mt-4">
-        <p className="title">Trends</p>
-      </h1>
-      <Trends />
     </div>
   )
 }
