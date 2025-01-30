@@ -1,67 +1,67 @@
-"use client";
-import ElementsAlike from "@/components/quiz/ElementsAlike";
-import { GuessTheLocation } from "@/components/quiz/GuessTheLocation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
-import { Label } from "@/components/ui/label";
-import { Level } from "@/types/levels";
-import gsap from "gsap";
-import { useEffect, useRef, useState } from "react";
-import ClassicQuiz from "../../../components/quiz/ClassicQuiz";
-import { useTheme } from "../../../contexts/ThemeContext";
-import { Toaster, toast } from "sonner";
+'use client'
+import ElementsAlike from '@/components/quiz/ElementsAlike'
+import { GuessTheLocation } from '@/components/quiz/GuessTheLocation'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Input } from '@/components/ui/input'
+import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button'
+import { Label } from '@/components/ui/label'
+import { Level } from '@/types/levels'
+import gsap from 'gsap'
+import { useEffect, useRef, useState } from 'react'
+import { Toaster, toast } from 'sonner'
+import ClassicQuiz from '../../../components/quiz/ClassicQuiz'
+import { useTheme } from '../../../contexts/ThemeContext'
 
 export default function Quiz() {
-  const [isTimed, setIsTimed] = useState<boolean>(true);
-  const [isCustom, setIsCustom] = useState<boolean>(false);
-  const [time, setTime] = useState<number>(3);
-  const [customTime, setCustomTime] = useState<number>(3);
-  const [level, setLevel] = useState<Level>("Medium");
-  const [customLevel, setCustomLevel] = useState<Level>("Medium");
+  const [isTimed, setIsTimed] = useState<boolean>(true)
+  const [isCustom, setIsCustom] = useState<boolean>(false)
+  const [time, setTime] = useState<number>(3)
+  const [customTime, setCustomTime] = useState<number>(3)
+  const [level, setLevel] = useState<Level>('Medium')
+  const [customLevel, setCustomLevel] = useState<Level>('Medium')
   const [gameMode, setGameMode] = useState<
-    "classic" | "location" | "elementsAlike"
-  >("classic");
-  const [gameStarted, setGameStarted] = useState<boolean>(false);
-  const [customQuestions, setCustomQuestions] = useState<number>(5);
+    'classic' | 'location' | 'elementsAlike'
+  >('classic')
+  const [gameStarted, setGameStarted] = useState<boolean>(false)
+  const [customQuestions, setCustomQuestions] = useState<number>(5)
 
-  const theme = useTheme().theme;
-  const timeOptions = [1, 3, 5, 10];
-  const levels: Level[] = ["Easy", "Medium", "Hard"];
-  const letterRefs = useRef<(HTMLParagraphElement | null)[]>([]);
+  const theme = useTheme().theme
+  const timeOptions = [1, 3, 5, 10]
+  const levels: Level[] = ['Easy', 'Medium', 'Hard']
+  const letterRefs = useRef<(HTMLParagraphElement | null)[]>([])
 
   const handleTimeChange = (newTime: number) => {
-    setTime(newTime);
-  };
+    setTime(newTime)
+  }
 
   const handleLevelChange = (newLevel: Level) => {
-    setLevel(newLevel);
-  };
+    setLevel(newLevel)
+  }
 
   const handleGameModeChange = (
-    newGameMode: "classic" | "location" | "elementsAlike",
+    newGameMode: 'classic' | 'location' | 'elementsAlike',
   ) => {
-    setGameMode(newGameMode);
-  };
+    setGameMode(newGameMode)
+  }
 
   const startGame = () => {
     if (isCustom) {
-      setTime(customTime);
-      setLevel(customLevel);
+      setTime(customTime)
+      setLevel(customLevel)
     }
-    setGameStarted(true);
-  };
+    setGameStarted(true)
+  }
 
   useEffect(() => {
-    letterRefs.current = letterRefs.current.slice(0, 4);
+    letterRefs.current = letterRefs.current.slice(0, 4)
 
     const tl = gsap.timeline({
       defaults: {
         duration: 1.2,
-        ease: "elastic.out(1, 0.8)",
+        ease: 'elastic.out(1, 0.8)',
       },
-    });
+    })
 
     tl.fromTo(
       letterRefs.current,
@@ -78,61 +78,61 @@ export default function Quiz() {
         scale: 1,
         stagger: {
           each: 0.1,
-          ease: "power2.inOut",
+          ease: 'power2.inOut',
         },
       },
     )
       .fromTo(
         letterRefs.current,
         {
-          filter: "blur(10px)",
+          filter: 'blur(10px)',
         },
         {
-          filter: "blur(0px)",
+          filter: 'blur(0px)',
           stagger: {
             each: 0.08,
-            from: "start",
+            from: 'start',
           },
           duration: 0.8,
         },
-        "<0.1",
+        '<0.1',
       )
       .fromTo(
-        ".card",
-        { opacity: 0, filter: "blur(10px)" },
-        { opacity: 1, filter: "blur(0px)", stagger: 0.2, ease: "power2.inOut" },
-        "<0.5",
+        '.card',
+        { opacity: 0, filter: 'blur(10px)' },
+        { opacity: 1, filter: 'blur(0px)', stagger: 0.2, ease: 'power2.inOut' },
+        '<0.5',
       )
       .fromTo(
-        ".card2",
-        { opacity: 0, filter: "blur(10px)" },
-        { opacity: 1, filter: "blur(0px)", stagger: 0.2, ease: "power2.inOut" },
-        "1",
+        '.card2',
+        { opacity: 0, filter: 'blur(10px)' },
+        { opacity: 1, filter: 'blur(0px)', stagger: 0.2, ease: 'power2.inOut' },
+        '1',
       )
       .fromTo(
-        ".card3",
-        { opacity: 0, filter: "blur(10px)" },
-        { opacity: 1, filter: "blur(0px)", stagger: 0.2, ease: "power2.inOut" },
-        "1",
+        '.card3',
+        { opacity: 0, filter: 'blur(10px)' },
+        { opacity: 1, filter: 'blur(0px)', stagger: 0.2, ease: 'power2.inOut' },
+        '1',
       )
       .fromTo(
-        ".time",
+        '.time',
         { opacity: 0, y: 50 },
-        { opacity: 1, y: 0, stagger: 0.2, ease: "power2.inOut" },
+        { opacity: 1, y: 0, stagger: 0.2, ease: 'power2.inOut' },
       )
       .fromTo(
-        ".quiz-btn",
+        '.quiz-btn',
         { opacity: 0, x: -50 },
-        { opacity: 1, x: 0, duration: 2, ease: "power2.inOut" },
-        "<0.1",
-      );
-  }, []);
+        { opacity: 1, x: 0, duration: 2, ease: 'power2.inOut' },
+        '<0.1',
+      )
+  }, [])
 
   return (
-    <div className="flex gap-3 flex-col dark:shadow-none bg-background">
+    <div className="flex gap-3 flex-col dark:shadow-none bg-background pb-5">
       <Toaster />
-      <h1 className="quiz-title flex flex-row text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-center md:text-start title mt-16 md:mt-20 lg:mt-24 container mx-auto p-2 sm:p-3 md:p-4 w-full sm:w-11/12 md:w-5/6">
-        {["Q", "U", "I", "Z"].map((letter, index) => (
+      <h1 className="quiz-title flex flex-row text-3xl sm:text-4xl md:text-5xl lg:text-8xl text-center md:text-start title mt-16 md:mt-20 lg:mt-24 container mx-auto w-full sm:w-11/12 md:w-5/6">
+        {['Q', 'U', 'I', 'Z'].map((letter, index) => (
           <p
             key={index}
             //@ts-ignore
@@ -144,7 +144,7 @@ export default function Quiz() {
         ))}
       </h1>
       {gameStarted ? (
-        gameMode === "classic" ? (
+        gameMode === 'classic' ? (
           <div className="container mx-auto p-2 sm:p-3 md:p-4 w-full sm:w-11/12 md:w-5/6">
             <ClassicQuiz
               level={level}
@@ -155,22 +155,22 @@ export default function Quiz() {
                   : (function (time) {
                       switch (time) {
                         case 1:
-                          return 3;
+                          return 3
                         case 3:
-                          return 5;
+                          return 5
                         case 5:
-                          return 10;
+                          return 10
                         case 10:
-                          return 15;
+                          return 15
                         default:
-                          return 3;
+                          return 3
                       }
                     })(time)
               }
               setGameStarted={setGameStarted}
             />
           </div>
-        ) : gameMode === "location" ? (
+        ) : gameMode === 'location' ? (
           <GuessTheLocation
             level={level}
             time={isTimed || isCustom ? time : 200}
@@ -180,21 +180,21 @@ export default function Quiz() {
                 : (function (time) {
                     switch (time) {
                       case 1:
-                        return 3;
+                        return 3
                       case 3:
-                        return 5;
+                        return 5
                       case 5:
-                        return 10;
+                        return 10
                       case 10:
-                        return 15;
+                        return 15
                       default:
-                        return 3;
+                        return 3
                     }
                   })(time)
             }
             setGameStarted={setGameStarted}
           />
-        ) : gameMode === "elementsAlike" ? (
+        ) : gameMode === 'elementsAlike' ? (
           <ElementsAlike
             //@ts-ignore
             level={level}
@@ -205,18 +205,18 @@ export default function Quiz() {
               (function (time) {
                 switch (time) {
                   case 1:
-                    return 1;
+                    return 1
                   case 3:
-                    return 2;
+                    return 2
                   case 5:
-                    return 4;
+                    return 4
                   case 10:
-                    if (level === "Hard" || level === "hard") return 9;
+                    if (level === 'Hard' || level === 'hard') return 9
                     else {
-                      return 6;
+                      return 6
                     }
                   default:
-                    return 3;
+                    return 3
                 }
               })(time)
             }
@@ -228,11 +228,11 @@ export default function Quiz() {
           <div className="flex gap-3 flex-col sm:flex-col md:flex-row container mx-auto p-2 sm:p-3 md:p-4 w-full sm:w-11/12 md:w-5/6">
             <Card
               className={`w-full md:w-1/3 cursor-pointer ${
-                gameMode === "classic"
-                  ? "border border-border dark:border-border/70 dark:border-2 transition-all duration-300 shadow-lg shadow-foreground/20 text-foreground rounded-lg card dark:shadow-none"
-                  : "border border-border/50 dark:border-border/10 dark:border-2 card text-foreground/50 rounded-lg bg-foreground/10"
+                gameMode === 'classic'
+                  ? 'border border-border dark:border-border/70 dark:border-2 transition-all duration-300 shadow-lg shadow-foreground/20 text-foreground rounded-lg card dark:shadow-none'
+                  : 'border border-border/50 dark:border-border/10 dark:border-2 card text-foreground/50 rounded-lg bg-foreground/10'
               }`}
-              onClick={() => handleGameModeChange("classic")}
+              onClick={() => handleGameModeChange('classic')}
             >
               <CardHeader className="p-3 sm:p-4">
                 <CardTitle className="font-medium subtitle text-base sm:text-lg md:text-xl">
@@ -249,11 +249,11 @@ export default function Quiz() {
 
             <Card
               className={`w-full md:w-1/3 cursor-pointer ${
-                gameMode === "location"
-                  ? "border border-border dark:border-border/70 dark:border-2 transition-all duration-300 shadow-lg shadow-foreground/20 text-foreground rounded-lg card2 dark:shadow-none"
-                  : "border border-border/50 dark:border-border/10 dark:border-2 card2 text-foreground/50 rounded-lg bg-foreground/10"
+                gameMode === 'location'
+                  ? 'border border-border dark:border-border/70 dark:border-2 transition-all duration-300 shadow-lg shadow-foreground/20 text-foreground rounded-lg card2 dark:shadow-none'
+                  : 'border border-border/50 dark:border-border/10 dark:border-2 card2 text-foreground/50 rounded-lg bg-foreground/10'
               }`}
-              onClick={() => handleGameModeChange("location")}
+              onClick={() => handleGameModeChange('location')}
             >
               <CardHeader className="p-3 sm:p-4">
                 <CardTitle className="font-medium subtitle text-base sm:text-lg md:text-xl">
@@ -270,17 +270,19 @@ export default function Quiz() {
             </Card>
 
             <Card
-              className={`w-full ${!isTimed ? "opacity-25 " : ""} md:w-1/3 cursor-pointer ${
-                gameMode === "elementsAlike"
-                  ? "border border-border dark:border-border/70 dark:border-2 transition-all duration-300 shadow-lg shadow-foreground/20 text-foreground rounded-lg card3 dark:shadow-none"
-                  : "border border-border/50 dark:border-border/10 dark:border-2 card3 text-foreground/50 rounded-lg bg-foreground/10"
+              className={`w-full ${
+                !isTimed ? 'opacity-25 ' : ''
+              } md:w-1/3 cursor-pointer ${
+                gameMode === 'elementsAlike'
+                  ? 'border border-border dark:border-border/70 dark:border-2 transition-all duration-300 shadow-lg shadow-foreground/20 text-foreground rounded-lg card3 dark:shadow-none'
+                  : 'border border-border/50 dark:border-border/10 dark:border-2 card3 text-foreground/50 rounded-lg bg-foreground/10'
               }`}
               onClick={() => {
-                if (isTimed) handleGameModeChange("elementsAlike");
+                if (isTimed) handleGameModeChange('elementsAlike')
                 else
                   toast(
                     "This mode is only available for timed quiz! Kindly select 'Time the Quiz'",
-                  );
+                  )
               }}
             >
               <CardHeader className="p-3 sm:p-4">
@@ -306,13 +308,16 @@ export default function Quiz() {
                   id="timed-quiz"
                   checked={isTimed}
                   onCheckedChange={(checked) => {
-                    if (gameMode === "elementsAlike") {
-                      setGameMode("classic");
+                    if (gameMode === 'elementsAlike') {
+                      setGameMode('classic')
                     }
-                    setIsTimed(checked as boolean);
+                    setIsTimed(checked as boolean)
                   }}
                 />
-                <label htmlFor="timed-quiz" className="text-base sm:text-lg">
+                <label
+                  htmlFor="timed-quiz"
+                  className="text-base sm:text-lg"
+                >
                   Time the Quiz
                 </label>
               </div>
@@ -321,10 +326,13 @@ export default function Quiz() {
                   className="h-5 w-5 sm:h-6 sm:w-6 rounded-md border-2 border-border/50 data-[state=checked]:bg-background data-[state=checked]:text-foreground bg-background/50"
                   id="custom-quiz"
                   checked={isCustom}
-                  disabled={gameMode === "elementsAlike"}
+                  disabled={gameMode === 'elementsAlike'}
                   onCheckedChange={(checked) => setIsCustom(checked as boolean)}
                 />
-                <label htmlFor="custom-quiz" className="text-base sm:text-lg">
+                <label
+                  htmlFor="custom-quiz"
+                  className="text-base sm:text-lg"
+                >
                   Custom Quiz
                 </label>
               </div>
@@ -339,22 +347,25 @@ export default function Quiz() {
                       key={option}
                       className={
                         time === option
-                          ? "bg-emerald-500 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent"
-                          : "border border-border/50 dark:border-border/10 dark:border-2 card text-foreground/50 rounded-md bg-foreground/10 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base"
+                          ? 'bg-emerald-500 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent'
+                          : 'border border-border/50 dark:border-border/10 dark:border-2 card text-foreground/50 rounded-md bg-foreground/10 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base'
                       }
                       onClick={() => handleTimeChange(option)}
                     >
-                      {option} Min{option > 1 ? "s" : ""}
+                      {option} Min{option > 1 ? 's' : ''}
                     </button>
                   ))}
                 </div>
               </div>
             )}
 
-            {isCustom && gameMode != "elementsAlike" ? (
+            {isCustom && gameMode != 'elementsAlike' ? (
               <div className="custom-config space-y-3 sm:space-y-4 border dark:border-2 border-border/50 p-2 sm:p-3 md:p-4 w-full md:w-1/2 lg:w-1/3 h-fit shadow-md shadow-foreground/20 dark:shadow-none rounded-lg">
                 <div>
-                  <Label htmlFor="custom-time" className="text-sm sm:text-base">
+                  <Label
+                    htmlFor="custom-time"
+                    className="text-sm sm:text-base"
+                  >
                     Custom Time (minutes)
                   </Label>
                   <Input
@@ -364,9 +375,9 @@ export default function Quiz() {
                     max="30"
                     value={customTime}
                     onChange={(e) => {
-                      setCustomTime(Number(e.target.value));
+                      setCustomTime(Number(e.target.value))
                       //@ts-ignore
-                      setTime(e.target.value);
+                      setTime(e.target.value)
                     }}
                     className="mt-2"
                   />
@@ -382,12 +393,12 @@ export default function Quiz() {
                         key={_level}
                         className={
                           _level === customLevel
-                            ? _level === "Easy"
-                              ? "bg-emerald-400 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent"
-                              : _level === "Medium"
-                                ? "bg-yellow-400 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent"
-                                : "bg-red-500 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent"
-                            : "border border-border/50 dark:border-border/10 dark:border-2 card text-foreground/50 rounded-lg bg-foreground/10 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base"
+                            ? _level === 'Easy'
+                              ? 'bg-emerald-400 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent'
+                              : _level === 'Medium'
+                              ? 'bg-yellow-400 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent'
+                              : 'bg-red-500 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent'
+                            : 'border border-border/50 dark:border-border/10 dark:border-2 card text-foreground/50 rounded-lg bg-foreground/10 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base'
                         }
                         onClick={() => setCustomLevel(_level)}
                       >
@@ -408,7 +419,7 @@ export default function Quiz() {
                     id="custom-questions"
                     type="number"
                     min="1"
-                    max={gameMode === "classic" ? 112 : 10}
+                    max={gameMode === 'classic' ? 112 : 10}
                     value={customQuestions}
                     onChange={(e) => setCustomQuestions(Number(e.target.value))}
                     className="mt-2"
@@ -417,7 +428,10 @@ export default function Quiz() {
               </div>
             ) : (
               <div className="time border dark:border-2 border-border/50 p-2 sm:p-3 md:p-4 w-full md:w-1/2 lg:w-1/3 h-fit shadow-md shadow-foreground/20 dark:shadow-none rounded-lg">
-                <label htmlFor="level" className="text-base sm:text-lg">
+                <label
+                  htmlFor="level"
+                  className="text-base sm:text-lg"
+                >
                   Choose Difficulty
                 </label>
                 <div className="flex flex-wrap gap-2 pt-2">
@@ -426,12 +440,12 @@ export default function Quiz() {
                       key={_level}
                       className={
                         _level === level
-                          ? _level === "Easy"
-                            ? "bg-emerald-400 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent"
-                            : _level === "Medium"
-                              ? "bg-yellow-400 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent"
-                              : "bg-red-500 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent"
-                          : "border border-border/50 dark:border-border/10 dark:border-2 card text-foreground/50 rounded-lg bg-foreground/10 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base"
+                          ? _level === 'Easy'
+                            ? 'bg-emerald-400 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent'
+                            : _level === 'Medium'
+                            ? 'bg-yellow-400 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent'
+                            : 'bg-red-500 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent'
+                          : 'border border-border/50 dark:border-border/10 dark:border-2 card text-foreground/50 rounded-lg bg-foreground/10 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base'
                       }
                       onClick={() => handleLevelChange(_level)}
                     >
@@ -452,7 +466,7 @@ export default function Quiz() {
         </>
       )}
     </div>
-  );
+  )
 }
 // "Nonmetal",
 //     "Noble gas",

@@ -8,10 +8,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { useState } from 'react'
+import gsap from 'gsap'
+import { useEffect, useRef, useState } from 'react'
 
 export default function Learn() {
   const [selectedGroup, setSelectedGroup] = useState<number>(0)
+  const letterRefs = useRef<(HTMLParagraphElement | null)[]>([])
 
   const groups = [
     {
@@ -87,13 +89,85 @@ export default function Learn() {
         '🎈Fun fact: Noble gases are the cool, quiet types. Helium fills up your party balloons, and Neon gives signs their bright, glowing colors – they’re just chill, doing their own thing!',
     },
   ]
+  useEffect(() => {
+    letterRefs.current = letterRefs.current.slice(0, 7)
+
+    const tl = gsap.timeline({
+      defaults: {
+        duration: 1.2,
+        ease: 'elastic.out(1, 0.8)',
+      },
+    })
+
+    tl.fromTo(
+      letterRefs.current,
+      {
+        y: 120,
+        opacity: 0,
+        rotateX: -80,
+        scale: 0.8,
+      },
+      {
+        y: 0,
+        opacity: 1,
+        rotateX: 0,
+        scale: 1,
+        stagger: {
+          each: 0.1,
+          ease: 'power2.inOut',
+        },
+      },
+    )
+      .fromTo(
+        letterRefs.current,
+        {
+          filter: 'blur(10px)',
+        },
+        {
+          filter: 'blur(0px)',
+          stagger: {
+            each: 0.14,
+            from: 'start',
+          },
+          duration: 0.8,
+        },
+        '<0.1',
+      )
+      .fromTo(
+        '.learn',
+        {
+          filter: 'blur(10px)',
+          y: 120,
+          opacity: 0,
+          rotateX: -80,
+          scale: 0.8,
+        },
+        {
+          filter: 'blur(0px)',
+          y: 0,
+          opacity: 1,
+          rotateX: 0,
+          scale: 1,
+          ease: 'power2.inOut',
+        },
+      )
+  }, [])
 
   return (
     <div className="container mx-auto mt-24">
-      <h1 className="flex flex-row text-7xl md:text-start text-center">
-        <p className="mx-3 title">Learn the Periodic Table!</p>
+      <h1 className="quiz-title flex flex-row text-3xl sm:text-4xl md:text-6xl lg:text-8xl md:text-start text-center title px-2 sm:px-3 md:px-4">
+        {['L', 'E', 'A', 'R', 'N'].map((letter, index) => (
+          <p
+            key={index}
+            //@ts-ignore
+            ref={(el) => (letterRefs.current[index] = el)}
+            className="mx-1 sm:mx-2 md:mx-3 transition-colors duration-300 cursor-default select-none text-foreground"
+          >
+            {letter}
+          </p>
+        ))}
       </h1>
-      <div className="flex flex-col gap-2 p-5 text-xl">
+      <div className="learn flex flex-col gap-2 p-5 text-xl">
         <div className="flex flex-col gap-3 mb-2">
           <b className="text-4xl font-normal font-[Monty] tracking-tight w-fit">
             Groups

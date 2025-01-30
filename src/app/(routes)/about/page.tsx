@@ -97,7 +97,7 @@ export default function About() {
   return (
     <div className="bg-background">
       <div className="flex gap-2 flex-col container mx-auto p-3 w-5/6">
-        <h1 className="about-title flex flex-row text-7xl md:text-start text-center title pt-20">
+        <h1 className="about-title flex flex-row text-7xl lg:text-8xl md:text-start text-center title pt-20">
           {['A', 'B', 'O', 'U', 'T'].map((letter, index) => (
             <p
               key={index}
