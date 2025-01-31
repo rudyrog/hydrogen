@@ -17,11 +17,15 @@ export default function ClassicQuiz({
   time,
   noOfQuestions,
   setGameStarted,
+  customMin , 
+  customMax
 }: {
   level: Level;
   time: number;
   noOfQuestions: number;
   setGameStarted: Dispatch<SetStateAction<boolean>>;
+  customMin: number | null;
+  customMax: number | null;
 }) {
   const [currentQuestion, setCurrentQuestion] = useState(1);
   const [questions, setQuestions] = useState<Element[]>([]);
@@ -91,7 +95,7 @@ export default function ClassicQuiz({
   const fetchQuestions = async () => {
     try {
       const max = level === "Easy" ? 10 : level === "Medium" ? 20 : 30;
-      const response = await fetch(`/api/v1/getQuestion?min=1&max=${max}`);
+      const response = await fetch(`/api/v1/getQuestion?min=${customMin ? customMin : 1}&max=${customMax ? customMax : max}`);
       const data = await response.json();
       const shuffledQuestions = data
         .sort(() => 0.5 - Math.random())
@@ -105,7 +109,11 @@ export default function ClassicQuiz({
   const fetchNextBatch = async () => {
     try {
       const max = level === "Easy" ? 10 : level === "Medium" ? 20 : 30;
-      const response = await fetch(`/api/v1/getQuestion?min=1&max=${max}`);
+      const response = await fetch(
+        `/api/v1/getQuestion?min=${customMin ? customMin : 1}&max=${
+          customMax ? customMax : max
+        }`
+      );
       const data = await response.json();
       const shuffledQuestions = data
         .sort(() => 0.5 - Math.random())
@@ -245,7 +253,7 @@ export default function ClassicQuiz({
             )}
             Classic{" "}
             <p className="text-sm text-foreground/60">
-              ({currentQuestion} of {questions.length})
+              ({currentQuestion} of {noOfQuestions})
             </p>
             {isTimelessMode && (
               <p className="text-sm text-foreground/60">

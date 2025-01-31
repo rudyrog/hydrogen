@@ -1,4 +1,5 @@
 'use client'
+import Achro from '@/components/Achro'
 import PeriodicTable from '@/components/PeriodicTable'
 import Trends from '@/components/learn/Trends'
 import {
@@ -156,7 +157,7 @@ export default function Learn() {
   return (
     <div className="container mx-auto mt-24">
       <h1 className="quiz-title flex flex-row text-3xl sm:text-4xl md:text-6xl lg:text-8xl md:text-start text-center title px-2 sm:px-3 md:px-4">
-        {['L', 'E', 'A', 'R', 'N'].map((letter, index) => (
+        {["L", "E", "A", "R", "N"].map((letter, index) => (
           <p
             key={index}
             //@ts-ignore
@@ -228,7 +229,13 @@ export default function Learn() {
           Trends
         </b>
         <Trends />
+        <b className="text-4xl font-normal font-[Monty] tracking-tight w-fit">
+          Lets learn the periodic table!
+        </b>
+        <div className="container md:w-1/3 mx-auto">
+          <Achro />
+        </div>
       </div>
     </div>
-  )
+  );
 }

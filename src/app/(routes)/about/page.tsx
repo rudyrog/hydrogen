@@ -96,55 +96,72 @@ export default function About() {
 
   return (
     <div className="bg-background">
-      <div className="flex gap-2 flex-col container mx-auto p-3 w-5/6">
-        <h1 className="about-title flex flex-row text-7xl lg:text-8xl md:text-start text-center title pt-20">
+      <div className="flex gap-2 flex-col container mx-auto p-3 w-full sm:w-5/6 md:w-5/6 lg:w-5/6">
+        <h1 className="title flex flex-row justify-center md:justify-start text-5xl sm:text-6xl md:text-7xl lg:text-8xl pt-10 sm:pt-15 md:pt-20">
           {['A', 'B', 'O', 'U', 'T'].map((letter, index) => (
             <p
               key={index}
               //@ts-ignore
               ref={(el) => (letterRefs.current[index] = el)}
-              className="mx-3 transition-colors duration-300 cursor-default select-none"
+              className="mx-1 sm:mx-2 md:mx-3 transition-colors duration-300 cursor-default select-none"
             >
               {letter}
             </p>
           ))}
         </h1>
-        <div className="flex flex-row gap-3 justify-between w-full">
+
+        <div className="flex flex-col md:flex-row gap-3  w-full">
           <div
             ref={contentRef}
-            className="w-2/5 border border-border/50 p-5"
+            className="w-full md:w-1/2 border border-border/50 p-3 sm:p-4 md:p-5 rounded-md hover:shadow-lg"
           >
-            <h2 className="text-xl font-serif">Chemistry</h2>
+            <h2 className="text-lg sm:text-xl font-serif">Chemistry</h2>
             <div className="w-full">
-              <p>
+              <p className="text-sm sm:text-base">
                 It is a branch of science that studies the properties and
                 behavior of matter, including the composition, structure, and
                 behavior of atoms, molecules, and ions.
               </p>
             </div>
-            <h2 className="text-xl font-serif mt-2">Development</h2>
-            <p>
+            <h2 className="text-lg sm:text-xl font-serif mt-2">Development</h2>
+            <div className="text-sm sm:text-base">
               This is a project created by{' '}
-              <a
+            <a
                 href="https://github.com/rudyrog"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="name-link"
               >
-                Rudra Mehta
+                Rudra Mehta,
               </a>{' '}
-              and{' '}
               <a
                 href="https://github.com/parv141206"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="name-link"
               >
-                Parv Shah
+                Parv Shah,
+              </a>{' '}
+              <a
+                href="https://github.com/djman323"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="name-link"
+              >
+                Devansh Jani{' '}
+              </a>
+               and {' '}
+              <a
+                href="https://github.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="name-link"
+              >
+                Hrishit Patel
               </a>
               .
-            </p>
-            <p>
+            </div>
+            <p className="text-sm sm:text-base">
               Support our project on{' '}
               <a
                 href="https://github.com/rudyrog/periodic-table"
@@ -157,69 +174,67 @@ export default function About() {
               .
             </p>
             <div className="mt-2">
-              <p className="font-serif text-lg">Technologies Used</p>
-              <ul className="list-disc list-inside">
-                <li>
-                  <a
-                    href="https://nextjs.org/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="ab-link"
-                  >
-                    Next.js
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://tailwindcss.com/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="ab-link"
-                  >
-                    TailwindCSS
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://www.typescriptlang.org/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="ab-link"
-                  >
-                    TypeScript
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://gsap.com/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="ab-link"
-                  >
-                    Gsap
-                  </a>
-                </li>
-              </ul>
+              <p className="font-serif text-base sm:text-lg">Technologies Used</p>
+               <div className="space-y-4 mt-2">
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <li className="p-3 border rounded-lg hover:bg-gray-100 transition-all hover:shadow-md">
+              <a
+                href="https://nextjs.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="name-link"
+              >
+                <h3 className="font-bold">Next.js</h3>
+                <p className="text-sm text-gray-600">React framework for production</p>
+              </a>
+            </li>
+            <li className="p-3 border rounded-lg hover:bg-gray-100 transition-all hover:shadow-md">
+              <a
+                href="https://tailwindcss.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="name-link"
+              >
+                <h3 className="font-bold">TailwindCSS</h3>
+                <p className="text-sm text-gray-600">Utility-first CSS framework</p>
+              </a>
+            </li>
+            <li className="p-3 border rounded-lg hover:bg-gray-100 transition-all hover:shadow-md">
+              <a
+                href="https://www.typescriptlang.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="name-link"
+              >
+                <h3 className="font-bold">TypeScript</h3>
+                <p className="text-sm text-gray-600">Type-safe JavaScript</p>
+              </a>
+            </li>
+            <li className="p-3 border rounded-lg hover:bg-gray-100 transition-all hover:shadow-md">
+              <a
+                href="https://gsap.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="name-link"
+              >
+                <h3 className="font-bold">GSAP</h3>
+                <p className="text-sm text-gray-600">Professional animation library</p>
+              </a>
+            </li>
+          </ul>
+        </div>
             </div>
           </div>
-          <div className="w-2/3 flex flex-row justify-evenly gap-2">
+
+          <div className="w-fit hidden md:flex md:flex-row justify-evenly md:justify-start gap-2 mt-4 md:mt-0 rounded-md hover:shadow-lg">
             <Image
               width={370}
               height={190}
               src="/images/mercury.jpg"
               alt="Mercury"
-              className="border border-border/30"
+              className="w-full md:w-auto border border-border/30 mb-2 md:mb-0"
               //@ts-ignore
               ref={(el) => (imagesRef.current[0] = el as HTMLImageElement)}
-            />
-            <Image
-              width={400}
-              height={190}
-              src="/images/bonds.jpg"
-              alt="test tube"
-              className="border border-border dark:border-border/30"
-              //@ts-ignore
-              ref={(el) => (imagesRef.current[1] = el as HTMLImageElement)}
             />
           </div>
         </div>

@@ -18,11 +18,15 @@ export const GuessTheLocation = ({
   time,
   noOfQuestions,
   setGameStarted,
+  customMin,
+  customMax
 }: {
   level: string;
   time: number;
   noOfQuestions: number;
   setGameStarted: Dispatch<SetStateAction<boolean>>;
+  customMin: number | null;
+  customMax: number | null;
 }) => {
   const [questions, setQuestions] = useState<Element[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState(1);
@@ -34,6 +38,7 @@ export const GuessTheLocation = ({
   const [hintUsed, setHintUsed] = useState(false);
   const [isTimelessMode, setIsTimelessMode] = useState(time > 199);
   const [totalQuestionsAnswered, setTotalQuestionsAnswered] = useState(0);
+  
   const { user } = useAuth();
 
   useEffect(() => {
@@ -58,7 +63,7 @@ export const GuessTheLocation = ({
       let fetchedQuestions: Element[] = [];
 
       while (fetchedQuestions.length < noOfQuestions) {
-        const response = await fetch(`/api/v1/getQuestion?min=1&max=${max}`);
+        const response = await fetch(`/api/v1/getQuestion?min=${customMin ? customMin : 1}&max=${customMax ? customMax : max}`);
         const data = await response.json();
         const shuffledQuestions = data
           .sort(() => 0.5 - Math.random())
