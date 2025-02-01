@@ -37,6 +37,13 @@ export async function initializeUserProfile(email: string) {
         classicQuizCompleted: 0,
         guessTheLocationCompleted: 0,
         elementsAlikeCompleted: 0,
+        timeSpent: 0,
+        points: 0,
+        easy: 0,
+        medium: 0,
+        hard: 0,
+        nickname: "",
+        rank: "New",
       };
 
       await addDoc(collection(db, "profile"), newProfile);
