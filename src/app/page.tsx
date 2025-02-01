@@ -160,7 +160,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="relative w-full h-[80vh] --bg-background">
+    <main className="relative w-full h-[80vh] bg-background">
       <Particles
         className="particles fixed md:block hidden inset-0 w-full h-full animate-in"
         quantity={200}
