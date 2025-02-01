@@ -1,67 +1,102 @@
-'use client'
-import ElementsAlike from '@/components/quiz/ElementsAlike'
-import { GuessTheLocation } from '@/components/quiz/GuessTheLocation'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Input } from '@/components/ui/input'
-import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button'
-import { Label } from '@/components/ui/label'
-import { Level } from '@/types/levels'
-import gsap from 'gsap'
-import { useEffect, useRef, useState } from 'react'
-import { Toaster, toast } from 'sonner'
-import ClassicQuiz from '../../../components/quiz/ClassicQuiz'
-import { useTheme } from '../../../contexts/ThemeContext'
+"use client";
+import ElementsAlike from "@/components/quiz/ElementsAlike";
+import { GuessTheLocation } from "@/components/quiz/GuessTheLocation";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
+import { Label } from "@/components/ui/label";
+import { Level } from "@/types/levels";
+import gsap from "gsap";
+import { useEffect, useRef, useState } from "react";
+import { Toaster, toast } from "sonner";
+import ClassicQuiz from "../../../components/quiz/ClassicQuiz";
+import { useTheme } from "../../../contexts/ThemeContext";
 
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { DialogClose } from "@radix-ui/react-dialog";
 export default function Quiz() {
-  const [isTimed, setIsTimed] = useState<boolean>(true)
-  const [isCustom, setIsCustom] = useState<boolean>(false)
-  const [time, setTime] = useState<number>(3)
-  const [customTime, setCustomTime] = useState<number>(3)
-  const [level, setLevel] = useState<Level>('Medium')
-  const [customLevel, setCustomLevel] = useState<Level>('Medium')
+  const [isTimed, setIsTimed] = useState<boolean>(true);
+  const [isCustom, setIsCustom] = useState<boolean>(false);
+  const [time, setTime] = useState<number>(3);
+  const [customTime, setCustomTime] = useState<number>(3);
+  const [level, setLevel] = useState<Level>("Medium");
+  const [customLevel, setCustomLevel] = useState<Level>("Medium");
   const [gameMode, setGameMode] = useState<
-    'classic' | 'location' | 'elementsAlike'
-  >('classic')
-  const [gameStarted, setGameStarted] = useState<boolean>(false)
-  const [customQuestions, setCustomQuestions] = useState<number>(5)
-  const [minElement , setMinElement ] = useState<number |null>(null)
-  const [maxElement , setMaxElement] = useState<number | null>(null)
-  const theme = useTheme().theme
-  const timeOptions = [1, 3, 5, 10]
-  const levels: Level[] = ['Easy', 'Medium', 'Hard']
-  const letterRefs = useRef<(HTMLParagraphElement | null)[]>([])
+    "classic" | "location" | "elementsAlike"
+  >("classic");
+  const [gameStarted, setGameStarted] = useState<boolean>(false);
+  const [customQuestions, setCustomQuestions] = useState<number>(5);
+  const [minElement, setMinElement] = useState<number | null>(null);
+  const [maxElement, setMaxElement] = useState<number | null>(null);
+  const theme = useTheme().theme;
+  const timeOptions = [1, 3, 5, 10];
+  const levels: Level[] = ["Easy", "Medium", "Hard"];
+  const letterRefs = useRef<(HTMLParagraphElement | null)[]>([]);
   const handleTimeChange = (newTime: number) => {
-    setTime(newTime)
-  }
-
+    setTime(newTime);
+  };
+  const [countdown, setCountdown] = useState(3);
+  const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
   const handleLevelChange = (newLevel: Level) => {
-    setLevel(newLevel)
-  }
+    setLevel(newLevel);
+  };
 
+  const startCountdown = () => {
+    if (intervalId) return;
+
+    const id = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          startGame();
+          clearInterval(id);
+          setIntervalId(null);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    setIntervalId(id);
+  };
+  const stopCountdown = () => {
+    if (intervalId) {
+      setCountdown(3);
+      clearInterval(intervalId);
+      setIntervalId(null);
+    }
+  };
   const handleGameModeChange = (
-    newGameMode: 'classic' | 'location' | 'elementsAlike',
+    newGameMode: "classic" | "location" | "elementsAlike",
   ) => {
-    setGameMode(newGameMode)
-  }
+    setGameMode(newGameMode);
+  };
 
   const startGame = () => {
     if (isCustom) {
-      setTime(customTime)
-      setLevel(customLevel)
+      setTime(customTime);
+      setLevel(customLevel);
     }
-    setGameStarted(true)
-  }
+    setGameStarted(true);
+  };
 
   useEffect(() => {
-    letterRefs.current = letterRefs.current.slice(0, 4)
+    letterRefs.current = letterRefs.current.slice(0, 4);
 
     const tl = gsap.timeline({
       defaults: {
         duration: 1.2,
-        ease: 'elastic.out(1, 0.8)',
+        ease: "elastic.out(1, 0.8)",
       },
-    })
+    });
 
     tl.fromTo(
       letterRefs.current,
@@ -78,60 +113,60 @@ export default function Quiz() {
         scale: 1,
         stagger: {
           each: 0.1,
-          ease: 'power2.inOut',
+          ease: "power2.inOut",
         },
       },
     )
       .fromTo(
         letterRefs.current,
         {
-          filter: 'blur(10px)',
+          filter: "blur(10px)",
         },
         {
-          filter: 'blur(0px)',
+          filter: "blur(0px)",
           stagger: {
             each: 0.08,
-            from: 'start',
+            from: "start",
           },
           duration: 0.8,
         },
-        '<0.1',
+        "<0.1",
       )
       .fromTo(
-        '.card',
-        { opacity: 0, filter: 'blur(10px)' },
-        { opacity: 1, filter: 'blur(0px)', stagger: 0.2, ease: 'power2.inOut' },
-        '<0.5',
+        ".card",
+        { opacity: 0, filter: "blur(10px)" },
+        { opacity: 1, filter: "blur(0px)", stagger: 0.2, ease: "power2.inOut" },
+        "<0.5",
       )
       .fromTo(
-        '.card2',
-        { opacity: 0, filter: 'blur(10px)' },
-        { opacity: 1, filter: 'blur(0px)', stagger: 0.2, ease: 'power2.inOut' },
-        '1',
+        ".card2",
+        { opacity: 0, filter: "blur(10px)" },
+        { opacity: 1, filter: "blur(0px)", stagger: 0.2, ease: "power2.inOut" },
+        "1",
       )
       .fromTo(
-        '.card3',
-        { opacity: 0, filter: 'blur(10px)' },
-        { opacity: 1, filter: 'blur(0px)', stagger: 0.2, ease: 'power2.inOut' },
-        '1',
+        ".card3",
+        { opacity: 0, filter: "blur(10px)" },
+        { opacity: 1, filter: "blur(0px)", stagger: 0.2, ease: "power2.inOut" },
+        "1",
       )
       .fromTo(
-        '.time',
+        ".time",
         { opacity: 0, y: 50 },
-        { opacity: 1, y: 0, stagger: 0.2, ease: 'power2.inOut' },
+        { opacity: 1, y: 0, stagger: 0.2, ease: "power2.inOut" },
       )
       .fromTo(
-        '.quiz-btn',
+        ".quiz-btn",
         { opacity: 0, x: -50 },
-        { opacity: 1, x: 0, duration: 2, ease: 'power2.inOut' },
-        '<0.1',
-      )
-  }, [])
+        { opacity: 1, x: 0, duration: 2, ease: "power2.inOut" },
+        "<0.1",
+      );
+  }, []);
 
   return (
-    <div className="flex gap-3 flex-col dark:shadow-none bg-background pb-5">
+    <div className="flex gap-3 p-3 flex-col dark:shadow-none --bg-background pb-5">
       <Toaster />
-      <h1 className="quiz-title flex flex-row text-3xl sm:text-4xl md:text-5xl lg:text-8xl text-center md:text-start title mt-16 md:mt-20 lg:mt-24 container mx-auto w-full sm:w-11/12 md:w-5/6">
+      <h1 className="quiz-title flex flex-row md:justify-start justify-center text-3xl sm:text-4xl md:text-5xl lg:text-8xl text-center md:text-start title mt-16 md:mt-20 lg:mt-24 container mx-auto w-full sm:w-11/12 md:w-5/6">
         {["Q", "U", "I", "Z"].map((letter, index) => (
           <p
             key={index}
@@ -285,7 +320,7 @@ export default function Quiz() {
                 if (isTimed) handleGameModeChange("elementsAlike");
                 else
                   toast(
-                    "This mode is only available for timed quiz! Kindly select 'Time the Quiz'"
+                    "This mode is only available for timed quiz! Kindly select 'Time the Quiz'",
                   );
               }}
             >
@@ -390,8 +425,8 @@ export default function Quiz() {
                             ? _level === "Easy"
                               ? "bg-emerald-400 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent"
                               : _level === "Medium"
-                              ? "bg-yellow-400 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent"
-                              : "bg-red-500 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent"
+                                ? "bg-yellow-400 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent"
+                                : "bg-red-500 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent"
                             : "border border-border/50 dark:border-border/10 dark:border-2 card text-foreground/50 rounded-lg bg-foreground/10 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base"
                         }
                         onClick={() => setCustomLevel(_level)}
@@ -469,8 +504,8 @@ export default function Quiz() {
                           ? _level === "Easy"
                             ? "bg-emerald-400 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent"
                             : _level === "Medium"
-                            ? "bg-yellow-400 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent"
-                            : "bg-red-500 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent"
+                              ? "bg-yellow-400 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent"
+                              : "bg-red-500 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent"
                           : "border border-border/50 dark:border-border/10 dark:border-2 card text-foreground/50 rounded-lg bg-foreground/10 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base"
                       }
                       onClick={() => handleLevelChange(_level)}
@@ -482,12 +517,38 @@ export default function Quiz() {
               </div>
             )}
 
-            <InteractiveHoverButton
-              onClick={startGame}
-              className="quiz-btn subtitle font-light w-fit mt-2 sm:mt-3 text-base sm:text-lg border-border/30 border-2"
-            >
-              Choose Quiz!
-            </InteractiveHoverButton>
+            <Dialog>
+              <DialogTrigger asChild>
+                <InteractiveHoverButton
+                  onClick={startCountdown}
+                  className="quiz-btn subtitle font-light w-fit mt-2 sm:mt-3 text-base sm:text-lg border-border/30 border-2"
+                >
+                  Lets Go!
+                </InteractiveHoverButton>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle className="text-2xl font-bold">
+                    Are you absolutely sure?
+                  </DialogTitle>
+                  <DialogDescription className="text-xl">
+                    Quiz starting in
+                    <br />
+                    {countdown}
+                  </DialogDescription>
+                </DialogHeader>
+                <DialogFooter>
+                  <DialogClose asChild>
+                    <InteractiveHoverButton
+                      onClick={stopCountdown}
+                      className="quiz-btn subtitle font-light w-fit mt-2 sm:mt-3 text-base sm:text-lg border-border/30 border-2"
+                    >
+                      Cancel
+                    </InteractiveHoverButton>
+                  </DialogClose>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </div>
         </>
       )}

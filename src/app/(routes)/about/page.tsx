@@ -95,7 +95,7 @@ export default function About() {
   }, []);
 
   return (
-    <div className="bg-background">
+    <div className="--bg-background">
       <div className="flex gap-2 flex-col container mx-auto p-3 w-full sm:w-5/6 md:w-5/6 lg:w-5/6">
         <h1 className="title flex flex-row justify-center md:justify-start text-3xl md:text-7xl lg:text-8xl pt-10 sm:pt-15 md:pt-20">
           {["A", "B", "O", "U", "T"].map((letter, index) => (

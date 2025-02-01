@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/carousel";
 import { Element } from "@/types/element";
 
-// Manually assigning column numbers based on the periodic table layout
 const achroAsSentences = [
   "HeLiNa Ki Rab se Fariyad",
   "Beta Mange Car Scooter Baap Razi",
@@ -166,7 +165,10 @@ export default function Achro() {
       <Carousel className="border-none">
         <CarouselContent className="border-none">
           {Object.entries(groupedElements).map(([column, elementsWithText]) => (
-            <CarouselItem key={column} className="p-4 rounded-lg">
+            <CarouselItem
+              key={column}
+              className="p-4 flex flex-col gap-3 rounded-lg"
+            >
               <h2 className="text-xl font-bold mb-2">Column {column}</h2>
               <ul className="flex flex-col items-start space-y-2">
                 {elementsWithText.map(({ element, text }) =>
@@ -186,8 +188,11 @@ export default function Achro() {
                   ),
                 )}
               </ul>
-              {/* @ts-ignore*/}
-              {achroAsSentences[column - 1]}
+              <hr />
+              <div className="p-3">
+                {/* @ts-ignore*/}
+                {achroAsSentences[column - 1]}
+              </div>
             </CarouselItem>
           ))}
         </CarouselContent>

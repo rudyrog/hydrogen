@@ -19,7 +19,7 @@ export const GuessTheLocation = ({
   noOfQuestions,
   setGameStarted,
   customMin,
-  customMax
+  customMax,
 }: {
   level: string;
   time: number;
@@ -38,7 +38,7 @@ export const GuessTheLocation = ({
   const [hintUsed, setHintUsed] = useState(false);
   const [isTimelessMode, setIsTimelessMode] = useState(time > 199);
   const [totalQuestionsAnswered, setTotalQuestionsAnswered] = useState(0);
-  
+
   const { user } = useAuth();
 
   useEffect(() => {
@@ -63,7 +63,15 @@ export const GuessTheLocation = ({
       let fetchedQuestions: Element[] = [];
 
       while (fetchedQuestions.length < noOfQuestions) {
-        const response = await fetch(`/api/v1/getQuestion?min=${customMin ? customMin : 1}&max=${customMax ? customMax : max}`);
+        const response = await fetch(
+          `/api/v1/getQuestion?min=${customMin ? customMin : 1}&max=${customMax ? customMax : max}`,
+          {
+            method: "GET",
+            headers: {
+              "x-api-key": process.env.NEXT_PUBLIC_API_SECRET_KEY || "",
+            },
+          },
+        );
         const data = await response.json();
         const shuffledQuestions = data
           .sort(() => 0.5 - Math.random())
@@ -287,6 +295,7 @@ const HiddenPeriodicTable = ({
           setIsGameCompleted(true);
           if (user?.email) {
             incrementGuessTheLocationCompleted(user.email, level);
+
             incrementTimeSpent(
               user.email,
               (totalTime * 60 - timeRemaining) / 60,

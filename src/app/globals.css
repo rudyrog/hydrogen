@@ -1,7 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+:root {
+  --s: 25rem;
+  --c1: #7a7a7a11;
+  --c2: #79797900;
 
+  --_g: #0000 90deg, var(--c1) 0;
+}
+.bg-pattern {
+  background: conic-gradient(from 90deg at 2px 2px, var(--_g)),
+    conic-gradient(from 90deg at 1px 1px, var(--_g)), var(--c2);
+  background-size:
+    var(--s) var(--s),
+    calc(var(--s) / 5) calc(var(--s) / 5);
+  background-position: center;
+}
 b {
   position: relative;
   z-index: 1;
@@ -143,4 +157,3 @@ b::before {
     @apply body;
   }
 }
-

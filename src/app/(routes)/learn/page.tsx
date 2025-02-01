@@ -2,6 +2,7 @@
 import Achro from "@/components/Achro";
 import PeriodicTable from "@/components/PeriodicTable";
 import Trends from "@/components/learn/Trends";
+import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
 import {
   Select,
   SelectContent,
@@ -10,6 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import gsap from "gsap";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 export default function Learn() {
@@ -155,7 +157,7 @@ export default function Learn() {
   }, []);
 
   return (
-    <div className="container mx-auto mt-24">
+    <div className="container mx-auto my-24">
       <h1 className="quiz-title md:justify-start justify-center flex flex-row text-3xl md:text-6xl lg:text-8xl md:text-start text-center title px-2 sm:px-3 md:px-4">
         {["L", "E", "A", "R", "N"].map((letter, index) => (
           <p
@@ -168,6 +170,10 @@ export default function Learn() {
           </p>
         ))}
       </h1>
+      <div className="text-xl p-5">
+        Before we look at some tips to remember the table, you should know
+        following,
+      </div>
       <div className="learn flex flex-col gap-2 p-5 text-xl">
         <div className="flex flex-col gap-3 mb-2">
           <b className="text-4xl font-normal font-[Monty] tracking-tight w-fit">
@@ -232,9 +238,19 @@ export default function Learn() {
         <b className="text-4xl font-normal font-[Monty] tracking-tight w-fit">
           Lets learn the periodic table!
         </b>
-        <div className="container md:w-1/3 w-[80%] mx-auto">
+        <div className="container  my-5 w-[80%] mx-auto">
+          <div className="text-xl">
+            Following are few mnemonics in Hindi/English to remember specific
+            clumns of the periodic table
+          </div>
           <Achro />
         </div>
+        <div className="text-xl">
+          We encourage you take quizes! Practice makes one perfect!
+        </div>
+        <Link href={"/quiz"}>
+          <InteractiveHoverButton>Explore Quizes</InteractiveHoverButton>
+        </Link>
       </div>
     </div>
   );

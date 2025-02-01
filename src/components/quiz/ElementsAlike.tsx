@@ -100,8 +100,18 @@ export default function ElementsAlike({
     try {
       setIsLoading(true);
       const [questionsResponse, groupResponse] = await Promise.all([
-        fetch(`/api/v1/getQuestion?min=1&max=200`),
-        fetch(`/api/v1/getGroupElements?group=${encodeURIComponent(group)}`),
+        fetch(`/api/v1/getQuestion?min=1&max=200`, {
+          method: "GET",
+          headers: {
+            "x-api-key": process.env.NEXT_PUBLIC_API_SECRET_KEY || "",
+          },
+        }),
+        fetch(`/api/v1/getGroupElements?group=${encodeURIComponent(group)}`, {
+          method: "GET",
+          headers: {
+            "x-api-key": process.env.NEXT_PUBLIC_API_SECRET_KEY || "",
+          },
+        }),
       ]);
 
       if (!questionsResponse.ok || !groupResponse.ok) {

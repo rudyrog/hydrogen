@@ -3,13 +3,21 @@ import path from "path";
 import { NextRequest, NextResponse } from "next/server";
 
 export function GET(req: NextRequest) {
+  const API_KEY = process.env.API_SECRET_KEY;
+  const requestKey = req.headers.get("x-api-key");
+  if (!requestKey || requestKey !== API_KEY) {
+    return NextResponse.json(
+      { error: "Cant access this without an API key!" },
+      { status: 401 },
+    );
+  }
   const { searchParams } = new URL(req.url);
   const groupQuery = searchParams.get("group");
 
   if (!groupQuery) {
     return NextResponse.json(
       { error: "Group query parameter is required" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -19,11 +27,17 @@ export function GET(req: NextRequest) {
     const elements = JSON.parse(data);
 
     const normalizedQuery = groupQuery.toLowerCase().replace(/\s+/g, "");
-    console.log(normalizedQuery , elements[10].GroupBlock.toLowerCase().replace(/\s+/g, "") )
+    console.log(
+      normalizedQuery,
+      elements[10].GroupBlock.toLowerCase().replace(/\s+/g, ""),
+    );
     const filteredElements = Array.isArray(elements)
       ? elements.filter((el: any) => {
-          if (!el.GroupBlock) return false; 
-          const normalizedGroup = el.GroupBlock.toLowerCase().replace(/\s+/g, "");
+          if (!el.GroupBlock) return false;
+          const normalizedGroup = el.GroupBlock.toLowerCase().replace(
+            /\s+/g,
+            "",
+          );
           return normalizedGroup === normalizedQuery;
         })
       : [];
@@ -32,14 +46,14 @@ export function GET(req: NextRequest) {
     } else {
       return NextResponse.json(
         { error: `No elements found for group: ${groupQuery}` },
-        { status: 404 }
+        { status: 404 },
       );
     }
   } catch (err) {
     console.error("Error:", err);
     return NextResponse.json(
       { error: "Failed to fetch elements" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

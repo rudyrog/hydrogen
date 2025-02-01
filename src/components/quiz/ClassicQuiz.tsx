@@ -17,8 +17,8 @@ export default function ClassicQuiz({
   time,
   noOfQuestions,
   setGameStarted,
-  customMin , 
-  customMax
+  customMin,
+  customMax,
 }: {
   level: Level;
   time: number;
@@ -95,11 +95,19 @@ export default function ClassicQuiz({
   const fetchQuestions = async () => {
     try {
       const max = level === "Easy" ? 10 : level === "Medium" ? 20 : 30;
-      const response = await fetch(`/api/v1/getQuestion?min=${customMin ? customMin : 1}&max=${customMax ? customMax : max}`);
+      const response = await fetch(
+        `/api/v1/getQuestion?min=${customMin ? customMin : 1}&max=${customMax ? customMax : max}`,
+        {
+          method: "GET",
+          headers: {
+            "x-api-key": process.env.NEXT_PUBLIC_API_SECRET_KEY || "",
+          },
+        },
+      );
       const data = await response.json();
       const shuffledQuestions = data
         .sort(() => 0.5 - Math.random())
-        .slice(0, 10);
+        .slice(0, noOfQuestions);
       setQuestions(shuffledQuestions);
     } catch (error) {
       console.error("Error fetching questions:", error);
@@ -112,12 +120,18 @@ export default function ClassicQuiz({
       const response = await fetch(
         `/api/v1/getQuestion?min=${customMin ? customMin : 1}&max=${
           customMax ? customMax : max
-        }`
+        }`,
+        {
+          method: "GET",
+          headers: {
+            "x-api-key": process.env.NEXT_PUBLIC_API_SECRET_KEY || "",
+          },
+        },
       );
       const data = await response.json();
       const shuffledQuestions = data
         .sort(() => 0.5 - Math.random())
-        .slice(0, 10);
+        .slice(0, noOfQuestions);
       setQuestions(shuffledQuestions);
       setCurrentQuestion(1);
       setNoOfHints(1);

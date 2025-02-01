@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { Particles } from "../components/ui/particles";
 import { useTheme } from "../contexts/ThemeContext";
 import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
+import Link from "next/link";
 
 function SimpleCard({
   title,
@@ -103,7 +104,8 @@ export default function Home() {
           duration: 3,
         },
         "<0.5",
-      ) .fromTo(
+      )
+      .fromTo(
         ".card1",
         {
           filter: "blur(10px)",
@@ -115,7 +117,8 @@ export default function Home() {
           duration: 3,
         },
         "<0.5",
-      ) .fromTo(
+      )
+      .fromTo(
         ".card2",
         {
           filter: "blur(10px)",
@@ -127,7 +130,8 @@ export default function Home() {
           duration: 3,
         },
         "<0.5",
-      ).fromTo(
+      )
+      .fromTo(
         ".card3",
         {
           filter: "blur(10px)",
@@ -139,7 +143,8 @@ export default function Home() {
           duration: 3,
         },
         "<0.5",
-      ).fromTo(
+      )
+      .fromTo(
         ".card4",
         {
           filter: "blur(10px)",
@@ -155,9 +160,9 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="relative w-full h-[80vh] bg-background">
+    <main className="relative w-full h-[80vh] --bg-background">
       <Particles
-        className="particles fixed inset-0 w-full h-full animate-in"
+        className="particles fixed md:block hidden inset-0 w-full h-full animate-in"
         quantity={200}
         ease={90}
         color={color}
@@ -178,11 +183,17 @@ export default function Home() {
         </div>
         <div className="description max-w-[95%] sm:max-w-[90%] md:max-w-[80%] lg:max-w-[65%] border border-border/50 p-3 sm:p-4 md:p-5 lg:p-6 shadow-lg shadow-foreground/5 bg-background/30 backdrop-blur-md rounded-lg mt-8 sm:mt-10 md:mt-12 lg:mt-16">
           <p className="text-center text-foreground text-xl sm:text-sm md:text-base lg:text-lg">
-            Want to learn Chemistry the easy way? <br />Learn, Quiz and perfect your grasp on Chemistry without having to read textbooks for an eternity!  
+            Want to learn Chemistry the easy way? <br />
+            Learn, Quiz and perfect your grasp on Chemistry without having to
+            read textbooks for an eternity!
           </p>
         </div>
         <div className="relative md:w-4/5 flex flex-col items-center justify-center gap-3 mx-auto my-10 md:my-0  min-h-screen">
-          <InteractiveHoverButton className="text-xl">Start Learning</InteractiveHoverButton>
+          <Link href="/learn">
+            <InteractiveHoverButton className="text-xl">
+              Start Learning
+            </InteractiveHoverButton>{" "}
+          </Link>
           <SimpleCard
             className="w-full md:w-1/3  md:absolute  top-10 left-0 card1"
             title="Games"
