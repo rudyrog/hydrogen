@@ -1,23 +1,23 @@
-'use client'
-import gsap from 'gsap'
-import Image from 'next/image'
-import { useEffect, useRef } from 'react'
+"use client";
+import gsap from "gsap";
+import Image from "next/image";
+import { useEffect, useRef } from "react";
 
 export default function About() {
-  const letterRefs = useRef<(HTMLParagraphElement | null)[]>([])
-  const contentRef = useRef(null)
-  const imagesRef = useRef<(HTMLImageElement | null)[]>([])
+  const letterRefs = useRef<(HTMLParagraphElement | null)[]>([]);
+  const contentRef = useRef(null);
+  const imagesRef = useRef<(HTMLImageElement | null)[]>([]);
 
   useEffect(() => {
-    letterRefs.current = letterRefs.current.slice(0, 5)
-    imagesRef.current = imagesRef.current.slice(0, 2)
+    letterRefs.current = letterRefs.current.slice(0, 5);
+    imagesRef.current = imagesRef.current.slice(0, 2);
 
     const tl = gsap.timeline({
       defaults: {
         duration: 1.2,
-        ease: 'elastic.out(1, 0.8)',
+        ease: "elastic.out(1, 0.8)",
       },
-    })
+    });
     tl.fromTo(
       letterRefs.current,
       {
@@ -33,72 +33,72 @@ export default function About() {
         scale: 1,
         stagger: {
           each: 0.1,
-          ease: 'power2.inOut',
+          ease: "power2.inOut",
         },
       },
     )
       .fromTo(
         letterRefs.current,
         {
-          filter: 'blur(10px)',
+          filter: "blur(10px)",
         },
         {
-          filter: 'blur(0px)',
+          filter: "blur(0px)",
           stagger: {
             each: 0.08,
-            from: 'start',
+            from: "start",
           },
           duration: 0.8,
         },
-        '<0.1',
+        "<0.1",
       )
       .fromTo(
         contentRef.current,
         {
-          filter: 'blur(10px)',
+          filter: "blur(10px)",
           opacity: 0,
           y: 50,
           scale: 0.95,
         },
         {
-          filter: 'blur(0px)',
+          filter: "blur(0px)",
           opacity: 1,
           y: 0,
           scale: 1,
           duration: 1,
-          ease: 'power3.out',
+          ease: "power3.out",
         },
-        '-=0.5',
+        "-=0.5",
       )
 
       .fromTo(
         imagesRef.current,
         {
-          filter: 'blur(10px)',
+          filter: "blur(10px)",
           opacity: 0,
           x: 100,
           rotateY: 15,
           scale: 0.9,
         },
         {
-          filter: 'blur(0px)',
+          filter: "blur(0px)",
           opacity: 1,
           x: 0,
           rotateY: 0,
           scale: 1,
           stagger: 0.2,
           duration: 1.2,
-          ease: 'power2.out',
+          ease: "power2.out",
         },
-        '-=0.8',
-      )
-  }, [])
+        "-=0.8",
+      );
+  }, []);
 
   return (
     <div className="bg-background">
       <div className="flex gap-2 flex-col container mx-auto p-3 w-full sm:w-5/6 md:w-5/6 lg:w-5/6">
-        <h1 className="title flex flex-row justify-center md:justify-start text-5xl sm:text-6xl md:text-7xl lg:text-8xl pt-10 sm:pt-15 md:pt-20">
-          {['A', 'B', 'O', 'U', 'T'].map((letter, index) => (
+        <h1 className="title flex flex-row justify-center md:justify-start text-3xl md:text-7xl lg:text-8xl pt-10 sm:pt-15 md:pt-20">
+          {["A", "B", "O", "U", "T"].map((letter, index) => (
             <p
               key={index}
               //@ts-ignore
@@ -125,15 +125,15 @@ export default function About() {
             </div>
             <h2 className="text-lg sm:text-xl font-serif mt-2">Development</h2>
             <div className="text-sm sm:text-base">
-              This is a project created by{' '}
-            <a
+              This is a project created by{" "}
+              <a
                 href="https://github.com/rudyrog"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="name-link"
               >
                 Rudra Mehta,
-              </a>{' '}
+              </a>{" "}
               <a
                 href="https://github.com/parv141206"
                 target="_blank"
@@ -141,16 +141,16 @@ export default function About() {
                 className="name-link"
               >
                 Parv Shah,
-              </a>{' '}
+              </a>{" "}
               <a
                 href="https://github.com/djman323"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="name-link"
               >
-                Devansh Jani{' '}
+                Devansh Jani{" "}
               </a>
-               and {' '}
+              and{" "}
               <a
                 href="https://github.com/"
                 target="_blank"
@@ -162,7 +162,7 @@ export default function About() {
               .
             </div>
             <p className="text-sm sm:text-base">
-              Support our project on{' '}
+              Support our project on{" "}
               <a
                 href="https://github.com/rudyrog/periodic-table"
                 target="_blank"
@@ -174,55 +174,65 @@ export default function About() {
               .
             </p>
             <div className="mt-2">
-              <p className="font-serif text-base sm:text-lg">Technologies Used</p>
-               <div className="space-y-4 mt-2">
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <li className="p-3 border rounded-lg hover:bg-gray-100 transition-all hover:shadow-md">
-              <a
-                href="https://nextjs.org/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="name-link"
-              >
-                <h3 className="font-bold">Next.js</h3>
-                <p className="text-sm text-gray-600">React framework for production</p>
-              </a>
-            </li>
-            <li className="p-3 border rounded-lg hover:bg-gray-100 transition-all hover:shadow-md">
-              <a
-                href="https://tailwindcss.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="name-link"
-              >
-                <h3 className="font-bold">TailwindCSS</h3>
-                <p className="text-sm text-gray-600">Utility-first CSS framework</p>
-              </a>
-            </li>
-            <li className="p-3 border rounded-lg hover:bg-gray-100 transition-all hover:shadow-md">
-              <a
-                href="https://www.typescriptlang.org/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="name-link"
-              >
-                <h3 className="font-bold">TypeScript</h3>
-                <p className="text-sm text-gray-600">Type-safe JavaScript</p>
-              </a>
-            </li>
-            <li className="p-3 border rounded-lg hover:bg-gray-100 transition-all hover:shadow-md">
-              <a
-                href="https://gsap.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="name-link"
-              >
-                <h3 className="font-bold">GSAP</h3>
-                <p className="text-sm text-gray-600">Professional animation library</p>
-              </a>
-            </li>
-          </ul>
-        </div>
+              <p className="font-serif text-base sm:text-lg">
+                Technologies Used
+              </p>
+              <div className="space-y-4 mt-2">
+                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <li className="p-3 border rounded-lg hover:bg-gray-100 transition-all hover:shadow-md">
+                    <a
+                      href="https://nextjs.org/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="name-link"
+                    >
+                      <h3 className="font-bold">Next.js</h3>
+                      <p className="text-sm text-gray-600">
+                        React framework for production
+                      </p>
+                    </a>
+                  </li>
+                  <li className="p-3 border rounded-lg hover:bg-gray-100 transition-all hover:shadow-md">
+                    <a
+                      href="https://tailwindcss.com/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="name-link"
+                    >
+                      <h3 className="font-bold">TailwindCSS</h3>
+                      <p className="text-sm text-gray-600">
+                        Utility-first CSS framework
+                      </p>
+                    </a>
+                  </li>
+                  <li className="p-3 border rounded-lg hover:bg-gray-100 transition-all hover:shadow-md">
+                    <a
+                      href="https://www.typescriptlang.org/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="name-link"
+                    >
+                      <h3 className="font-bold">TypeScript</h3>
+                      <p className="text-sm text-gray-600">
+                        Type-safe JavaScript
+                      </p>
+                    </a>
+                  </li>
+                  <li className="p-3 border rounded-lg hover:bg-gray-100 transition-all hover:shadow-md">
+                    <a
+                      href="https://gsap.com/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="name-link"
+                    >
+                      <h3 className="font-bold">GSAP</h3>
+                      <p className="text-sm text-gray-600">
+                        Professional animation library
+                      </p>
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
 
@@ -240,5 +250,5 @@ export default function About() {
         </div>
       </div>
     </div>
-  )
+  );
 }
