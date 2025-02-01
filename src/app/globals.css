@@ -6,7 +6,7 @@ b {
   position: relative;
   z-index: 1;
   padding: 0.6rem;
-  @apply text-black ;
+  @apply text-black;
 }
 
 b::before {
@@ -71,7 +71,7 @@ b::before {
 
 @font-face {
   font-family: "Aptos";
-  src: url("/fonts/bodyFont/aptos.ttf");
+  src: url("/fonts/bodyFont/Aptos.ttf");
 }
 .subtitle {
   font-family: "Aptos", sans-serif;
@@ -83,8 +83,8 @@ b::before {
 
 @layer base {
   :root {
-    --background: 0 0% 100%; 
-    --foreground: 0 0% 0%;   
+    --background: 0 0% 100%;
+    --foreground: 0 0% 0%;
     --card: 0 0% 0%;
     --card-foreground: 0 0% 0%;
     --popover: 0 0% 100%;
@@ -93,46 +93,42 @@ b::before {
     --primary-foreground: 0 0% 100%;
     --secondary: 0 0% 96%;
     --secondary-foreground: 0 0% 0%;
-    --muted: 0 0% 96%; 
-    --muted-foreground: 0 0% 45%; 
-    --accent: 0 0% 87%; 
-    --accent-foreground: 0 0% 0%; 
-    --destructive: 0 84.2% 60.2%; 
-    --destructive-foreground: 0 0% 100%; 
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 0 0% 87%;
+    --accent-foreground: 0 0% 0%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
     --border: 0 0% 45%;
     --input: 0 0% 89%;
     --ring: 0 0% 0%;
-    --radius: 0.5rem; 
+    --radius: 0.5rem;
     --link-color: rgba(0, 0, 0, 0.8);
     --link-hover: rgba(0, 0, 0, 1);
     --link-dark-color: rgba(255, 255, 255, 0.8);
-    --link-dark-hover: rgba(255, 255, 255, 1); 
+    --link-dark-hover: rgba(255, 255, 255, 1);
   }
 
   .dark {
-    --background: 0 0% 5%; 
-    --foreground: 0 0% 100%; 
+    --background: 0 0% 5%;
+    --foreground: 0 0% 100%;
     --card: 0 0% 90%;
     --card-foreground: 0 0% 100%;
-    --popover: 0 0% 0%; 
-    --popover-foreground: 0 0% 100%; 
-    --primary: 0 0% 100
-    --primary-foreground: 0 0% 0
-    --secondary: 0 0% 13%; 
-    --secondary-foreground: 0 0% 100
-    --muted: 0 0% 13%; 
-    --muted-foreground: 0 0% 80%; 
+    --popover: 0 0% 0%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 0 0% 100 --primary-foreground: 0 0% 0 --secondary: 0 0% 13%;
+    --secondary-foreground: 0 0% 100 --muted: 0 0% 13%;
+    --muted-foreground: 0 0% 80%;
     --accent: 0 0% 87%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 100%;
-    --border: 0 0% 45%; 
-    --input: 0 0% 30%; 
-    --ring: 0 0% 100%; 
-    --radius: 0.5rem; 
+    --border: 0 0% 45%;
+    --input: 0 0% 30%;
+    --ring: 0 0% 100%;
+    --radius: 0.5rem;
     --link-color: rgba(255, 255, 255, 0.8);
     --link-hover: rgba(255, 255, 255, 1);
-
   }
 }
 ::-webkit-scrollbar {
@@ -147,3 +143,4 @@ b::before {
     @apply body;
   }
 }
+
