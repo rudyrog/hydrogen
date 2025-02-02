@@ -157,7 +157,7 @@ export default function Learn() {
   }, []);
 
   return (
-    <div className="container mx-auto my-24">
+    <div className="container mx-auto py-24">
       <h1 className="quiz-title md:justify-start justify-center flex flex-row text-3xl md:text-6xl lg:text-8xl md:text-start text-center title px-2 sm:px-3 md:px-4">
         {["L", "E", "A", "R", "N"].map((letter, index) => (
           <p

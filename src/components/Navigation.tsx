@@ -22,7 +22,7 @@ export default function Navigation() {
   ];
   return (
     <>
-      <nav className="fixed md:flex hidden top-0 bg-background/80 left-0 right-0 z-50  flex-row items-center justify-center text-foreground gap-8 py-4 backdrop-blur-md border-b border-border/20 shadow-sm shadow-foreground/10">
+      <nav className="fixed md:flex hidden top-0 bg-background/50 dark:bg-slate-950/50 left-0 right-0 z-50  flex-row items-center justify-center text-foreground gap-8 py-4 backdrop-blur-md border-b border-border/20 shadow-sm shadow-foreground/10">
         <div className="text-3xl pointer-events-none">⚛</div>
         <Link href="/" className="name-link">
           Home
@@ -51,7 +51,7 @@ export default function Navigation() {
           {theme === "light" ? <IoSunnyOutline /> : <FaRegMoon />}
         </button>
       </nav>
-      <nav className="flex md:hidden">
+      <nav className="flex md:opacity-0">
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild>
             <Button
