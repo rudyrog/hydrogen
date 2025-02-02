@@ -24,7 +24,7 @@ const PeriodicTable = ({
   half?: boolean;
 }) => {
   const [selectedElement, setSelectedElement] = React.useState<Element | null>(
-    null
+    null,
   );
   const { theme } = useTheme();
 
@@ -71,7 +71,7 @@ const PeriodicTable = ({
                 })(
                   element.CPKHexColor.slice(0, 2),
                   element.CPKHexColor.slice(2, 4),
-                  element.CPKHexColor.slice(4, 6)
+                  element.CPKHexColor.slice(4, 6),
                 )
               : element.CPKHexColor || "808080"
           }`,
@@ -95,12 +95,8 @@ const PeriodicTable = ({
     return (
       <>
         <DrawerHeader>
-          <DrawerTitle className="text-lg md:text-2xl">
-            {element.Name}
-          </DrawerTitle>
-          <DrawerDescription className="text-sm md:text-base">
-            {element.Symbol}
-          </DrawerDescription>
+          <DrawerTitle className="text-lg md:text-2xl"></DrawerTitle>
+          <DrawerDescription className="text-sm md:text-base"></DrawerDescription>
         </DrawerHeader>
         <DrawerContent className="px-4 md:px-20 lg:px-40 flex flex-col items-center">
           <div className="flex flex-col items-center pt-4">
@@ -152,10 +148,10 @@ const PeriodicTable = ({
   // Renders the lanthanides and actinides rows.
   const renderLanthanidesAndActinides = () => {
     const lanthanides = elements.filter(
-      (e) => e.AtomicNumber >= 57 && e.AtomicNumber <= 70
+      (e) => e.AtomicNumber >= 57 && e.AtomicNumber <= 70,
     );
     const actinides = elements.filter(
-      (e) => e.AtomicNumber >= 89 && e.AtomicNumber <= 102
+      (e) => e.AtomicNumber >= 89 && e.AtomicNumber <= 102,
     );
 
     return (
@@ -244,11 +240,11 @@ const PeriodicTable = ({
           {elements
             .filter(
               (element) =>
-                element.AtomicNumber < 57 || element.AtomicNumber > 70
+                element.AtomicNumber < 57 || element.AtomicNumber > 70,
             )
             .filter(
               (element) =>
-                element.AtomicNumber < 89 || element.AtomicNumber > 102
+                element.AtomicNumber < 89 || element.AtomicNumber > 102,
             )
             .map((element) => (
               <ElementCard

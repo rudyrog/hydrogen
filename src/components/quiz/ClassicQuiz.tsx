@@ -83,6 +83,11 @@ export default function ClassicQuiz({
       setInputLength(questionNameLength);
       setValues(Array(questionNameLength).fill(""));
       setIsLoading(false);
+
+      // Focus on first input after values are reset
+      setTimeout(() => {
+        inputRefs.current[0]?.focus();
+      }, 0);
     }
   }, [questions, currentQuestion]);
 
@@ -104,7 +109,7 @@ export default function ClassicQuiz({
           headers: {
             "x-api-key": process.env.NEXT_PUBLIC_API_SECRET_KEY || "",
           },
-        }
+        },
       );
       const data = await response.json();
       const shuffledQuestions = data
@@ -128,16 +133,16 @@ export default function ClassicQuiz({
           headers: {
             "x-api-key": process.env.NEXT_PUBLIC_API_SECRET_KEY || "",
           },
-        }
+        },
       );
       const data = await response.json();
       const shuffledQuestions = data
         .sort(() => 0.5 - Math.random())
         .slice(0, noOfQuestions);
+      console.log(shuffledQuestions);
       setQuestions(shuffledQuestions);
       setCurrentQuestion(1);
       setNoOfHints(1);
-      inputRefs.current[0]?.focus();
     } catch (error) {
       console.error("Error fetching next batch of questions:", error);
     }
@@ -145,7 +150,7 @@ export default function ClassicQuiz({
 
   const handleChange = (
     index: number,
-    e: React.ChangeEvent<HTMLInputElement>
+    e: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const newValues = [...values];
     newValues[index] = e.target.value.slice(-1);
@@ -158,7 +163,7 @@ export default function ClassicQuiz({
 
   const handleKeyDown = (
     index: number,
-    e: React.KeyboardEvent<HTMLInputElement>
+    e: React.KeyboardEvent<HTMLInputElement>,
   ) => {
     if (e.key === "Backspace" && !values[index] && index > 0) {
       inputRefs.current[index - 1]?.focus();
@@ -182,7 +187,6 @@ export default function ClassicQuiz({
       if (currentQuestion < questions.length) {
         setCurrentQuestion((prev) => prev + 1);
         setNoOfHints(1);
-        inputRefs.current[0]?.focus();
       } else {
         if (newTotalQuestions < noOfQuestions) {
           fetchNextBatch();
@@ -269,7 +273,8 @@ export default function ClassicQuiz({
             )}
             Classic{" "}
             <p className="text-sm text-foreground/60">
-              ({currentQuestion} of {noOfQuestions})
+              ({!isTimelessMode ? `${currentQuestion} of ${noOfQuestions}` : ""}
+              )
             </p>
             {isTimelessMode && (
               <p className="text-sm text-foreground/60">
@@ -288,7 +293,7 @@ export default function ClassicQuiz({
                 maxLength={1}
                 onChange={(e) => handleChange(index, e)}
                 onKeyDown={(e) => handleKeyDown(index, e)}
-                className={`md:w-10 w-6 h-14 text-center text-xl bg-background ${
+                className={`md:w-10 w-6 h-14 text-center text-xl bg-background/0 ${
                   value ? "border-none" : "border-b-2 border-foreground/30"
                 } outline-none focus:border-b-2 focus:border-foreground`}
               />
@@ -332,7 +337,7 @@ export default function ClassicQuiz({
                 onClick={handleQuit}
                 className="btn-secondary font-light w-fit mt-3 text-lg border border-foreground/20 flex items-center gap-2"
               >
-                <XCircle className="w-5 h-5" /> Quit
+                Quit
               </InteractiveHoverButton>
             )}
           </div>

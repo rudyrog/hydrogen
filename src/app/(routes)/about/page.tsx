@@ -13,7 +13,7 @@ export default function About() {
     { name: "Rudra Mehta", github: "https://github.com/rudyrog" },
     { name: "Parv Shah", github: "https://github.com/parv141206" },
     { name: "Devansh Jani", github: "https://github.com/djman323" },
-    { name: "Hrishit Patel", github: "https://github.com/" },
+    { name: "Hrishit Patel", github: "https://github.com/Hri25" },
   ];
 
   useEffect(() => {
@@ -43,7 +43,7 @@ export default function About() {
           each: 0.1,
           ease: "power2.inOut",
         },
-      }
+      },
     )
       .fromTo(
         letterRefs.current,
@@ -58,7 +58,7 @@ export default function About() {
           },
           duration: 0.8,
         },
-        "<0.1"
+        "<0.1",
       )
       .fromTo(
         contentRef.current,
@@ -76,7 +76,7 @@ export default function About() {
           duration: 1,
           ease: "power3.out",
         },
-        "-=0.5"
+        "-=0.5",
       )
       .fromTo(
         imagesRef.current,
@@ -97,7 +97,7 @@ export default function About() {
           duration: 1.2,
           ease: "power2.out",
         },
-        "-=0.8"
+        "-=0.8",
       )
       .fromTo(
         teamMembersRef.current,
@@ -111,7 +111,7 @@ export default function About() {
           duration: 0.8,
           ease: "power2.out",
         },
-        "-=0.5"
+        "-=0.5",
       );
   }, []);
 

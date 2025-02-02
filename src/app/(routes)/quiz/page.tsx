@@ -56,6 +56,7 @@ export default function Quiz() {
     const id = setInterval(() => {
       setCountdown((prev) => {
         if (prev <= 1) {
+          setCountdown(3);
           startGame();
           clearInterval(id);
           setIntervalId(null);
@@ -75,7 +76,7 @@ export default function Quiz() {
     }
   };
   const handleGameModeChange = (
-    newGameMode: "classic" | "location" | "elementsAlike"
+    newGameMode: "classic" | "location" | "elementsAlike",
   ) => {
     setGameMode(newGameMode);
   };
@@ -115,7 +116,7 @@ export default function Quiz() {
           each: 0.1,
           ease: "power2.inOut",
         },
-      }
+      },
     )
       .fromTo(
         letterRefs.current,
@@ -130,36 +131,36 @@ export default function Quiz() {
           },
           duration: 0.8,
         },
-        "<0.1"
+        "<0.1",
       )
       .fromTo(
         ".card",
         { opacity: 0, filter: "blur(10px)" },
         { opacity: 1, filter: "blur(0px)", stagger: 0.2, ease: "power2.inOut" },
-        "<0.5"
+        "<0.5",
       )
       .fromTo(
         ".card2",
         { opacity: 0, filter: "blur(10px)" },
         { opacity: 1, filter: "blur(0px)", stagger: 0.2, ease: "power2.inOut" },
-        "1"
+        "1",
       )
       .fromTo(
         ".card3",
         { opacity: 0, filter: "blur(10px)" },
         { opacity: 1, filter: "blur(0px)", stagger: 0.2, ease: "power2.inOut" },
-        "1"
+        "1",
       )
       .fromTo(
         ".time",
         { opacity: 0, y: 50 },
-        { opacity: 1, y: 0, stagger: 0.2, ease: "power2.inOut" }
+        { opacity: 1, y: 0, stagger: 0.2, ease: "power2.inOut" },
       )
       .fromTo(
         ".quiz-btn",
         { opacity: 0, x: -50 },
         { opacity: 1, x: 0, duration: 2, ease: "power2.inOut" },
-        "<0.1"
+        "<0.1",
       );
   }, []);
 
@@ -320,7 +321,7 @@ export default function Quiz() {
                 if (isTimed) handleGameModeChange("elementsAlike");
                 else
                   toast(
-                    "This mode is only available for timed quiz! Kindly select 'Time the Quiz'"
+                    "This mode is only available for timed quiz! Kindly select 'Time the Quiz'",
                   );
               }}
             >
@@ -425,8 +426,8 @@ export default function Quiz() {
                             ? _level === "Easy"
                               ? "bg-emerald-400 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent"
                               : _level === "Medium"
-                              ? "bg-yellow-400 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent"
-                              : "bg-red-500 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent"
+                                ? "bg-yellow-400 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent"
+                                : "bg-red-500 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent"
                             : "border border-border/50 dark:border-border/10 dark:border-2 card text-foreground/50 rounded-lg bg-foreground/10 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base"
                         }
                         onClick={() => setCustomLevel(_level)}
@@ -504,8 +505,8 @@ export default function Quiz() {
                           ? _level === "Easy"
                             ? "bg-emerald-400 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent"
                             : _level === "Medium"
-                            ? "bg-yellow-400 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent"
-                            : "bg-red-500 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent"
+                              ? "bg-yellow-400 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent"
+                              : "bg-red-500 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent"
                           : "border border-border/50 dark:border-border/10 dark:border-2 card text-foreground/50 rounded-lg bg-foreground/10 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base"
                       }
                       onClick={() => handleLevelChange(_level)}
@@ -520,7 +521,10 @@ export default function Quiz() {
             <Dialog>
               <DialogTrigger asChild>
                 <InteractiveHoverButton
-                  onClick={startCountdown}
+                  onClick={() => {
+                    setCountdown(3);
+                    startCountdown();
+                  }}
                   className="quiz-btn subtitle font-light w-fit mt-2 sm:mt-3 text-base sm:text-lg border-border/30 border-2"
                 >
                   Lets Go!

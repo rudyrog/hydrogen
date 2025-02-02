@@ -119,7 +119,7 @@ export default function Learn() {
           each: 0.1,
           ease: "power2.inOut",
         },
-      }
+      },
     )
       .fromTo(
         letterRefs.current,
@@ -134,25 +134,43 @@ export default function Learn() {
           },
           duration: 0.8,
         },
-        "<0.1"
+        "<0.1",
       )
       .fromTo(
         ".learn",
         {
           filter: "blur(10px)",
-          y: 120,
+          y: 10,
           opacity: 0,
           rotateX: -80,
-          scale: 0.8,
+          //scale: 0.8,
         },
         {
           filter: "blur(0px)",
           y: 0,
           opacity: 1,
           rotateX: 0,
-          scale: 1,
+          //scale: 1,
           ease: "power2.inOut",
-        }
+        },
+      )
+      .fromTo(
+        ".p-table",
+        {
+          filter: "blur(10px)",
+          //y: 10,
+          opacity: 0,
+          //rotateX: -80,
+          //scale: 0.8,
+        },
+        {
+          filter: "blur(0px)",
+          //y: 0,
+          opacity: 1,
+          //rotateX: 0,
+          //scale: 1,
+          ease: "power2.inOut",
+        },
       );
   }, []);
 
@@ -170,8 +188,8 @@ export default function Learn() {
           </p>
         ))}
       </h1>
-      <div className="learn flex flex-col gap-2 p-5 text-xl">
-        <div className="flex flex-col gap-3 mb-2">
+      <div className="flex flex-col gap-2 p-5 text-xl">
+        <div className="learn flex flex-col gap-3 mb-2">
           <b className="text-4xl font-normal font-[Monty] tracking-tight w-fit">
             Groups
           </b>
@@ -185,72 +203,75 @@ export default function Learn() {
             </p>
           </div>
         </div>
+        <div className="p-table flex flex-col gap-2">
+          <div className="">
+            <Select
+              defaultValue={String(0)}
+              onValueChange={(value) => setSelectedGroup(Number(value))}
+            >
+              <SelectTrigger className="w-fit gap-4 text-xl body text-foreground shadow-md rounded-lg bg-background border border-border/60 outline-none">
+                <SelectValue placeholder="Select Group" />
+              </SelectTrigger>
+              <SelectContent className="bg-background border border-border/30 shadow-md backdrop-blur-sm text-lg">
+                {groups.map((group, index) => (
+                  <SelectItem
+                    key={index}
+                    value={String(index)}
+                    className="hover:bg-foreground/10 transition-colors duration-300 text-lg"
+                  >
+                    {group.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
 
-        <div>
-          <Select
-            defaultValue={String(0)}
-            onValueChange={(value) => setSelectedGroup(Number(value))}
-          >
-            <SelectTrigger className="w-fit gap-4 text-xl body text-foreground shadow-md rounded-lg bg-background border border-border/60 outline-none">
-              <SelectValue placeholder="Select Group" />
-            </SelectTrigger>
-            <SelectContent className="bg-background border border-border/30 shadow-md backdrop-blur-sm text-lg">
-              {groups.map((group, index) => (
-                <SelectItem
-                  key={index}
-                  value={String(index)}
-                  className="hover:bg-foreground/10 transition-colors duration-300 text-lg"
-                >
-                  {group.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div className="text-xl mx-2">
-          {selectedGroup !== null && (
-            <div>
-              <p>{groups[selectedGroup].description}</p>
-              <p className="text-foreground/50 font-medium ">
-                {groups[selectedGroup].examples}
-              </p>
+          <div className="text-xl mx-2">
+            {selectedGroup !== null && (
+              <div>
+                <p>{groups[selectedGroup].description}</p>
+                <p className="text-foreground/50 font-medium ">
+                  {groups[selectedGroup].examples}
+                </p>
+              </div>
+            )}
+            <div className=" overflow-x-scroll">
+              <PeriodicTable
+                normal={false}
+                half={true}
+                highlighted={
+                  selectedGroup !== null
+                    ? groups[selectedGroup].highlighted
+                    : []
+                }
+              />
             </div>
-          )}
-          <div className=" overflow-x-scroll">
-            <PeriodicTable
-              normal={false}
-              half={true}
-              highlighted={
-                selectedGroup !== null ? groups[selectedGroup].highlighted : []
-              }
-            />
           </div>
-        </div>
 
-        <p className="text-pretty">{groups[selectedGroup].details}</p>
-        <b className="text-4xl font-normal font-[Monty] tracking-tight w-fit mt-10">
-          Trends
-        </b>
-        <Trends />
-        <b className="text-4xl font-normal font-[Monty] tracking-tight w-fit mt-10">
-          Memorize
-        </b>
-        <div className="container w-[80%]">
-          <div className="text-xl">
-            Following are few mnemonics in Hindi/English to remember specific
-            columns of the periodic table
+          <p className="text-pretty">{groups[selectedGroup].details}</p>
+          <b className="text-4xl font-normal font-[Monty] tracking-tight w-fit mt-10">
+            Trends
+          </b>
+          <Trends />
+          <b className="text-4xl font-normal font-[Monty] tracking-tight w-fit mt-10">
+            Memorize
+          </b>
+          <div className="container w-[80%]">
+            <div className="text-xl">
+              Following are few mnemonics in Hindi/English to remember specific
+              columns of the periodic table
+            </div>
+            <Achro />
           </div>
-          <Achro />
+          <div className="text-xl">
+            We encourage you take quizes! Practice makes one perfect!
+          </div>
+          <Link href={"/quiz"}>
+            <InteractiveHoverButton className="font-[monty]">
+              Explore Quizes
+            </InteractiveHoverButton>
+          </Link>
         </div>
-        <div className="text-xl">
-          We encourage you take quizes! Practice makes one perfect!
-        </div>
-        <Link href={"/quiz"}>
-          <InteractiveHoverButton className="font-[monty]">
-            Explore Quizes
-          </InteractiveHoverButton>
-        </Link>
       </div>
     </div>
   );

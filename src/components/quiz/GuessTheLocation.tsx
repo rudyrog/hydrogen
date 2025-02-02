@@ -72,7 +72,7 @@ export const GuessTheLocation = ({
             headers: {
               "x-api-key": process.env.NEXT_PUBLIC_API_SECRET_KEY || "",
             },
-          }
+          },
         );
         const data = await response.json();
         const shuffledQuestions = data
@@ -300,7 +300,7 @@ const HiddenPeriodicTable = ({
 
             incrementTimeSpent(
               user.email,
-              (totalTime * 60 - timeRemaining) / 60
+              (totalTime * 60 - timeRemaining) / 60,
             );
           }
         }
@@ -339,7 +339,7 @@ const HiddenPeriodicTable = ({
                 })(
                   element.CPKHexColor.slice(0, 2),
                   element.CPKHexColor.slice(2, 4),
-                  element.CPKHexColor.slice(4, 6)
+                  element.CPKHexColor.slice(4, 6),
                 )
               : element.CPKHexColor || "808080"
           }`,
@@ -355,10 +355,10 @@ const HiddenPeriodicTable = ({
 
   const renderLanthanidesAndActinides = () => {
     const lanthanides = elements.filter(
-      (e) => e.AtomicNumber >= 57 && e.AtomicNumber <= 70
+      (e) => e.AtomicNumber >= 57 && e.AtomicNumber <= 70,
     );
     const actinides = elements.filter(
-      (e) => e.AtomicNumber >= 89 && e.AtomicNumber <= 102
+      (e) => e.AtomicNumber >= 89 && e.AtomicNumber <= 102,
     );
 
     return (
@@ -388,26 +388,8 @@ const HiddenPeriodicTable = ({
   const getGridColumn = (atomicNumber: number): string => {
     if (atomicNumber === 1) return "1";
     if (atomicNumber === 2) return "18";
-
-    if (
-      atomicNumber === 3 ||
-      atomicNumber === 11 ||
-      atomicNumber === 19 ||
-      atomicNumber === 37 ||
-      atomicNumber === 55 ||
-      atomicNumber === 87
-    )
-      return "1";
-    if (
-      atomicNumber === 4 ||
-      atomicNumber === 12 ||
-      atomicNumber === 20 ||
-      atomicNumber === 38 ||
-      atomicNumber === 56 ||
-      atomicNumber === 88
-    )
-      return "2";
-
+    if ([3, 11, 19, 37, 55, 87].includes(atomicNumber)) return "1";
+    if ([4, 12, 20, 38, 56, 88].includes(atomicNumber)) return "2";
     if (atomicNumber >= 5 && atomicNumber <= 10)
       return String(atomicNumber + 8);
     if (atomicNumber >= 13 && atomicNumber <= 18) return String(atomicNumber);
@@ -419,7 +401,6 @@ const HiddenPeriodicTable = ({
       return String(atomicNumber - 68);
     if (atomicNumber >= 113 && atomicNumber <= 118)
       return String(atomicNumber - 100);
-
     if (atomicNumber >= 21 && atomicNumber <= 30)
       return String(atomicNumber - 18);
     if (atomicNumber >= 39 && atomicNumber <= 48)
@@ -428,12 +409,10 @@ const HiddenPeriodicTable = ({
       return String(atomicNumber - 68);
     if (atomicNumber >= 103 && atomicNumber <= 112)
       return String(atomicNumber - 100);
-
     if (atomicNumber >= 57 && atomicNumber <= 70)
       return String(atomicNumber - 56);
     if (atomicNumber >= 89 && atomicNumber <= 102)
       return String(atomicNumber - 88);
-
     return "1";
   };
 
@@ -445,10 +424,8 @@ const HiddenPeriodicTable = ({
     if (atomicNumber <= 54) return "5";
     if (atomicNumber <= 86) return "6";
     if (atomicNumber <= 118) return "7";
-
     if (atomicNumber >= 57 && atomicNumber <= 70) return "9";
     if (atomicNumber >= 89 && atomicNumber <= 102) return "10";
-
     return "1";
   };
 
@@ -461,13 +438,21 @@ const HiddenPeriodicTable = ({
           gridTemplateRows: "repeat(7, 4rem)",
         }}
       >
-        {elements.map((element) => (
-          <ElementCard
-            key={element.AtomicNumber}
-            //@ts-ignore
-            element={element}
-          />
-        ))}
+        {elements
+          .filter(
+            (element) => element.AtomicNumber < 57 || element.AtomicNumber > 70,
+          )
+          .filter(
+            (element) =>
+              element.AtomicNumber < 89 || element.AtomicNumber > 102,
+          )
+          .map((element) => (
+            <ElementCard
+              key={element.AtomicNumber}
+              //@ts-ignore
+              element={element}
+            />
+          ))}
       </div>
       {renderLanthanidesAndActinides()}
     </div>
