@@ -55,7 +55,7 @@ export default function ElementsAlike({
   const [questionGroups, setQuestionGroups] = useState<string[]>([]);
   const [selectedElements, setSelectedElements] = useState<string[]>([]);
   const [currentGroupElements, setCurrentGroupElements] = useState<Element[]>(
-    [],
+    []
   );
   const { user } = useAuth();
   useEffect(() => {
@@ -127,8 +127,8 @@ export default function ElementsAlike({
       ];
       const uniqueQuestions = Array.from(
         new Map(
-          shuffledQuestions.map((q: Element) => [q.AtomicNumber, q]),
-        ).values(),
+          shuffledQuestions.map((q: Element) => [q.AtomicNumber, q])
+        ).values()
       );
       shuffledQuestions = uniqueQuestions
         .sort(() => Math.random() - 0.5)
@@ -144,16 +144,16 @@ export default function ElementsAlike({
 
   function areAllElementsCorrect(
     selectedElements: string[],
-    currentGroupElements: { AtomicNumber: number }[],
+    currentGroupElements: { AtomicNumber: number }[]
   ): boolean {
     const groupAtomicNumbers = new Set(
-      currentGroupElements.map((element) => element.AtomicNumber.toString()),
+      currentGroupElements.map((element) => element.AtomicNumber.toString())
     );
 
     return (
       selectedElements.length === groupAtomicNumbers.size &&
       selectedElements.every((atomicNumber) =>
-        groupAtomicNumbers.has(atomicNumber),
+        groupAtomicNumbers.has(atomicNumber)
       )
     );
   }
@@ -184,7 +184,7 @@ export default function ElementsAlike({
   };
 
   return (
-    <div className="min-h-screen bg-background dark:bg-background py-8">
+    <div className="min-h-screen py-8">
       <Toaster />
       <div className="max-w-6xl mx-auto px-4">
         {isCompleted ? (
@@ -268,17 +268,17 @@ export default function ElementsAlike({
                                   console.log(selectedElements);
                                   setSelectedElements((prev) =>
                                     prev.includes(
-                                      element.AtomicNumber.toString(),
+                                      element.AtomicNumber.toString()
                                     )
                                       ? prev.filter(
                                           (id) =>
                                             id !==
-                                            element.AtomicNumber.toString(),
+                                            element.AtomicNumber.toString()
                                         )
                                       : [
                                           ...prev,
                                           element.AtomicNumber.toString(),
-                                        ],
+                                        ]
                                   );
                                 }
                               }}
@@ -295,7 +295,7 @@ export default function ElementsAlike({
                                         ${
                                           element &&
                                           selectedElements.includes(
-                                            element.AtomicNumber.toString(),
+                                            element.AtomicNumber.toString()
                                           )
                                             ? "fill-green-300 dark:fill-green-800"
                                             : "fill-background dark:fill-background"

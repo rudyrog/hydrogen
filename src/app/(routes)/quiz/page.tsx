@@ -75,7 +75,7 @@ export default function Quiz() {
     }
   };
   const handleGameModeChange = (
-    newGameMode: "classic" | "location" | "elementsAlike",
+    newGameMode: "classic" | "location" | "elementsAlike"
   ) => {
     setGameMode(newGameMode);
   };
@@ -115,7 +115,7 @@ export default function Quiz() {
           each: 0.1,
           ease: "power2.inOut",
         },
-      },
+      }
     )
       .fromTo(
         letterRefs.current,
@@ -130,41 +130,41 @@ export default function Quiz() {
           },
           duration: 0.8,
         },
-        "<0.1",
+        "<0.1"
       )
       .fromTo(
         ".card",
         { opacity: 0, filter: "blur(10px)" },
         { opacity: 1, filter: "blur(0px)", stagger: 0.2, ease: "power2.inOut" },
-        "<0.5",
+        "<0.5"
       )
       .fromTo(
         ".card2",
         { opacity: 0, filter: "blur(10px)" },
         { opacity: 1, filter: "blur(0px)", stagger: 0.2, ease: "power2.inOut" },
-        "1",
+        "1"
       )
       .fromTo(
         ".card3",
         { opacity: 0, filter: "blur(10px)" },
         { opacity: 1, filter: "blur(0px)", stagger: 0.2, ease: "power2.inOut" },
-        "1",
+        "1"
       )
       .fromTo(
         ".time",
         { opacity: 0, y: 50 },
-        { opacity: 1, y: 0, stagger: 0.2, ease: "power2.inOut" },
+        { opacity: 1, y: 0, stagger: 0.2, ease: "power2.inOut" }
       )
       .fromTo(
         ".quiz-btn",
         { opacity: 0, x: -50 },
         { opacity: 1, x: 0, duration: 2, ease: "power2.inOut" },
-        "<0.1",
+        "<0.1"
       );
   }, []);
 
   return (
-    <div className="flex gap-3 p-3 flex-col dark:shadow-none --bg-background pb-5">
+    <div className="flex gap-3 p-3 flex-col dark:shadow-none min-h-screen --bg-background pb-5">
       <Toaster />
       <h1 className="quiz-title flex flex-row md:justify-start justify-center text-3xl sm:text-4xl md:text-5xl lg:text-8xl text-center md:text-start title mt-16 md:mt-20 lg:mt-24 container mx-auto w-full sm:w-11/12 md:w-5/6">
         {["Q", "U", "I", "Z"].map((letter, index) => (
@@ -180,7 +180,7 @@ export default function Quiz() {
       </h1>
       {gameStarted ? (
         gameMode === "classic" ? (
-          <div className="container mx-auto p-2 sm:p-3 md:p-4 w-full sm:w-11/12 md:w-5/6">
+          <div className=" mx-auto p-2 sm:p-3 md:p-4 w-full sm:w-11/12 md:w-5/6">
             <ClassicQuiz
               level={level}
               time={isTimed || isCustom ? time : 200}
@@ -320,7 +320,7 @@ export default function Quiz() {
                 if (isTimed) handleGameModeChange("elementsAlike");
                 else
                   toast(
-                    "This mode is only available for timed quiz! Kindly select 'Time the Quiz'",
+                    "This mode is only available for timed quiz! Kindly select 'Time the Quiz'"
                   );
               }}
             >
@@ -425,8 +425,8 @@ export default function Quiz() {
                             ? _level === "Easy"
                               ? "bg-emerald-400 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent"
                               : _level === "Medium"
-                                ? "bg-yellow-400 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent"
-                                : "bg-red-500 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent"
+                              ? "bg-yellow-400 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent"
+                              : "bg-red-500 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent"
                             : "border border-border/50 dark:border-border/10 dark:border-2 card text-foreground/50 rounded-lg bg-foreground/10 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base"
                         }
                         onClick={() => setCustomLevel(_level)}
@@ -504,8 +504,8 @@ export default function Quiz() {
                           ? _level === "Easy"
                             ? "bg-emerald-400 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent"
                             : _level === "Medium"
-                              ? "bg-yellow-400 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent"
-                              : "bg-red-500 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent"
+                            ? "bg-yellow-400 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent"
+                            : "bg-red-500 text-black transition-all duration-500 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base rounded-md border-2 border-transparent"
                           : "border border-border/50 dark:border-border/10 dark:border-2 card text-foreground/50 rounded-lg bg-foreground/10 px-2 sm:px-3 py-1 text-xs sm:text-sm md:text-base"
                       }
                       onClick={() => handleLevelChange(_level)}

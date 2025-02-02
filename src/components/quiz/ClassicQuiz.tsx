@@ -96,13 +96,15 @@ export default function ClassicQuiz({
     try {
       const max = level === "Easy" ? 10 : level === "Medium" ? 20 : 30;
       const response = await fetch(
-        `/api/v1/getQuestion?min=${customMin ? customMin : 1}&max=${customMax ? customMax : max}`,
+        `/api/v1/getQuestion?min=${customMin ? customMin : 1}&max=${
+          customMax ? customMax : max
+        }`,
         {
           method: "GET",
           headers: {
             "x-api-key": process.env.NEXT_PUBLIC_API_SECRET_KEY || "",
           },
-        },
+        }
       );
       const data = await response.json();
       const shuffledQuestions = data
@@ -126,7 +128,7 @@ export default function ClassicQuiz({
           headers: {
             "x-api-key": process.env.NEXT_PUBLIC_API_SECRET_KEY || "",
           },
-        },
+        }
       );
       const data = await response.json();
       const shuffledQuestions = data
@@ -143,7 +145,7 @@ export default function ClassicQuiz({
 
   const handleChange = (
     index: number,
-    e: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const newValues = [...values];
     newValues[index] = e.target.value.slice(-1);
@@ -156,7 +158,7 @@ export default function ClassicQuiz({
 
   const handleKeyDown = (
     index: number,
-    e: React.KeyboardEvent<HTMLInputElement>,
+    e: React.KeyboardEvent<HTMLInputElement>
   ) => {
     if (e.key === "Backspace" && !values[index] && index > 0) {
       inputRefs.current[index - 1]?.focus();

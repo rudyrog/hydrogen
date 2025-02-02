@@ -169,7 +169,7 @@ export default function Achro() {
               key={column}
               className="p-4 flex flex-col gap-3 rounded-lg"
             >
-              <h2 className="text-xl font-bold mb-2">Column {column}</h2>
+              <h2 className="text-2xl mb-2">Column {column}</h2>
               <ul className="flex flex-col items-start space-y-2">
                 {elementsWithText.map(({ element, text }) =>
                   text != "" || text != null ? (
@@ -178,18 +178,18 @@ export default function Achro() {
                       className="flex justify-center items-center gap-3"
                     >
                       <br />
-                      <li className="border p-2 rounded-md text-center ">
+                      <li className="border-2 border-border/60 p-2 rounded-md text-center ">
                         <span className="font-semibold">{element.Symbol}</span>
                       </li>
                       {element.Name} - {text}
                     </div>
                   ) : (
                     ""
-                  ),
+                  )
                 )}
               </ul>
-              <hr />
-              <div className="p-3">
+              <hr className="border border-border/60" />
+              <div className="p-3 font-[monty]">
                 {/* @ts-ignore*/}
                 {achroAsSentences[column - 1]}
               </div>

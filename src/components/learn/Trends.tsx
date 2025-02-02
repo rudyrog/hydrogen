@@ -145,11 +145,10 @@ export default function Trends() {
             </p>
           </div>
         )}
-      </div>
-
-      <div className="mt-4 relative w-[90vw] overflow-x-scroll">
-        <TrendArrows selectedTrend={selectedTrend} />
-        <PeriodicTable normal={false} half={true} />
+        <div className="mt-4 relative overflow-x-scroll">
+          <TrendArrows selectedTrend={selectedTrend} />
+          <PeriodicTable normal={false} half={true} />
+        </div>
       </div>
     </div>
   );

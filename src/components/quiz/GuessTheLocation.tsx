@@ -64,13 +64,15 @@ export const GuessTheLocation = ({
 
       while (fetchedQuestions.length < noOfQuestions) {
         const response = await fetch(
-          `/api/v1/getQuestion?min=${customMin ? customMin : 1}&max=${customMax ? customMax : max}`,
+          `/api/v1/getQuestion?min=${customMin ? customMin : 1}&max=${
+            customMax ? customMax : max
+          }`,
           {
             method: "GET",
             headers: {
               "x-api-key": process.env.NEXT_PUBLIC_API_SECRET_KEY || "",
             },
-          },
+          }
         );
         const data = await response.json();
         const shuffledQuestions = data
@@ -298,7 +300,7 @@ const HiddenPeriodicTable = ({
 
             incrementTimeSpent(
               user.email,
-              (totalTime * 60 - timeRemaining) / 60,
+              (totalTime * 60 - timeRemaining) / 60
             );
           }
         }
@@ -337,7 +339,7 @@ const HiddenPeriodicTable = ({
                 })(
                   element.CPKHexColor.slice(0, 2),
                   element.CPKHexColor.slice(2, 4),
-                  element.CPKHexColor.slice(4, 6),
+                  element.CPKHexColor.slice(4, 6)
                 )
               : element.CPKHexColor || "808080"
           }`,
@@ -353,10 +355,10 @@ const HiddenPeriodicTable = ({
 
   const renderLanthanidesAndActinides = () => {
     const lanthanides = elements.filter(
-      (e) => e.AtomicNumber >= 57 && e.AtomicNumber <= 70,
+      (e) => e.AtomicNumber >= 57 && e.AtomicNumber <= 70
     );
     const actinides = elements.filter(
-      (e) => e.AtomicNumber >= 89 && e.AtomicNumber <= 102,
+      (e) => e.AtomicNumber >= 89 && e.AtomicNumber <= 102
     );
 
     return (

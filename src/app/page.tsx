@@ -19,16 +19,15 @@ function SimpleCard({
 }) {
   return (
     <div
-      className={`body border ${className} border-border/50 p-3 w-fit sm:p-4 md:p-5 lg:p-6 shadow-lg shadow-foreground/5 bg-background/30 backdrop-blur-md rounded-lg mt-8 sm:mt-10 md:mt-12 lg:mt-16`}
+      className={`body border ${className} border-border/50 p-3 w-fit sm:p-4 md:p-5 lg:p-6 shadow-lg shadow-foreground/5  backdrop-blur-md rounded-lg mt-8 sm:mt-10 md:mt-12 lg:mt-16 flex flex-col`}
     >
-      <div className="text-3xl font-bold subtitle">{title}</div>
-      {desc}
+      <div className="text-3xl tracking-wider font-[monty]">{title}</div>
+      <div> {desc}</div>
     </div>
   );
 }
 
 export default function Home() {
-  const letterRefs = useRef<(HTMLParagraphElement | null)[]>([]);
   const theme = useTheme().theme;
   const [color, setColor] = useState<string>("#ffffff");
   const [isMobile, setIsMobile] = useState(true);
@@ -51,8 +50,6 @@ export default function Home() {
   useEffect(() => {
     if (!isMobile) {
       gsap.registerPlugin(ScrollTrigger);
-      letterRefs.current = letterRefs.current.slice(0, 8);
-
       const tl = gsap.timeline({
         defaults: {
           ease: "elastic.out(1, 0.8)",
@@ -60,86 +57,55 @@ export default function Home() {
       });
 
       tl.fromTo(
-        letterRefs.current,
+        ".description",
         {
-          y: 120,
+          filter: "blur(10px)",
+          y: 80,
           opacity: 0,
-          rotateX: -80,
-          scale: 0.8,
         },
         {
-          y: 0,
           opacity: 1,
-          rotateX: 0,
-          scale: 1,
-          stagger: {
-            each: 0.1,
-            ease: "power2.inOut",
-          },
+          filter: "blur(0px)",
+          y: 0,
+          duration: 3,
         },
+        "<0.1"
       )
-        .fromTo(
-          letterRefs.current,
-          {
-            filter: "blur(10px)",
-          },
-          {
-            filter: "blur(0px)",
-            stagger: {
-              each: 0.08,
-              from: "start",
-            },
-            duration: 0.8,
-          },
-          "<0.1",
-        )
-        .fromTo(
-          ".description",
-          {
-            filter: "blur(10px)",
-            y: 80,
-          },
-          {
-            filter: "blur(0px)",
-            y: 0,
-            duration: 3,
-          },
-          "<0.1",
-        )
         .fromTo(
           ".particles",
           {
             filter: "blur(10px)",
             y: 80,
+            opacity: 0,
           },
           {
+            opacity: 1,
             filter: "blur(0px)",
             y: 0,
             duration: 3,
           },
-          "<0.5",
+          "<0.1"
         )
         .fromTo(
-          [".card1", ".card2", ".card3", ".card4"],
+          [".card1", ".card2", ".card3", ".card4", ".button"],
           {
             filter: "blur(10px)",
             y: 80,
+            opacity: 0,
           },
           {
+            opacity: 1,
             filter: "blur(0px)",
             y: 0,
             duration: 3,
-            stagger: {
-              each: 0.2,
-            },
           },
-          "<0.5",
+          "<0.5"
         );
     }
   }, [isMobile]);
 
   return (
-    <main className="relative w-full h-[80vh] bg-background">
+    <main className="relative w-full h-full --bg-background">
       {!isMobile && (
         <Particles
           className="particles fixed md:block hidden inset-0 w-full h-full animate-in"
@@ -149,7 +115,7 @@ export default function Home() {
           refresh
         />
       )}
-      <section className="relative z-10 flex flex-col justify-center items-center w-full min-h-[180vh] px-4 sm:px-6 md:px-8 lg:px-12">
+      <section className="relative z-10 flex flex-col justify-center items-center w-full min-h-[200vh] px-4 sm:px-6 md:px-8 lg:px-12">
         <AnimatedLetters text="HYDROGEN" isMobile={isMobile} />
         <div className="description max-w-[95%] sm:max-w-[90%] md:max-w-[80%] lg:max-w-[65%] border border-border/50 p-3 sm:p-4 md:p-5 lg:p-6 shadow-lg shadow-foreground/5 bg-background/30 backdrop-blur-md rounded-lg mt-8 sm:mt-10 md:mt-12 lg:mt-16">
           <p className="text-center text-foreground text-xl sm:text-sm md:text-base lg:text-lg">
@@ -160,7 +126,7 @@ export default function Home() {
         </div>
         <div className="relative md:w-4/5 flex flex-col items-center justify-center gap-3 mx-auto my-10 md:my-0  min-h-screen">
           <Link href="/learn">
-            <InteractiveHoverButton className="text-xl">
+            <InteractiveHoverButton className="text-xl font-[monty] button">
               Start Learning
             </InteractiveHoverButton>{" "}
           </Link>

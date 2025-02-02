@@ -58,7 +58,7 @@ b::before {
 }
 
 .name-link {
-  @apply mx-0.5 text-base;
+  @apply text-base ;
   color: var(--link-color);
   transition: all 0.3s;
   letter-spacing: 0.1em;
@@ -124,7 +124,7 @@ b::before {
   }
 
   .dark {
-    --background: 0 0% 5%;
+    --background: 220 15% 15%;
     --foreground: 0 0% 100%;
     --card: 0 0% 90%;
     --card-foreground: 0 0% 100%;

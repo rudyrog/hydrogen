@@ -119,7 +119,7 @@ export default function Learn() {
           each: 0.1,
           ease: "power2.inOut",
         },
-      },
+      }
     )
       .fromTo(
         letterRefs.current,
@@ -134,7 +134,7 @@ export default function Learn() {
           },
           duration: 0.8,
         },
-        "<0.1",
+        "<0.1"
       )
       .fromTo(
         ".learn",
@@ -152,7 +152,7 @@ export default function Learn() {
           rotateX: 0,
           scale: 1,
           ease: "power2.inOut",
-        },
+        }
       );
   }, []);
 
@@ -170,16 +170,15 @@ export default function Learn() {
           </p>
         ))}
       </h1>
-      <div className="text-xl p-5">
-        Before we look at some tips to remember the table, you should know
-        following,
-      </div>
       <div className="learn flex flex-col gap-2 p-5 text-xl">
         <div className="flex flex-col gap-3 mb-2">
           <b className="text-4xl font-normal font-[Monty] tracking-tight w-fit">
             Groups
           </b>
           <div>
+            <p>
+              Before the tips you should be familiar with the groups and trends.
+            </p>
             <p>
               There's 18 Groups. Each group represents a set of elements with
               the same properties.
@@ -218,30 +217,29 @@ export default function Learn() {
               </p>
             </div>
           )}
-        </div>
-
-        <div className="w-[90vw] overflow-x-scroll">
-          <PeriodicTable
-            normal={false}
-            half={true}
-            highlighted={
-              selectedGroup !== null ? groups[selectedGroup].highlighted : []
-            }
-          />
+          <div className=" overflow-x-scroll">
+            <PeriodicTable
+              normal={false}
+              half={true}
+              highlighted={
+                selectedGroup !== null ? groups[selectedGroup].highlighted : []
+              }
+            />
+          </div>
         </div>
 
         <p className="text-pretty">{groups[selectedGroup].details}</p>
-        <b className="text-4xl font-normal font-[Monty] tracking-tight w-fit mt-5">
+        <b className="text-4xl font-normal font-[Monty] tracking-tight w-fit mt-10">
           Trends
         </b>
         <Trends />
-        <b className="text-4xl font-normal font-[Monty] tracking-tight w-fit">
-          Lets learn the periodic table!
+        <b className="text-4xl font-normal font-[Monty] tracking-tight w-fit mt-10">
+          Memorize
         </b>
-        <div className="container  my-5 w-[80%] mx-auto">
+        <div className="container w-[80%]">
           <div className="text-xl">
             Following are few mnemonics in Hindi/English to remember specific
-            clumns of the periodic table
+            columns of the periodic table
           </div>
           <Achro />
         </div>
@@ -249,7 +247,9 @@ export default function Learn() {
           We encourage you take quizes! Practice makes one perfect!
         </div>
         <Link href={"/quiz"}>
-          <InteractiveHoverButton>Explore Quizes</InteractiveHoverButton>
+          <InteractiveHoverButton className="font-[monty]">
+            Explore Quizes
+          </InteractiveHoverButton>
         </Link>
       </div>
     </div>

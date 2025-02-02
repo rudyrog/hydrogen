@@ -42,36 +42,38 @@ interface AnimatedLettersProps {
 const defaultAnimationConfig: AnimationConfig = {
   desktop: {
     initial: {
-      y: 120,
+      y: 100,
       opacity: 0,
-      rotateX: -80,
-      scale: 0.8,
+      rotateX: -60,
+      scale: 0.9,
     },
     animate: {
       y: 0,
       opacity: 1,
       rotateX: 0,
       scale: 1,
-      ease: "elastic.out(1, 0.8)",
+      ease: "elastic.out(1.2, 0.8)",
+      duration: 1.2,
     },
     stagger: {
-      each: 0.1,
-      ease: "power2.inOut",
+      each: 0.08,
+      ease: "power3.inOut",
     },
   },
   mobile: {
     initial: {
-      y: 50,
+      y: 40,
       opacity: 0,
     },
     animate: {
       y: 0,
       opacity: 1,
-      ease: "power2.out",
+      ease: "power3.out",
+      duration: 0.8,
     },
     stagger: {
-      each: 0.05,
-      ease: "power2.inOut",
+      each: 0.08,
+      ease: "power3.inOut",
     },
   },
 };
@@ -109,30 +111,23 @@ const AnimatedLetters = ({
       const config = isMobile
         ? animationConfig.mobile
         : animationConfig.desktop;
+
       const tl = gsap.timeline();
 
       // Main animation
-      tl.fromTo(letterRefs.current, config.initial || {}, {
-        ...(config.animate || {}),
-        stagger: config.stagger || {},
-      });
+      tl.fromTo(
+        letterRefs.current,
+        { ...config.initial },
+        { ...config.animate, stagger: config.stagger }
+      );
 
       // Optional blur effect for desktop
       if (!isMobile && withBlur) {
         tl.fromTo(
           letterRefs.current,
-          {
-            filter: "blur(10px)",
-          },
-          {
-            filter: "blur(0px)",
-            stagger: {
-              each: 0.08,
-              from: "start",
-            },
-            duration: 0.8,
-          },
-          "<0.1",
+          { filter: "blur(12px)" },
+          { filter: "blur(0px)", stagger: { each: 0.1, from: "start" } },
+          "<0.05"
         );
       }
     };
@@ -153,7 +148,7 @@ const AnimatedLetters = ({
           key={index}
           // @ts-ignore
           ref={(el) => (letterRefs.current[index] = el)}
-          className={`${letterSpacingClasses}  transition-colors duration-300 cursor-default select-none ${letterClassName}`}
+          className={`${letterSpacingClasses} transition-colors duration-300 cursor-default select-none ${letterClassName}`}
         >
           {letter}
         </span>

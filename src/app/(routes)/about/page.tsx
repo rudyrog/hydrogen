@@ -7,6 +7,14 @@ export default function About() {
   const letterRefs = useRef<(HTMLParagraphElement | null)[]>([]);
   const contentRef = useRef(null);
   const imagesRef = useRef<(HTMLImageElement | null)[]>([]);
+  const teamMembersRef = useRef(null);
+
+  const teamMembers = [
+    { name: "Rudra Mehta", github: "https://github.com/rudyrog" },
+    { name: "Parv Shah", github: "https://github.com/parv141206" },
+    { name: "Devansh Jani", github: "https://github.com/djman323" },
+    { name: "Hrishit Patel", github: "https://github.com/" },
+  ];
 
   useEffect(() => {
     letterRefs.current = letterRefs.current.slice(0, 5);
@@ -35,7 +43,7 @@ export default function About() {
           each: 0.1,
           ease: "power2.inOut",
         },
-      },
+      }
     )
       .fromTo(
         letterRefs.current,
@@ -50,7 +58,7 @@ export default function About() {
           },
           duration: 0.8,
         },
-        "<0.1",
+        "<0.1"
       )
       .fromTo(
         contentRef.current,
@@ -68,9 +76,8 @@ export default function About() {
           duration: 1,
           ease: "power3.out",
         },
-        "-=0.5",
+        "-=0.5"
       )
-
       .fromTo(
         imagesRef.current,
         {
@@ -90,159 +97,143 @@ export default function About() {
           duration: 1.2,
           ease: "power2.out",
         },
-        "-=0.8",
+        "-=0.8"
+      )
+      .fromTo(
+        teamMembersRef.current,
+        {
+          opacity: 0,
+          y: 30,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power2.out",
+        },
+        "-=0.5"
       );
   }, []);
 
   return (
-    <div className="--bg-background">
+    <div className="--bg-background min-h-screen">
       <div className="flex gap-2 flex-col container mx-auto p-3 w-full sm:w-5/6 md:w-5/6 lg:w-5/6">
-        <h1 className="title flex flex-row justify-center md:justify-start text-3xl md:text-7xl lg:text-8xl pt-10 sm:pt-15 md:pt-20">
+        <h1 className="title flex flex-row justify-center md:justify-start text-5xl md:text-7xl lg:text-8xl pt-10 sm:pt-15 md:pt-20">
           {["A", "B", "O", "U", "T"].map((letter, index) => (
             <p
               key={index}
               //@ts-ignore
               ref={(el) => (letterRefs.current[index] = el)}
-              className="mx-1 sm:mx-2 md:mx-3 transition-colors duration-300 cursor-default select-none"
+              className="mx-1 sm:mx-2 md:mx-3 transition-colors duration-300 cursor-default select-none text-foreground"
             >
               {letter}
             </p>
           ))}
         </h1>
 
-        <div className="flex flex-col md:flex-row gap-3  w-full">
+        <div className="flex flex-col md:flex-row gap-3 w-full">
           <div
             ref={contentRef}
-            className="w-full md:w-1/2 border border-border/50 p-3 sm:p-4 md:p-5 rounded-md hover:shadow-lg"
+            className="w-full md:w-1/2 rounded-2xl p-6 sm:p-4 md:p-5 transition-all duration-300 bg-background border border-border/30 hover:shadow-lg"
           >
-            <h2 className="text-lg sm:text-xl font-serif">Chemistry</h2>
-            <div className="w-full">
-              <p className="text-sm sm:text-base">
-                It is a branch of science that studies the properties and
-                behavior of matter, including the composition, structure, and
-                behavior of atoms, molecules, and ions.
-              </p>
-            </div>
-            <h2 className="text-lg sm:text-xl font-serif mt-2">Development</h2>
-            <div className="text-sm sm:text-base">
-              This is a project created by{" "}
-              <a
-                href="https://github.com/rudyrog"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="name-link"
-              >
-                Rudra Mehta,
-              </a>{" "}
-              <a
-                href="https://github.com/parv141206"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="name-link"
-              >
-                Parv Shah,
-              </a>{" "}
-              <a
-                href="https://github.com/djman323"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="name-link"
-              >
-                Devansh Jani{" "}
-              </a>
-              and{" "}
-              <a
-                href="https://github.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="name-link"
-              >
-                Hrishit Patel
-              </a>
-              .
-            </div>
-            <p className="text-sm sm:text-base">
-              Support our project on{" "}
-              <a
-                href="https://github.com/rudyrog/periodic-table"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="name-link"
-              >
-                GitHub
-              </a>
-              .
-            </p>
-            <div className="mt-2">
-              <p className="font-serif text-base sm:text-lg">
-                Technologies Used
-              </p>
-              <div className="space-y-4 mt-2">
-                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <li className="p-3 border rounded-lg hover:bg-gray-100 transition-all hover:shadow-md">
+            <h2 className="text-lg sm:text-xl font-[monty] text-foreground border-b border-border/50 mb-4 w-fit">
+              Team Members
+            </h2>
+
+            <div ref={teamMembersRef}>
+              <div>
+                {teamMembers.map((member, index) => (
+                  <div key={index} className="group relative">
                     <a
-                      href="https://nextjs.org/"
+                      href={member.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="name-link"
+                      className="block"
                     >
-                      <h3 className="font-bold">Next.js</h3>
-                      <p className="text-sm text-gray-600">
-                        React framework for production
-                      </p>
+                      <div className="flex items-center space-x-4 group-hover:translate-x-2 transition-transform duration-300">
+                        <div className="flex flex-row gap-2 items-center">
+                          <p>~</p>
+                          <p className="text-base sm:text-lg text-foreground line-clamp-1">
+                            {member.name}
+                          </p>
+                          <p className="text-xs sm:text-sm text-foreground opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            /github
+                          </p>
+                        </div>
+                      </div>
                     </a>
-                  </li>
-                  <li className="p-3 border rounded-lg hover:bg-gray-100 transition-all hover:shadow-md">
-                    <a
-                      href="https://tailwindcss.com/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="name-link"
-                    >
-                      <h3 className="font-bold">TailwindCSS</h3>
-                      <p className="text-sm text-gray-600">
-                        Utility-first CSS framework
-                      </p>
-                    </a>
-                  </li>
-                  <li className="p-3 border rounded-lg hover:bg-gray-100 transition-all hover:shadow-md">
-                    <a
-                      href="https://www.typescriptlang.org/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="name-link"
-                    >
-                      <h3 className="font-bold">TypeScript</h3>
-                      <p className="text-sm text-gray-600">
-                        Type-safe JavaScript
-                      </p>
-                    </a>
-                  </li>
-                  <li className="p-3 border rounded-lg hover:bg-gray-100 transition-all hover:shadow-md">
-                    <a
-                      href="https://gsap.com/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="name-link"
-                    >
-                      <h3 className="font-bold">GSAP</h3>
-                      <p className="text-sm text-gray-600">
-                        Professional animation library
-                      </p>
-                    </a>
-                  </li>
-                </ul>
+                  </div>
+                ))}
               </div>
+            </div>
+            <div className="space-y-4 mt-4">
+              <h2 className="text-lg sm:text-xl font-[monty] text-foreground border-b border-border/50 w-fit">
+                Tech Stack
+              </h2>
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <li className="p-3 bg-background rounded-2xl shadow-[0_4px_30px_rgba(0,0,0,0.1)] backdrop-blur-[7.2px] hover:bg-background transition-all group dark:border dark:border-border/30">
+                  <a
+                    href="https://nextjs.org/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="name-link"
+                  >
+                    <h3 className="text-foreground text-lg">Next.js</h3>
+                    <p className="text-sm text-foreground group-hover:text-foreground transition-colors">
+                      React framework for production
+                    </p>
+                  </a>
+                </li>
+                <li className="p-3 bg-background rounded-2xl shadow-[0_4px_30px_rgba(0,0,0,0.1)] backdrop-blur-[7.2px] hover:bg-background transition-all group dark:border dark:border-border/30">
+                  <a
+                    href="https://tailwindcss.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="name-link"
+                  >
+                    <h3 className="text-foreground text-lg">Tailwind Css</h3>
+                    <p className="text-sm text-foreground group-hover:text-foreground transition-colors">
+                      Utility-first CSS framework
+                    </p>
+                  </a>
+                </li>
+                <li className="p-3 bg-background rounded-2xl shadow-[0_4px_30px_rgba(0,0,0,0.1)] backdrop-blur-[7.2px] hover:bg-background transition-all group dark:border dark:border-border/30">
+                  <a
+                    href="https://www.typescriptlang.org/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="name-link"
+                  >
+                    <h3 className="text-foreground text-lg">Typescript</h3>
+                    <p className="text-sm text-foreground group-hover:text-foreground transition-colors">
+                      Type-safe JavaScript
+                    </p>
+                  </a>
+                </li>
+                <li className="p-3 bg-background rounded-2xl shadow-[0_4px_30px_rgba(0,0,0,0.1)] backdrop-blur-[7.2px] hover:bg-background transition-all group dark:border dark:border-border/30">
+                  <a
+                    href="https://gsap.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="name-link"
+                  >
+                    <h3 className="text-foreground text-lg">Gsap</h3>
+                    <p className="text-sm text-foreground group-hover:text-foreground transition-colors">
+                      Professional animation library
+                    </p>
+                  </a>
+                </li>
+              </ul>
             </div>
           </div>
 
-          <div className="w-fit hidden md:flex md:flex-row justify-evenly md:justify-start gap-2 mt-4 md:mt-0 rounded-md hover:shadow-lg">
+          <div className="w-fit hidden md:flex md:flex-row justify-evenly md:justify-start gap-2 mt-4 md:mt-0 rounded-md">
             <Image
               width={370}
               height={190}
               src="/images/mercury.jpg"
               alt="Mercury"
-              className="w-full md:w-auto border border-border/30 mb-2 md:mb-0"
+              className="w-full md:w-auto border border-border/30 mb-2 md:mb-0 rounded-lg hover:shadow-lg"
               //@ts-ignore
               ref={(el) => (imagesRef.current[0] = el as HTMLImageElement)}
             />
