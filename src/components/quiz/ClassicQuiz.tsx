@@ -1,5 +1,4 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
-//@ts-ignore
 import { useAuth } from "@/contexts/AuthContext";
 import {
   incrementClassicQuizCompleted,
@@ -7,7 +6,7 @@ import {
   incrementPoints,
 } from "@/lib/firebase/profileFunctions";
 import { Level } from "@/types/levels";
-import { Trophy, XCircle } from "lucide-react";
+import { Trophy } from "lucide-react";
 import { useTheme } from "next-themes";
 import { InteractiveHoverButton } from "../ui/interactive-hover-button";
 import { Element } from "@/types/element";
@@ -39,6 +38,7 @@ export default function ClassicQuiz({
   const [badEnding, setBadEnding] = useState(false);
   const [totalQuestionsAnswered, setTotalQuestionsAnswered] = useState(0);
   const [isTimelessMode, setIsTimelessMode] = useState(time > 199);
+  const [progress, setProgress] = useState(0);
   const { user } = useAuth();
   const theme = useTheme().theme;
 
@@ -77,6 +77,15 @@ export default function ClassicQuiz({
     }
   }, [isLoading, isCompleted, isTimelessMode]);
 
+  // Update progress when question changes
+  useEffect(() => {
+    if (currentQuestion === 1) {
+      setProgress(0);
+    } else {
+      setProgress(((currentQuestion - 1) / noOfQuestions) * 100);
+    }
+  }, [currentQuestion, noOfQuestions]);
+
   useEffect(() => {
     if (questions.length > 0 && currentQuestion <= questions.length) {
       const questionNameLength = questions[currentQuestion - 1].Name.length;
@@ -84,7 +93,6 @@ export default function ClassicQuiz({
       setValues(Array(questionNameLength).fill(""));
       setIsLoading(false);
 
-      // Focus on first input after values are reset
       setTimeout(() => {
         inputRefs.current[0]?.focus();
       }, 0);
@@ -109,7 +117,7 @@ export default function ClassicQuiz({
           headers: {
             "x-api-key": process.env.NEXT_PUBLIC_API_SECRET_KEY || "",
           },
-        },
+        }
       );
       const data = await response.json();
       const shuffledQuestions = data
@@ -133,13 +141,12 @@ export default function ClassicQuiz({
           headers: {
             "x-api-key": process.env.NEXT_PUBLIC_API_SECRET_KEY || "",
           },
-        },
+        }
       );
       const data = await response.json();
       const shuffledQuestions = data
         .sort(() => 0.5 - Math.random())
         .slice(0, noOfQuestions);
-      console.log(shuffledQuestions);
       setQuestions(shuffledQuestions);
       setCurrentQuestion(1);
       setNoOfHints(1);
@@ -150,7 +157,7 @@ export default function ClassicQuiz({
 
   const handleChange = (
     index: number,
-    e: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const newValues = [...values];
     newValues[index] = e.target.value.slice(-1);
@@ -163,7 +170,7 @@ export default function ClassicQuiz({
 
   const handleKeyDown = (
     index: number,
-    e: React.KeyboardEvent<HTMLInputElement>,
+    e: React.KeyboardEvent<HTMLInputElement>
   ) => {
     if (e.key === "Backspace" && !values[index] && index > 0) {
       inputRefs.current[index - 1]?.focus();
@@ -218,128 +225,173 @@ export default function ClassicQuiz({
   };
 
   if (isLoading) {
-    return <div className="p-3">Loading...</div>;
+    return (
+      <div className="w-full min-h-[50vh] flex items-center justify-center">
+        <div className="text-lg">Loading...</div>
+      </div>
+    );
   }
+
   return (
-    <div className="p-3">
+    <div className="">
       {isCompleted ? (
-        <div className="cmp-txt text-3xl md:h-1/2 md:w-1/2 p-4 gap-2">
-          <div className="text-lg">
-            {badEnding ? (
-              <div className="flex flex-col items-center justify-center gap-8 p-8 text-center rounded-sm shadow-lg border border-foreground/20">
-                <div className="flex flex-row items-center gap-4">
-                  <p className="text-6xl tracking-tighter text-foreground">
-                    You Lose!
-                  </p>
-                </div>
-                <p className="text-xl text-foreground/50">
+        <div className="w-full max-w-2xl">
+          {badEnding ? (
+            <div className="flex flex-col items-center justify-center p-6 md:p-8 rounded-lg shadow-lg border border-foreground/20 bg-background/95 backdrop-blur-sm">
+              <div className="flex flex-col items-center gap-6">
+                <p className="text-5xl md:text-7xl font-bold tracking-tighter text-foreground animate-bounce">
+                  You Lose!
+                </p>
+                <p className="text-lg md:text-xl text-foreground/60 italic">
                   Almost had it? Challenge yourself again!
                 </p>
                 <InteractiveHoverButton
                   onClick={() => setGameStarted(false)}
-                  className="quiz-btn subtitle font-light w-fit mt-3 text-lg"
+                  className="px-6 py-3 rounded-full bg-background hover:bg-foreground/10 transition-all duration-200"
                 >
-                  Choose Quiz!
+                  Choose New Quiz
                 </InteractiveHoverButton>
               </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center gap-8 p-8 text-center rounded-sm shadow-lg border border-foreground/20">
-                <div className="flex flex-row items-center justify-center gap-4">
-                  <Trophy className="w-10 h-10 text-yellow-300" />
-                  <p className="text-6xl tracking-tighter text-foreground">
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center p-6 md:p-8 rounded-lg shadow-lg border border-foreground/20 bg-background/95 backdrop-blur-sm">
+              <div className="flex flex-col items-center gap-6">
+                <div className="flex items-center gap-4">
+                  <Trophy className="w-12 h-12 md:w-16 md:h-16 text-yellow-300 animate-pulse" />
+                  <p className="text-5xl md:text-7xl font-bold tracking-tighter text-foreground">
                     You Win!
                   </p>
                 </div>
-                <p className="text-xl text-foreground/50">
+                <p className="text-lg md:text-xl text-foreground/60 italic">
                   Congratulations on your victory! Ready for another challenge?
                 </p>
                 <InteractiveHoverButton
                   onClick={() => setGameStarted(false)}
-                  className="quiz-btn subtitle font-light w-fit mt-3 text-lg"
+                  className="px-6 py-3 rounded-full bg-background hover:bg-foreground/10 transition-all duration-200"
                 >
-                  Choose Quiz!
+                  Choose New Quiz
                 </InteractiveHoverButton>
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       ) : (
-        <div className="border border-foreground/20 md:h-1/2 md:w-1/2 p-4 flex flex-col items-center justify-center bg-background/70">
-          <div className="text-2xl text-center font-medium p-2 flex flex-col items-center justify-center gap-1">
+        <div className="w-full max-w-2xl">
+          <div className="rounded-lg border border-foreground/20 p-4 md:p-8 bg-background/95 backdrop-blur-sm">
             {!isTimelessMode && (
-              <div className="text-xl font-bold">
-                {formatTime(timeRemaining)}
+              <div className="mb-6">
+                <div className="flex justify-between text-md mb-2">
+                  <span>Classic Mode Progress</span>
+                  <span>{Math.round(progress)}%</span>
+                </div>
+                <div className="w-full h-2 bg-foreground/10 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-foreground/30 rounded-full transition-all duration-500 ease-out"
+                    style={{
+                      width: `${progress}%`,
+                    }}
+                  />
+                </div>
               </div>
             )}
-            Classic{" "}
-            <p className="text-sm text-foreground/60">
-              ({!isTimelessMode ? `${currentQuestion} of ${noOfQuestions}` : ""}
-              )
-            </p>
-            {isTimelessMode && (
-              <p className="text-sm text-foreground/60">
-                Total Questions: {totalQuestionsAnswered}
-              </p>
-            )}
-          </div>
-          <div className="flex items-center justify-center gap-2 p-3 border border-foreground/20 text-center md:text-3xl w-fit">
-            {values.map((value, index) => (
-              <input
-                key={index}
-                //@ts-ignore
-                ref={(el) => (inputRefs.current[index] = el)}
-                type="text"
-                value={value}
-                maxLength={1}
-                onChange={(e) => handleChange(index, e)}
-                onKeyDown={(e) => handleKeyDown(index, e)}
-                className={`md:w-10 w-6 h-14 text-center text-xl bg-background/0 ${
-                  value ? "border-none" : "border-b-2 border-foreground/30"
-                } outline-none focus:border-b-2 focus:border-foreground`}
-              />
-            ))}
-          </div>
-          <div className="p-3 text-lg text-foreground/70">Hints!</div>
-          <div className="flex justify-between gap-10 md:w-2/3">
-            <div className="flex flex-col justify-center items-center gap-2">
-              <div className="rounded-full border border-foreground/20 flex items-center justify-center p-3 w-16 h-16">
-                {noOfHints >= 1
-                  ? questions[currentQuestion - 1].AtomicNumber
-                  : "AN"}
-              </div>
-              {noOfHints >= 1 ? "AtomicNo" : ""}
+            <div className="flex flex-col items-center text-center mb-6 md:mb-8">
+              {!isTimelessMode && (
+                <div className="text-lg md:text-xl flex flex-col gap-4">
+                  {formatTime(timeRemaining)}
+                  <div className="font-[monty] text-4xl md:text-6xl flex items-center justify-center">
+                    {questions[currentQuestion - 1]?.AtomicNumber}
+                  </div>
+                </div>
+              )}
             </div>
 
-            <div className="flex flex-col justify-center items-center gap-2">
-              <div className="rounded-full border border-foreground/20 flex items-center justify-center p-3 w-16 h-16 ">
-                {noOfHints >= 2
-                  ? questions[currentQuestion - 1].StandardState
-                  : "?"}
+            <div className="flex flex-col items-center gap-6 md:gap-8">
+              <div className="w-full overflow-x-auto py-2">
+                <div
+                  className={`flex items-center justify-center gap-2 md:gap-3 min-w-min 
+                  ${
+                    inputLength > 12
+                      ? "scale-75 md:scale-90"
+                      : inputLength > 8
+                      ? "scale-90 md:scale-95"
+                      : ""
+                  }`}
+                >
+                  {values.map((value, index) => (
+                    <input
+                      key={index}
+                      //@ts-ignore
+                      ref={(el) => (inputRefs.current[index] = el)}
+                      type="text"
+                      value={value}
+                      maxLength={1}
+                      onChange={(e) => handleChange(index, e)}
+                      onKeyDown={(e) => handleKeyDown(index, e)}
+                      className={`w-7 h-9 md:w-12 md:h-14 text-xl md:text-2xl text-center transition-all duration-75 bg-transparent
+                        ${
+                          value
+                            ? "border-b-2 border-foreground"
+                            : "border-b-2 border-foreground/20"
+                        } 
+                        outline-none focus:border-foreground/50 transition-all duration-200`}
+                    />
+                  ))}
+                </div>
               </div>
-              {noOfHints >= 1 ? "State" : ""}
-            </div>
-            <div className="flex flex-col justify-center items-center gap-2">
-              <div className="rounded-full border border-foreground/20 flex items-center justify-center p-3 w-16 h-16">
-                {noOfHints >= 3 ? questions[currentQuestion - 1].Symbol : "?"}
+
+              <div className="w-full">
+                <h3 className="font-[monty] text-lg md:text-xl text-center mb-4">
+                  Hints
+                </h3>
+                <div className="flex justify-center gap-4 md:gap-8">
+                  {[
+                    {
+                      value:
+                        noOfHints >= 2
+                          ? questions[currentQuestion - 1].StandardState
+                          : "?",
+                      label: noOfHints >= 1 ? "State" : "???",
+                    },
+                    {
+                      value:
+                        noOfHints >= 3
+                          ? questions[currentQuestion - 1].Symbol
+                          : "?",
+                      label: noOfHints >= 1 ? "Symbol" : "???",
+                    },
+                  ].map((hint, index) => (
+                    <div
+                      key={index}
+                      className="flex flex-col items-center gap-2"
+                    >
+                      <div className="rounded-lg border border-foreground/20 w-16 h-14 md:w-20 md:h-18 flex items-center justify-center text-base md:text-lg font-medium bg-background/50 hover:bg-background/70 transition-all duration-200">
+                        {hint.value}
+                      </div>
+                      <span className="text-xs md:text-sm text-foreground/60">
+                        {hint.label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
-              {noOfHints >= 1 ? "Symbol" : ""}
+
+              <div className="flex gap-3 md:gap-4">
+                <InteractiveHoverButton
+                  onClick={() => setNoOfHints(noOfHints + 1)}
+                  className="px-4 md:px-6 py-2 text-sm md:text-base rounded-full bg-background hover:bg-foreground/10 transition-all duration-200 border border-border/50"
+                >
+                  Reveal Hint
+                </InteractiveHoverButton>
+                {isTimelessMode && (
+                  <InteractiveHoverButton
+                    onClick={handleQuit}
+                    className="px-4 md:px-6 py-2 text-sm md:text-base rounded-full bg-background hover:bg-foreground/10 transition-all duration-200 flex items-center gap-2"
+                  >
+                    Quit Game
+                  </InteractiveHoverButton>
+                )}
+              </div>
             </div>
-          </div>
-          <div className="flex gap-4 items-center justify-center">
-            <InteractiveHoverButton
-              onClick={() => setNoOfHints(noOfHints + 1)}
-              className="btn-pr font-light w-fit mt-3 text-lg border border-foreground/20"
-            >
-              Add Hint
-            </InteractiveHoverButton>
-            {isTimelessMode && (
-              <InteractiveHoverButton
-                onClick={handleQuit}
-                className="btn-secondary font-light w-fit mt-3 text-lg border border-foreground/20 flex items-center gap-2"
-              >
-                Quit
-              </InteractiveHoverButton>
-            )}
           </div>
         </div>
       )}
