@@ -36,7 +36,7 @@ export default function PTable() {
           each: 0.1,
           ease: "power2.inOut",
         },
-      },
+      }
     )
       .fromTo(
         letterRefs.current,
@@ -51,7 +51,7 @@ export default function PTable() {
           },
           duration: 0.8,
         },
-        "<0.1",
+        "<0.1"
       )
       .fromTo(
         ".p-table",
@@ -69,7 +69,7 @@ export default function PTable() {
           duration: 1,
           ease: "power3.out",
         },
-        "-=0.5",
+        "-=0.5"
       );
   }, []);
   return (

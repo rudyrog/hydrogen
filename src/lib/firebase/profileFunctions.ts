@@ -59,12 +59,12 @@ export async function initializeUserProfile(email: string) {
 
 export async function incrementClassicQuizCompleted(
   email: string,
-  level: Level,
+  level: Level
 ) {
   try {
     const profileQuery = query(
       collection(db, "profile"),
-      where("email", "==", email),
+      where("email", "==", email)
     );
     const querySnapshot = await getDocs(profileQuery);
 
@@ -87,12 +87,12 @@ export async function incrementClassicQuizCompleted(
     });
 
     console.log(
-      `Classic quiz completion incremented for ${email} (Level: ${level})`,
+      `Classic quiz completion incremented for ${email} (Level: ${level})`
     );
   } catch (error) {
     console.error(
       "[FIREBASE]: Error incrementing classic quiz completion:",
-      error,
+      error
     );
     throw new Error("Unable to increment classic quiz completion");
   }
@@ -100,12 +100,12 @@ export async function incrementClassicQuizCompleted(
 
 export async function incrementGuessTheLocationCompleted(
   email: string,
-  level: Level,
+  level: Level
 ) {
   try {
     const profileQuery = query(
       collection(db, "profile"),
-      where("email", "==", email),
+      where("email", "==", email)
     );
     const querySnapshot = await getDocs(profileQuery);
 
@@ -128,24 +128,24 @@ export async function incrementGuessTheLocationCompleted(
     });
 
     console.log(
-      `Guess the location completion incremented for ${email} (Level: ${level})`,
+      `Guess the location completion incremented for ${email} (Level: ${level})`
     );
   } catch (error) {
     console.error(
       "[FIREBASE]: Error incrementing guess the location completion:",
-      error,
+      error
     );
     throw new Error("Unable to increment guess the location completion");
   }
 }
 export async function incrementElementsAlikeCompleted(
   email: string,
-  level: Level,
+  level: Level
 ) {
   try {
     const profileQuery = query(
       collection(db, "profile"),
-      where("email", "==", email),
+      where("email", "==", email)
     );
     const querySnapshot = await getDocs(profileQuery);
 
@@ -168,12 +168,12 @@ export async function incrementElementsAlikeCompleted(
     });
 
     console.log(
-      `ElementsAlike completion incremented for ${email} (Level: ${level})`,
+      `ElementsAlike completion incremented for ${email} (Level: ${level})`
     );
   } catch (error) {
     console.error(
       "[FIREBASE]: Error incrementing elementsAlikeCompleted completion:",
-      error,
+      error
     );
     throw new Error("Unable to increment elementsAlikeCompleted completion");
   }
@@ -184,7 +184,7 @@ export async function incrementTimeSpent(email: string, timeInMinutes: number) {
     console.log(timeInMinutes);
     const profileQuery = query(
       collection(db, "profile"),
-      where("email", "==", email),
+      where("email", "==", email)
     );
     const querySnapshot = await getDocs(profileQuery);
 
@@ -200,7 +200,7 @@ export async function incrementTimeSpent(email: string, timeInMinutes: number) {
     });
 
     console.log(
-      `Time spent incremented by ${timeInMinutes} minutes for ${email}`,
+      `Time spent incremented by ${timeInMinutes} minutes for ${email}`
     );
   } catch (error) {
     console.error("[FIREBASE]: Error incrementing time spent:", error);
@@ -213,7 +213,7 @@ export async function getLeaderboard() {
     const profilesQuery = query(
       collection(db, "profile"),
       orderBy("points", "desc"),
-      limit(50),
+      limit(50)
     );
 
     const querySnapshot = await getDocs(profilesQuery);
@@ -251,7 +251,7 @@ export async function updateNickname(email: string, nickname: string) {
   try {
     const profileQuery = query(
       collection(db, "profile"),
-      where("email", "==", email),
+      where("email", "==", email)
     );
     const querySnapshot = await getDocs(profileQuery);
 
@@ -276,7 +276,7 @@ export async function updateRank(email: string, points?: number) {
   try {
     const profileQuery = query(
       collection(db, "profile"),
-      where("email", "==", email),
+      where("email", "==", email)
     );
     const querySnapshot = await getDocs(profileQuery);
 
@@ -291,7 +291,7 @@ export async function updateRank(email: string, points?: number) {
 
     let newRank = "Bronze";
 
-    if (profilePoints <= 600 && profilePoints > 400) {
+    if (profilePoints > 500) {
       newRank = "Platinum";
     } else if (profilePoints <= 400 && profilePoints > 200) {
       newRank = "Gold";
@@ -318,7 +318,7 @@ export async function incrementPoints(email: string, points: number) {
     console.log(points);
     const profileQuery = query(
       collection(db, "profile"),
-      where("email", "==", email),
+      where("email", "==", email)
     );
     const querySnapshot = await getDocs(profileQuery);
     if (querySnapshot.empty) {
