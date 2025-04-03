@@ -10,10 +10,10 @@ export default function About() {
   const teamMembersRef = useRef(null);
 
   const teamMembers = [
-    { name: "Rudra Mehta", github: "https://github.com/rudyrog" },
-    { name: "Parv Shah", github: "https://github.com/parv141206" },
-    { name: "Devansh Jani", github: "https://github.com/djman323" },
-    { name: "Hrishit Patel", github: "https://github.com/Hri25" },
+    { name: "Jyot Patel", github: "https://github.com/jyot1901" },
+    { name: "Dhruv Patel", github: "https://github.com/Dhruv6806" },
+    { name: "Kaamil Gohel", github: "https://github.com/kaamil1210" },
+    { name: "Jash Patel", github: "https://github.com/jash1924" },
   ];
 
   useEffect(() => {
