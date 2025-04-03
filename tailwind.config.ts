@@ -14,7 +14,6 @@ module.exports = {
       rgba(255, 255, 255, 0.955),
       rgba(255, 255, 255, 0.955)
     ),
-    url("/images/doodle-bg.png")
   `,
 
         "main-bg-dark": `
@@ -90,8 +89,6 @@ module.exports = {
       #000000ef
     ),
     
-    /* Background image */
-    url("/images/doodle-bg-white.png")
   `,
       },
       colors: {

@@ -58,7 +58,7 @@ b::before {
 }
 
 .name-link {
-  @apply text-base ;
+  @apply text-base;
   color: var(--link-color);
   transition: all 0.3s;
   letter-spacing: 0.1em;
